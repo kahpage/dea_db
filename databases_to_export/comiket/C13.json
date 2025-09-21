@@ -1,0 +1,32 @@
+{
+    "aliases": [
+        "C13",
+        "コミックマーケット13",
+        "Comiket 13",
+        "Comic Market 13"
+    ],
+    "dates": "1979.12.23",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "13_mmi_catalog_01.jpg",
+            "sources": [
+                {
+                    "source": "https://nlab.itmedia.co.jp/cont/articles/3230088/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        }
+    ]
+}

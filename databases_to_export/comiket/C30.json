@@ -1,0 +1,52 @@
+{
+    "aliases": [
+        "C30",
+        "コミックマーケット30",
+        "Comiket 30",
+        "Comic Market 30"
+    ],
+    "dates": "1986.08.10",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "30_0000876716.jpeg",
+            "sources": [
+                {
+                    "source": "https://ekizo.mandarake.co.jp/auction/item/itemInfoJa.html?index=289123",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "30_0000876718.avif",
+            "sources": [
+                {
+                    "source": "https://ekizo.mandarake.co.jp/auction/item/itemInfoJa.html?index=289123",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：乙田基(300円)うちわ：川猫めぐみ紙袋：弓月光 ／ 火鳥紅星テレカ：さえぐさじゅん"
+        }
+    ]
+}

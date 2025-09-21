@@ -1,0 +1,57 @@
+{
+    "aliases": [
+        "C6",
+        "コミックマーケット6",
+        "Comiket 6",
+        "Comic Market 6"
+    ],
+    "dates": "1977.07.30 - 1977.07.31",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "6_Du26326VsAEYvsk.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/kudan2002/status/1075721868257067008",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "6_Gp7YCcXaMAAEtDV.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiketofficial/status/1918208033110540685",
+                    "type": [
+                        "Doubtful",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "6_20241107-OYT1I50139-1.webp",
+            "sources": [
+                {
+                    "source": "https://www.yomiuri.co.jp/culture/subcul/20241107-OYT1T50161/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "Old news article about comiket, perhaps the first known."
+        }
+    ]
+}

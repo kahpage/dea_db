@@ -1,0 +1,52 @@
+{
+    "aliases": [
+        "C43",
+        "コミックマーケット43",
+        "Comiket 43",
+        "Comic Market 43"
+    ],
+    "dates": "1992.12.29 - 1992.12.30",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "43_i-img600x450-14602829191460282918.89873425hmrp0i3425.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/h224342493",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：西村有未(800円)紙袋：槙夢民"
+        },
+        {
+            "path": "43_kamikomike_no06.jpg",
+            "sources": [
+                {
+                    "source": "https://www.meiji.ac.jp/manga/yonezawa_lib/archives/exh-kamicomiket/exh-kamicomiket_archive03.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        }
+    ]
+}

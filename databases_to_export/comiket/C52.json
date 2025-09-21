@@ -1,0 +1,89 @@
+{
+    "aliases": [
+        "C52",
+        "コミックマーケット52",
+        "Comiket 52",
+        "Comic Market 52"
+    ],
+    "dates": "1997.08.15 - 1997.08.17",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "52_i-img1200x1200-17370974759052rzvhft32.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/w1169732337",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "52_i-img1200x1200-17370974759284wa3xlc32.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/w1169732337",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "52_m27421199273_1.jpg",
+            "sources": [
+                {
+                    "source": "https://jp.mercari.com/item/m27421199273",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "52_m27421199273_3.jpg",
+            "sources": [
+                {
+                    "source": "https://jp.mercari.com/item/m27421199273",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "52_m27421199273_2.jpg",
+            "sources": [
+                {
+                    "source": "https://jp.mercari.com/item/m27421199273",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：おがきちかと小笠原史・猫玄(1,500円･2冊)うちわ：まつながあやこ 紙袋：ＣＨＯＣＯプレス：仙人の卵"
+        }
+    ],
+    "comments": "There seem to have been two catalogs, SIDE 1 and SIDE 2. I have no idea what these sides correspond to."
+}

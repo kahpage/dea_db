@@ -1,0 +1,44 @@
+{
+    "aliases": [
+        "C16",
+        "コミックマーケット16",
+        "Comiket 16",
+        "Comic Market 16"
+    ],
+    "dates": "1980.12.14",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "16_0001778865.jpeg",
+            "sources": [
+                {
+                    "source": "https://ekizo.mandarake.co.jp/auction/item/itemInfoJa.html?index=589912",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "16_0001778867.jpeg",
+            "sources": [
+                {
+                    "source": "https://ekizo.mandarake.co.jp/auction/item/itemInfoJa.html?index=589912",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        }
+    ]
+}

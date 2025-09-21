@@ -1,0 +1,52 @@
+{
+    "aliases": [
+        "C40",
+        "コミックマーケット40",
+        "Comiket 40",
+        "Comic Market 40"
+    ],
+    "dates": "1991.08.16 - 1991.08.17",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "40_i-img1200x1200-17350348834178hzwle5311028.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/v1166743151",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "40_i-img1200x1200-173503488344647obznq311028.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/v1166743151",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：まのとのま(800円)うちわ：吾妻ひでお紙袋：まのとのま"
+        }
+    ]
+}

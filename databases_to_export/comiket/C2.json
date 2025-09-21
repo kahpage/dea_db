@@ -1,0 +1,68 @@
+{
+    "aliases": [
+        "C2",
+        "コミックマーケット2",
+        "Comiket 2",
+        "Comic Market 2"
+    ],
+    "dates": "1976.04.04",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "2_FSMNQ4vVUAACdl4.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiketofficial/status/1523175293519015936",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "2_FSMNQ4zVIAApso2.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiketofficial/status/1523175293519015936",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "2_FSMNQ47VEAAeXNI.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiketofficial/status/1523175293519015936",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "2_FSMNQ4_VIAAWMsl.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiketofficial/status/1523175293519015936",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        }
+    ]
+}

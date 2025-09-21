@@ -1,0 +1,89 @@
+{
+    "aliases": [
+        "C21",
+        "コミックマーケット21",
+        "Comiket 21",
+        "Comic Market 21"
+    ],
+    "dates": "1982.08.08",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "21_4b67b93777f65bdac4a9b9ae6dbf329da9efa594.jpg",
+            "sources": [
+                {
+                    "source": "https://www.bilibili.com/opus/214906441072705006",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "21_Dvto72lU8AAoTQF.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiketofficial/status/1079571967454277632",
+                    "type": [
+                        "Likely",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "21_Dvto72DVYAA6PeU.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiketofficial/status/1079571967454277632",
+                    "type": [
+                        "Likely",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "21_Dvto73UVsAILYCT.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiketofficial/status/1079571967454277632",
+                    "type": [
+                        "Likely",
+                        "Official"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "ポスター：岩崎摂表紙：岩崎摂(100円)"
+        },
+        {
+            "path": "21_mmi_catalog_03.jpg",
+            "sources": [
+                {
+                    "source": "https://nlab.itmedia.co.jp/cont/articles/3230088/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        }
+    ],
+    "comments": "Note: According to the x post, C21 was the first comiket with a catalogue: https://x.com/comiketofficial/status/1079571967454277632"
+}

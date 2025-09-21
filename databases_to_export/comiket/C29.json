@@ -1,0 +1,52 @@
+{
+    "aliases": [
+        "C29",
+        "コミックマーケット29",
+        "Comiket 29",
+        "Comic Market 29"
+    ],
+    "dates": "1985.12.29",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "29_i-img1200x1200-17396766323092jgcmb147515.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/c1173633539",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "29_i-img1200x1200-17396766324232s9hjbe47515.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/c1173633539",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：進上真樹(300円)紙袋：迎麻紀"
+        }
+    ]
+}

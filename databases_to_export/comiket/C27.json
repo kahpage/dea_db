@@ -1,0 +1,52 @@
+{
+    "aliases": [
+        "C27",
+        "コミックマーケット27",
+        "Comiket 27",
+        "Comic Market 27"
+    ],
+    "dates": "1984.12.23",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "27_0000876707.avif",
+            "sources": [
+                {
+                    "source": "https://ekizo.mandarake.co.jp/auction/item/itemInfoJa.html?index=289120",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "27_0000876709.jpeg",
+            "sources": [
+                {
+                    "source": "https://ekizo.mandarake.co.jp/auction/item/itemInfoJa.html?index=289120",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：STUDIO　AWAKE(200円)"
+        }
+    ]
+}

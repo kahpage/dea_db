@@ -1,0 +1,128 @@
+{
+    "aliases": [
+        "C15",
+        "コミックマーケット15",
+        "Comiket 15",
+        "Comic Market 15"
+    ],
+    "dates": "1980.09.14",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "1415_s1152572644.1.jpg",
+            "sources": [
+                {
+                    "source": "https://aucview.aucfan.com/yahoo/s1152572644/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1415_s1152572644.2.jpg",
+            "sources": [
+                {
+                    "source": "https://aucview.aucfan.com/yahoo/s1152572644/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1415_s1152572644.3.jpg",
+            "sources": [
+                {
+                    "source": "https://aucview.aucfan.com/yahoo/s1152572644/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1415_s1152572644.4.jpg",
+            "sources": [
+                {
+                    "source": "https://aucview.aucfan.com/yahoo/s1152572644/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1415_s1152572644.5.jpg",
+            "sources": [
+                {
+                    "source": "https://aucview.aucfan.com/yahoo/s1152572644/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1415_s1152572644.6.jpg",
+            "sources": [
+                {
+                    "source": "https://aucview.aucfan.com/yahoo/s1152572644/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "15_0001778861.avif",
+            "sources": [
+                {
+                    "source": "https://img.mandarake.co.jp/aucimg/8/8/6/4/0001778864.jpeg",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "15_0001778863.avif",
+            "sources": [
+                {
+                    "source": "https://img.mandarake.co.jp/aucimg/8/8/6/4/0001778864.jpeg",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "15_0001778864.avif",
+            "sources": [
+                {
+                    "source": "https://img.mandarake.co.jp/aucimg/8/8/6/4/0001778864.jpeg",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        }
+    ]
+}

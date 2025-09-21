@@ -1,0 +1,106 @@
+{
+    "aliases": [
+        "C20",
+        "コミックマーケット20",
+        "Comiket 20",
+        "Comic Market 20"
+    ],
+    "dates": "1982.03.21",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "20_i-img640x640-1667725069ce86db225196.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/f1071125160",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "20_i-img640x640-1667724991s95wxb216893.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/f1071125160",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "20_i-img640x640-1667725069o1iwqg225196.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/f1071125160",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "20_i-img640x640-1667725039tto6aj225251.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/f1071125160",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "20_0001778870.avif",
+            "sources": [
+                {
+                    "source": "https://ekizo.mandarake.co.jp/auction/item/itemInfoJa.html?index=589914",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "20_0001778872.jpeg",
+            "sources": [
+                {
+                    "source": "https://ekizo.mandarake.co.jp/auction/item/itemInfoJa.html?index=589914",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "MISSING ILLUSTRATION !",
+            "sources": [
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "ポスター：板橋節子"
+        }
+    ],
+    "comments": "Blog post: https://soorce.hatenablog.com/entry/20061112/p1"
+}

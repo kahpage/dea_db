@@ -1,0 +1,76 @@
+{
+    "aliases": [
+        "C49",
+        "コミックマーケット49",
+        "Comiket 49",
+        "Comic Market 49"
+    ],
+    "dates": "1995.12.29 - 1995.12.30",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "49_i-img1200x1200-17341611307995pxd7rp35203.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/n1165394582",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "49_i-img1200x1200-17341611308283owhxfu35203.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/n1165394582",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "49_i-img1200x1200-17341611309066wjbyuq35203.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/n1165394582",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：水人蔦楽(1,000円)紙袋：加藤茶吉プレス：山崎貴一"
+        },
+        {
+            "path": "49_kamikomike_no09.jpg",
+            "sources": [
+                {
+                    "source": "https://www.meiji.ac.jp/manga/yonezawa_lib/archives/exh-kamicomiket/exh-kamicomiket_archive03.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        }
+    ]
+}

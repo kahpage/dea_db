@@ -1,0 +1,64 @@
+{
+    "aliases": [
+        "C46",
+        "コミックマーケット46",
+        "Comiket 46",
+        "Comic Market 46"
+    ],
+    "dates": "1994.08.07 - 1994.08.08",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "46_i-img450x600-1655607254hwbu0c545482.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/k1055058689",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "46_i-img450x600-1655607254orbj09540575.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/k1055058689",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "46_i-img1200x1200-174875080356248wvq9p35.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/g1187119867",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：波羅ぽこん(1,000円)うちわ：介錯紙袋：川猫めぐみ"
+        }
+    ]
+}

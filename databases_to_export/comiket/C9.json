@@ -1,0 +1,32 @@
+{
+    "aliases": [
+        "C9",
+        "コミックマーケット9",
+        "Comiket 9",
+        "Comic Market 9"
+    ],
+    "dates": "1978.07.29 - 1978.07.30",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "9_EXOSt8lUMAE2V74.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiketofficial/status/1257510060416045056",
+                    "type": [
+                        "Likely",
+                        "Official"
+                    ]
+                }
+            ]
+        }
+    ]
+}

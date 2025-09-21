@@ -1,0 +1,114 @@
+{
+    "aliases": [
+        "C48",
+        "コミックマーケット48",
+        "Comiket 48",
+        "Comic Market 48"
+    ],
+    "dates": "1995.08.18 - 1995.08.20",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "48_i-img1200x1200-1686408376puurvb521306.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/v1095067219",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "48_i-img1200x1200-168640837617neng521306.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/v1095067219",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "48_i-img1200x1200-1686408376tdfubp521306.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/v1095067219",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "48_i-img1200x1200-17487544840449vwgi8x101656.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/1187098375",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "48_i-img1200x1200-17487544840811xeatav101656.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/1187098375",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "48_i-img1200x1200-1686408376tdfubp521306.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/v1095067219",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：高河ゆん(1,300円･2冊)うちわ：むっちりむうにい紙袋：友里のえる プレス：竹田やよい"
+        },
+        {
+            "path": "i-img1200x900-17425442225590of3bz790587.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/n1177895362",
+                    "type": [
+                        "Guess",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "Likely that second catalog's spine between the 48th and 47th."
+        }
+    ],
+    "description": "20th anniversary comiket, first 3-days event."
+}

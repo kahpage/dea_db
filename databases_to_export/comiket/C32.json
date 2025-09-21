@@ -1,0 +1,52 @@
+{
+    "aliases": [
+        "C32",
+        "コミックマーケット32",
+        "Comiket 32",
+        "Comic Market 32"
+    ],
+    "dates": "1987.08.08 - 1987.08.09",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "32_i-img1200x1200-17396792213462g7adbm25.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/n1173632445",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "32_i-img1200x1200-173967922147205zsgis25.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/n1173632445",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：宇都宮斉(400円)うちわ：Ａｌｅｘ 紙袋：Dr.モロー テレカ：須賀邦彦／松田紘佳／おおや和美／真鍋譲治"
+        }
+    ]
+}

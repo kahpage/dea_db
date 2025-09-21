@@ -1,0 +1,40 @@
+{
+    "aliases": [
+        "C39",
+        "コミックマーケット39",
+        "Comiket 39",
+        "Comic Market 39"
+    ],
+    "dates": "1990.12.23 - 1990.12.24",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "39_i-img847x1200-1696310837905xo1722644.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/p1108590080",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：おときた・たかお(700円)紙袋：くまだまり"
+        }
+    ]
+}

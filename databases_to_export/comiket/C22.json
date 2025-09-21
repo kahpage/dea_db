@@ -1,0 +1,40 @@
+{
+    "aliases": [
+        "C22",
+        "コミックマーケット22",
+        "Comiket 22",
+        "Comic Market 22"
+    ],
+    "dates": "1982.12.26",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "22_536352903_18519782992019873_1734364163910063066_n.jpg",
+            "sources": [
+                {
+                    "source": "https://www.instagram.com/p/DNeSfpQSjV5/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "ポスター：千之ナイフ表紙：千之ナイフ(100円)"
+        }
+    ]
+}

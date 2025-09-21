@@ -1,0 +1,104 @@
+{
+    "aliases": [
+        "C14",
+        "コミックマーケット14",
+        "Comiket 14",
+        "Comic Market 14"
+    ],
+    "dates": "1980.05.11",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "1415_s1152572644.1.jpg",
+            "sources": [
+                {
+                    "source": "https://aucview.aucfan.com/yahoo/s1152572644/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1415_s1152572644.2.jpg",
+            "sources": [
+                {
+                    "source": "https://aucview.aucfan.com/yahoo/s1152572644/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1415_s1152572644.3.jpg",
+            "sources": [
+                {
+                    "source": "https://aucview.aucfan.com/yahoo/s1152572644/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1415_s1152572644.4.jpg",
+            "sources": [
+                {
+                    "source": "https://aucview.aucfan.com/yahoo/s1152572644/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1415_s1152572644.5.jpg",
+            "sources": [
+                {
+                    "source": "https://aucview.aucfan.com/yahoo/s1152572644/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1415_s1152572644.6.jpg",
+            "sources": [
+                {
+                    "source": "https://aucview.aucfan.com/yahoo/s1152572644/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "14_EXOXKZFUwAAZ8d0.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiketofficial/status/1257515000471543810",
+                    "type": [
+                        "Likely",
+                        "Official"
+                    ]
+                }
+            ]
+        }
+    ]
+}

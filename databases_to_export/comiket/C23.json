@@ -1,0 +1,64 @@
+{
+    "aliases": [
+        "C23",
+        "コミックマーケット23",
+        "Comiket 23",
+        "Comic Market 23"
+    ],
+    "dates": "1983.04.03",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "23_26152136_218239258717584_1315410657264271360_n.jpg",
+            "sources": [
+                {
+                    "source": "https://www.instagram.com/p/BdTErLmDpLO/?img_index=1",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "23_25024393_2087570141498449_5958770805369208832_n.jpg",
+            "sources": [
+                {
+                    "source": "https://www.instagram.com/p/BdTErLmDpLO/?img_index=1",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "23_1038501204.jpg",
+            "sources": [
+                {
+                    "source": "https://aucfree.com/items/378292495",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "ポスター：ありせみほ表紙：ありせみほ(100円)"
+        }
+    ]
+}

@@ -1,0 +1,68 @@
+{
+    "aliases": [
+        "C12",
+        "コミックマーケット12",
+        "Comiket 12",
+        "Comic Market 12"
+    ],
+    "dates": "1979.07.28 - 1979.07.29",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "12_i-img900x1200-1721663809cusqig107713.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/c1145684080",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "12_0001778858.jpeg",
+            "sources": [
+                {
+                    "source": "https://ekizo.mandarake.co.jp/auction/item/itemInfoJa.html?index=589910",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "12_0001778860.jpeg",
+            "sources": [
+                {
+                    "source": "https://ekizo.mandarake.co.jp/auction/item/itemInfoJa.html?index=589910",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "12_EXOS7RQUMAAZdWY.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiketofficial/status/1257510060416045056",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        }
+    ]
+}

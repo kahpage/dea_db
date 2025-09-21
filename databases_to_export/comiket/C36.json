@@ -1,0 +1,64 @@
+{
+    "aliases": [
+        "C36",
+        "コミックマーケット36",
+        "Comiket 36",
+        "Comic Market 36"
+    ],
+    "dates": "1989.08.13 - 1989.08.14",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "36_i-img450x600-1655606757s5wsc0578960.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/h1055047527",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "36_i-img450x600-1655606757rhr8st572441.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/h1055047527",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "36_i-img1200x664-1679814176eow4j3172091.jpg",
+            "sources": [
+                {
+                    "source": "https://paypayfleamarket.yahoo.co.jp/item/g1086278116",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：本多且典(600円)うちわ：たつねこ紙袋：へうがけん"
+        }
+    ]
+}

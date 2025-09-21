@@ -1,0 +1,58 @@
+{
+    "aliases": [
+        "C19",
+        "コミックマーケット19",
+        "Comiket 19",
+        "Comic Market 19"
+    ],
+    "dates": "1981.12.20",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "19_GyjobcnaQAEJvdA.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/phobby_ss/status/1957069602875433014",
+                    "type": [
+                        "Guess",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "Not sure if this is the official illustration"
+        },
+        {
+            "path": "19_0001778868.jpeg",
+            "sources": [
+                {
+                    "source": "https://ekizo.mandarake.co.jp/auction/item/itemInfoJa.html?index=589913",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "MISSING ILLUSTRATION ?",
+            "sources": [
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "ポスター：吾妻ひでお"
+        }
+    ]
+}

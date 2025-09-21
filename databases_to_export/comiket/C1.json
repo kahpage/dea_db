@@ -1,0 +1,70 @@
+{
+    "aliases": [
+        "C1",
+        "コミックマーケット1",
+        "Comiket 1",
+        "Comic Market 1"
+    ],
+    "dates": "1975.12.21",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "1_03.jpg",
+            "sources": [
+                {
+                    "source": "https://gigazine.net/news/20120314-comiket/",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1_FR8rZD-UYAAajym.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiket_air/status/1521988045481906178",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1_FR8rZEFVkAAm3e7.jpg",
+            "sources": [
+                {
+                    "source": "https://x.com/comiket_air/status/1521988045481906178",
+                    "type": [
+                        "Likely",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "1_CAUju1EUMAEF9gk.jpg",
+            "sources": [
+                {
+                    "source": "https://posfie.com/@tokyoedit/p/BktoaLJ",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "Unknown authors !"
+        }
+    ],
+    "comments": "Some works apparently released at C1: https://pst-pallet.com/2018/12/07/comike/"
+}

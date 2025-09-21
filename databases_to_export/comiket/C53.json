@@ -1,0 +1,52 @@
+{
+    "aliases": [
+        "C53",
+        "コミックマーケット53",
+        "Comiket 53",
+        "Comic Market 53"
+    ],
+    "dates": "1997.12.28 - 1997.12.29",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "53_i-img898x1198-1633932250ftmy6v653709.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/v1011531278",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：タカハシマコ(1,400円)紙袋：下北沢鈴成プレス：セツコ山田"
+        },
+        {
+            "path": "53_i-img898x1198-1633932250bez9e6653709.jpg",
+            "sources": [
+                {
+                    "source": "https://auctions.yahoo.co.jp/jp/auction/v1011531278",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        }
+    ]
+}

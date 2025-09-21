@@ -1,0 +1,64 @@
+{
+    "aliases": [
+        "C45",
+        "コミックマーケット45",
+        "Comiket 45",
+        "Comic Market 45"
+    ],
+    "dates": "1993.12.29 - 1993.12.30",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "45_zhoro75968.jpg.webp",
+            "sources": [
+                {
+                    "source": "https://www.suruga-ya.jp/product/detail/ZHORO75968",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "45_i-img640x480-1665205832d4cucu205017.jpg",
+            "sources": [
+                {
+                    "source": "https://cqybif.axlman.ru.com/index.php?main_page=product_info&products_id=24860",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "45_i-img640x480-1665205849nahv2g206257.jpg",
+            "sources": [
+                {
+                    "source": "https://cqybif.axlman.ru.com/index.php?main_page=product_info&products_id=24860",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：相原ひでお(1,000円)紙袋：村田蓮爾"
+        }
+    ]
+}

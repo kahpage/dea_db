@@ -1,0 +1,64 @@
+{
+    "aliases": [
+        "C37",
+        "コミックマーケット37",
+        "Comiket 37",
+        "Comic Market 37"
+    ],
+    "dates": "1989.12.23 - 1989.12.24",
+    "sources": [
+        {
+            "source": "Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        }
+    ],
+    "media": [
+        {
+            "path": "37_i-img916x1200-1679814609gtitwg178226.jpg",
+            "sources": [
+                {
+                    "source": "https://paypayfleamarket.yahoo.co.jp/item/f1086271666",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "37_i-img1200x690-1679814609tavmhp178226.jpg",
+            "sources": [
+                {
+                    "source": "https://paypayfleamarket.yahoo.co.jp/item/f1086271666",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "37_i-img946x1200-1679814609h4sd2f178226.jpg",
+            "sources": [
+                {
+                    "source": "https://paypayfleamarket.yahoo.co.jp/item/f1086271666",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                },
+                {
+                    "source": "Authors: https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Likely",
+                        "External"
+                    ]
+                }
+            ],
+            "comments": "表紙：新田真子(600円)紙袋：へうがけん"
+        }
+    ]
+}
