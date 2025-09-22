@@ -13,12 +13,12 @@ from db_structs import is_eg_db
 
 PATH_CURRENT_DIR = Path(__file__).parent
 PATH_ROOT = PATH_CURRENT_DIR.parent
-PATH_exported = PATH_CURRENT_DIR / "export"
+PATH_exported = PATH_CURRENT_DIR / "databases_exported"
 PATH_databases_to_export = PATH_CURRENT_DIR / "databases_to_export" # databases_to_export/ folder                                 -> Input
 
-PATH_served_databases = PATH_exported / "served_databases"          # databases_served/ folder (served / public databases)        -> Served uncompessed files (media, ...)
+# PATH_served_databases = PATH_exported / "served_databases"          # databases_served/ folder (served / public databases)        -> Served uncompessed files (media, ...)
 # PATH_public_databases = PATH_exported / "public_databases"          # public/databases/ folder (compressed databases)             -> Served compressed (included in deploy) files (json databases, ...)
-PATH_static_databases = PATH_exported / "static_databases"          # assets/databases/ folder (directly imported database files) -> Imported json files (indexes, ...)
+# PATH_static_databases = PATH_exported / "static_databases"          # assets/databases/ folder (directly imported database files) -> Imported json files (indexes, ...)
 DB_FILE_ENCODING = "utf-8"
 
 STATIC_JSON_INDENT: int | None = None # None to remove indent, int otherwise (e.g. 4)
@@ -28,25 +28,16 @@ def clean_database_to_event_group(content: dict[str, Any]) -> dict[str, Any]:
     out_dict: dict[str, Any] = {}
     out_dict["aliases"] = content["aliases"]
     out_dict["events"] = content.get("events", [])
-
-    # if "events" in content:
-    #     events_out: list[dict[str, Any]] = []
-    #     for i in range(len(content["events"])):
-    #         event_out = {}
-    #         event_out["aliases"] = content["events"][i]["aliases"]
-    #         if "dates" in content["events"][i]:
-    #             event_out["dates"] = content["events"][i]["dates"]
-    #         events_out.append(event_out)
-    #     out_dict["events"] = events_out
     
     return out_dict
 
 if __name__ == '__main__':
     print("======= EXPORTING DATABASES... =======")
     print(f"{PATH_databases_to_export=}")
-    print(f"{PATH_served_databases=}")
+    # print(f"{PATH_served_databases=}")
     # print(f"{PATH_public_databases=}")
-    print(f"{PATH_static_databases=}")
+    # print(f"{PATH_static_databases=}")
+    print(f"{PATH_exported=}")
 
     # ============================================================
     #  Cleaning old exports 
@@ -57,12 +48,15 @@ if __name__ == '__main__':
         exit()
 
     exists_folders: list[Path] = []
-    if PATH_static_databases.is_dir():
-        exists_folders.append(PATH_static_databases)
-    if PATH_served_databases.is_dir():
-        exists_folders.append(PATH_served_databases)
+    # if PATH_static_databases.is_dir():
+    #     exists_folders.append(PATH_static_databases)
+    # if PATH_served_databases.is_dir():
+    #     exists_folders.append(PATH_served_databases)
     # if PATH_public_databases.is_dir():
     #     exists_folders.append(PATH_public_databases)
+    if PATH_exported.is_dir():
+        exists_folders.append(PATH_exported)
+    
     if exists_folders:
         print(f"====== Clearing old {', '.join(f.stem for f in exists_folders)} folder{'s' if len(exists_folders)>2 else ''}... ======")
         ans = input(f"The content of the following folders will be deleted:\n{'\n'.join(str(folder) for folder in exists_folders)}\nEnter YES to confirm:\n")
@@ -72,9 +66,10 @@ if __name__ == '__main__':
         for folder in exists_folders:
             shutil.rmtree(folder)
 
-    PATH_served_databases.mkdir(parents=True, exist_ok=True)
-    PATH_static_databases.mkdir(parents=True, exist_ok=True) 
+    # PATH_served_databases.mkdir(parents=True, exist_ok=True)
+    # PATH_static_databases.mkdir(parents=True, exist_ok=True) 
     # PATH_public_databases.mkdir(parents=True, exist_ok=True)
+    PATH_exported.mkdir(parents=True, exist_ok=True)
 
 
     # ============================================================
@@ -119,7 +114,7 @@ if __name__ == '__main__':
             db_folder_path = PATH_databases_to_export / "/".join(root_path_list) / db_name
             db_file_path = db_folder_path / "event_group.json"
             # new_db_file_path = PATH_public_databases  / "/".join(root_path_list) / db_name / "event_group.json" # new path
-            new_db_file_path = PATH_served_databases  / "/".join(root_path_list) / db_name / "event_group.json" # new path
+            new_db_file_path = PATH_exported  / "/".join(root_path_list) / db_name / "event_group.json" # new path
             
             print(f"mkdir {new_db_file_path.parent} for json database ...")
             new_db_file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -137,13 +132,15 @@ if __name__ == '__main__':
                 with (new_db_file_path.parent / f"{event_alias0}.json").open("w+", encoding="utf-8") as f:
                     json.dump(event_content, f, ensure_ascii=False, indent=STATIC_JSON_INDENT)
 
-            new_media_path = PATH_served_databases / "/".join(root_path_list) / db_name / "media" # new media path
-            print(f"mkdir {new_media_path} ...")
-            new_media_path.mkdir(parents=True, exist_ok=True)
-            old_media_folder_path = db_folder_path / "media"
-            if old_media_folder_path.exists() and old_media_folder_path.is_dir():
-                print(f"Running shutil.copytree({old_media_folder_path}, {new_media_path})...")
-                shutil.copytree(old_media_folder_path, new_media_path, dirs_exist_ok=True)
+            # # Copy media folder if exists # DEPRECATED
+            # new_media_path = PATH_exported  / "/".join(root_path_list) / db_name / "media" # new media path
+            # # new_media_path = PATH_served_databases / "/".join(root_path_list) / db_name / "media" # new media path
+            # print(f"mkdir {new_media_path} ...")
+            # new_media_path.mkdir(parents=True, exist_ok=True)
+            # old_media_folder_path = db_folder_path / "media"
+            # if old_media_folder_path.exists() and old_media_folder_path.is_dir():
+            #     print(f"Running shutil.copytree({old_media_folder_path}, {new_media_path})...")
+            #     shutil.copytree(old_media_folder_path, new_media_path, dirs_exist_ok=True)
         
         for subfolder_name in index:
             if subfolder_name not in ["@databases", "@count"]:
@@ -155,13 +152,15 @@ if __name__ == '__main__':
     print("====== Copying found databases to databases_served/ ... ======")
     recursive_copy_from_database_index(database_index)
     
-    index_file_path = PATH_static_databases / "database_file_index.json"
+    # index_file_path = PATH_static_databases / "database_file_index.json"
+    index_file_path = PATH_exported / "database_file_index.json"
     index_file_path.parent.mkdir(parents=True, exist_ok=True)
     print(f"Saving index file at {index_file_path}...")
     with index_file_path.open("w+", encoding="utf-8") as f:
         json.dump(database_index, f, ensure_ascii=False, indent=STATIC_JSON_INDENT)
         
-    eg_db_file_path = PATH_static_databases / "event_list_index.json"
+    # eg_db_file_path = PATH_static_databases / "event_list_index.json"
+    eg_db_file_path = PATH_exported / "event_list_index.json"
     eg_db_file_path.parent.mkdir(parents=True, exist_ok=True)
     print(f"Saving event groups database file at {eg_db_file_path}...")
     with eg_db_file_path.open("w+", encoding="utf-8") as f:
@@ -245,7 +244,7 @@ if __name__ == '__main__':
 
     # === Extensive circle index ===
     # circle_extensive_index_folder = PATH_public_databases # in databases_served/
-    circle_extensive_index_folder = PATH_served_databases # in databases_served/
+    circle_extensive_index_folder = PATH_exported # in databases_served/
     circle_extensive_index_folder.mkdir(parents=True, exist_ok=True)
     print(f"Saving extensive circle database files in {circle_extensive_index_folder}...")
     CHUNK_SIZE = 1_000_000  # 1 million characters per file
@@ -260,8 +259,8 @@ if __name__ == '__main__':
                 
     # === Compact circle index ===
     circle_compact_index["@extensive_chunk_count"] = chunk_count # add the chunk count to the compact index
-    circle_compact_index_file_path = PATH_static_databases / "circle_participation_compact_index.json"     # in assets/static_databases/
-    
+    # circle_compact_index_file_path = PATH_static_databases / "circle_participation_compact_index.json"     # in assets/static_databases/
+    circle_compact_index_file_path = PATH_exported / "circle_participation_compact_index.json"     # in assets/static_databases/
     circle_compact_index_file_path.parent.mkdir(parents=True, exist_ok=True)
     print(f"Saving compact circle database file at {circle_compact_index_file_path}...")
     with circle_compact_index_file_path.open("w+", encoding="utf-8") as f:

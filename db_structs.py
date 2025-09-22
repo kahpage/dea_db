@@ -387,12 +387,12 @@ class EventGroup:
             description=eg_raw.get("description", None)
         )
 if __name__ == '__main__':
-    
-    folder = Path(__file__).parent / "databases_to_export" / "m3"
-    eg = EventGroup.load_from_folder(folder)
+    pass
+    # folder = Path(__file__).parent / "databases_to_export" / "m3"
+    # eg = EventGroup.load_from_folder(folder)
 
-    with (folder / "eg_test.json").open("w", encoding="utf-8") as f:
-        json.dump(eg.get_json(), f, ensure_ascii=False, indent=4)
+    # with (folder / "eg_test.json").open("w", encoding="utf-8") as f:
+    #     json.dump(eg.get_json(), f, ensure_ascii=False, indent=4)
 
 
     # TODO now: 
