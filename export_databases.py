@@ -247,7 +247,7 @@ if __name__ == '__main__':
     circle_extensive_index_folder = PATH_exported # in databases_served/
     circle_extensive_index_folder.mkdir(parents=True, exist_ok=True)
     print(f"Saving extensive circle database files in {circle_extensive_index_folder}...")
-    CHUNK_SIZE = 1_000_000  # 1 million characters per file
+    CHUNK_SIZE = 2_500_000  # 2.5 million characters per file
     total_content = json.dumps(circle_index, ensure_ascii=False, indent=STATIC_JSON_INDENT)
     chunk_count = len(total_content)//CHUNK_SIZE + 1
     for i in range(0, chunk_count):
