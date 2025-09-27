@@ -16,9 +16,6 @@ PATH_ROOT = PATH_CURRENT_DIR.parent
 PATH_exported = PATH_CURRENT_DIR / "databases_exported"
 PATH_databases_to_export = PATH_CURRENT_DIR / "databases_to_export" # databases_to_export/ folder                                 -> Input
 
-# PATH_served_databases = PATH_exported / "served_databases"          # databases_served/ folder (served / public databases)        -> Served uncompessed files (media, ...)
-# PATH_public_databases = PATH_exported / "public_databases"          # public/databases/ folder (compressed databases)             -> Served compressed (included in deploy) files (json databases, ...)
-# PATH_static_databases = PATH_exported / "static_databases"          # assets/databases/ folder (directly imported database files) -> Imported json files (indexes, ...)
 DB_FILE_ENCODING = "utf-8"
 
 STATIC_JSON_INDENT: int | None = None # None to remove indent, int otherwise (e.g. 4)
@@ -34,9 +31,6 @@ def clean_database_to_event_group(content: dict[str, Any]) -> dict[str, Any]:
 if __name__ == '__main__':
     print("======= EXPORTING DATABASES... =======")
     print(f"{PATH_databases_to_export=}")
-    # print(f"{PATH_served_databases=}")
-    # print(f"{PATH_public_databases=}")
-    # print(f"{PATH_static_databases=}")
     print(f"{PATH_exported=}")
 
     # ============================================================
@@ -48,12 +42,6 @@ if __name__ == '__main__':
         exit()
 
     exists_folders: list[Path] = []
-    # if PATH_static_databases.is_dir():
-    #     exists_folders.append(PATH_static_databases)
-    # if PATH_served_databases.is_dir():
-    #     exists_folders.append(PATH_served_databases)
-    # if PATH_public_databases.is_dir():
-    #     exists_folders.append(PATH_public_databases)
     if PATH_exported.is_dir():
         exists_folders.append(PATH_exported)
     
@@ -65,10 +53,7 @@ if __name__ == '__main__':
             exit()
         for folder in exists_folders:
             shutil.rmtree(folder)
-
-    # PATH_served_databases.mkdir(parents=True, exist_ok=True)
-    # PATH_static_databases.mkdir(parents=True, exist_ok=True) 
-    # PATH_public_databases.mkdir(parents=True, exist_ok=True)
+            
     PATH_exported.mkdir(parents=True, exist_ok=True)
 
 
@@ -243,14 +228,13 @@ if __name__ == '__main__':
     circle_index, circle_compact_index = recursive_circle_index(database_index)
 
     # === Extensive circle index ===
-    # circle_extensive_index_folder = PATH_public_databases # in databases_served/
     circle_extensive_index_folder = PATH_exported # in databases_served/
     circle_extensive_index_folder.mkdir(parents=True, exist_ok=True)
     print(f"Saving extensive circle database files in {circle_extensive_index_folder}...")
     CHUNK_SIZE = 2_500_000  # 2.5 million characters per file
     total_content = json.dumps(circle_index, ensure_ascii=False, indent=STATIC_JSON_INDENT)
-    chunk_count = len(total_content)//CHUNK_SIZE + 1
-    for i in range(0, chunk_count):
+    extensive_chunk_count = len(total_content)//CHUNK_SIZE + 1
+    for i in range(0, extensive_chunk_count):
         chunk_file_path = circle_extensive_index_folder / f"circle_participation_extensive_index.json_{i}"
         chunk = total_content[i * CHUNK_SIZE: (i+1) * CHUNK_SIZE]
         print(f"Writing chunk {i} of size {len(chunk)} characters to {chunk_file_path}...")
@@ -258,10 +242,42 @@ if __name__ == '__main__':
             f.write(chunk)
                 
     # === Compact circle index ===
-    circle_compact_index["@extensive_chunk_count"] = chunk_count # add the chunk count to the compact index
-    # circle_compact_index_file_path = PATH_static_databases / "circle_participation_compact_index.json"     # in assets/static_databases/
-    circle_compact_index_file_path = PATH_exported / "circle_participation_compact_index.json"     # in assets/static_databases/
-    circle_compact_index_file_path.parent.mkdir(parents=True, exist_ok=True)
-    print(f"Saving compact circle database file at {circle_compact_index_file_path}...")
-    with circle_compact_index_file_path.open("w+", encoding="utf-8") as f:
-        json.dump(circle_compact_index, f, ensure_ascii=False, indent=STATIC_JSON_INDENT)
+    circle_compact_index_folder = PATH_exported # in databases_served/
+    circle_compact_index_folder.mkdir(parents=True, exist_ok=True)
+    print(f"Saving compact circle database files in {circle_compact_index_folder}...")
+    CHUNK_SIZE = 2_500_000  # 2.5 million characters per file
+    total_content = json.dumps(circle_compact_index, ensure_ascii=False, indent=STATIC_JSON_INDENT)
+    compact_chunk_count = len(total_content)//CHUNK_SIZE + 1
+    for i in range(0, compact_chunk_count):
+        chunk_file_path = circle_compact_index_folder / f"circle_participation_compact_index.json_{i}"
+        chunk = total_content[i * CHUNK_SIZE: (i+1) * CHUNK_SIZE]
+        print(f"Writing chunk {i} of size {len(chunk)} characters to {chunk_file_path}...")
+        with chunk_file_path.open("w+", encoding="utf-8") as f:
+            f.write(chunk)
+
+
+    # === Circle index metadata ===
+    # Get file sizes
+    extensive_total_size = 0
+    compact_total_size = 0
+    for i in range(0, extensive_chunk_count):
+        chunk_file_path = circle_extensive_index_folder / f"circle_participation_extensive_index.json_{i}"
+        size = chunk_file_path.stat().st_size
+        extensive_total_size += size
+
+    for i in range(0, compact_chunk_count):
+        chunk_file_path = circle_compact_index_folder / f"circle_participation_compact_index.json_{i}"
+        size = chunk_file_path.stat().st_size
+        compact_total_size += size
+        
+    out_metadata = {
+        "extensive_index_chunk_count": extensive_chunk_count,
+        "compact_index_chunk_count": compact_chunk_count,
+        "extensive_total_size": extensive_total_size,
+        "compact_total_size": compact_total_size,
+    }
+
+    circle_index_metadata_file_path = PATH_exported / "circle_index_metadata.json"
+    print(f"Saving circle index metadata file at {circle_index_metadata_file_path}...")
+    with circle_index_metadata_file_path.open("w+", encoding="utf-8") as f:
+        json.dump(out_metadata, f, ensure_ascii=False, indent=STATIC_JSON_INDENT)
