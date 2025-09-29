@@ -227,46 +227,105 @@ if __name__ == '__main__':
 
     circle_index, circle_compact_index = recursive_circle_index(database_index)
 
+    
+    def split_json_tree(data, max_items):
+        file_index = 1
+        item_count = 0
+        current_root = {}
+
+        def flush():
+            """Yield the current root as a JSON string and reset counters"""
+            nonlocal file_index, current_root, item_count
+            if item_count == 0:
+                return
+            yield json.dumps(current_root, ensure_ascii=False, indent=None)
+            file_index += 1
+            current_root = {}
+            item_count = 0
+
+        def ensure_path(path_keys):
+            """Ensure nested dicts exist in current_root for the given path, rebuild the path if necessary"""
+            node = current_root
+            for k in path_keys:
+                if k not in node:
+                    node[k] = {}
+                node = node[k]
+            return node
+
+        def traverse(node, path_keys):
+            nonlocal item_count
+            nonlocal current_root
+
+            if isinstance(node, list): # Circle list i.e. event
+                out_list = []
+                parent = ensure_path(path_keys[:-1])
+                parent[path_keys[-1]] = out_list
+
+                for item in node:
+                    if item_count >= max_items:
+                        # yield current and reset
+                        yield from flush()
+                        parent = ensure_path(path_keys[:-1])
+                        out_list = []
+                        parent[path_keys[-1]] = out_list
+
+                    out_list.append(item)
+                    item_count += 1
+
+                    if item_count >= max_items:
+                        yield from flush()
+                        parent = ensure_path(path_keys[:-1])
+                        out_list = []
+                        parent[path_keys[-1]] = out_list
+
+            elif isinstance(node, dict): # Subcategory
+                for k, v in node.items():
+                    yield from traverse(v, path_keys + [k])
+
+            else: # leaf value (not list/dict)
+                raise ValueError("Invalid structure: leaf value encountered")
+
+        # Traverse the whole tree
+        yield from traverse(data, [])
+        yield from flush()
+
     # === Extensive circle index ===
+    CIRCLES_PER_FILE = 10_000 # 10k circles per file
     circle_extensive_index_folder = PATH_exported # in databases_served/
     circle_extensive_index_folder.mkdir(parents=True, exist_ok=True)
     print(f"Saving extensive circle database files in {circle_extensive_index_folder}...")
-    CHUNK_SIZE = 2_500_000  # 2.5 million characters per file
-    total_content = json.dumps(circle_index, ensure_ascii=False, indent=STATIC_JSON_INDENT)
-    extensive_chunk_count = len(total_content)//CHUNK_SIZE + 1
-    for i in range(0, extensive_chunk_count):
-        chunk_file_path = circle_extensive_index_folder / f"circle_participation_extensive_index.json_{i}"
-        chunk = total_content[i * CHUNK_SIZE: (i+1) * CHUNK_SIZE]
+    extensive_chunk_count = 0
+    for i, chunk in enumerate(split_json_tree(circle_index, CIRCLES_PER_FILE)):
+        chunk_file_path = circle_extensive_index_folder / f"circle_participation_extensive_index_{i}.json"
         print(f"Writing chunk {i} of size {len(chunk)} characters to {chunk_file_path}...")
         with chunk_file_path.open("w+", encoding="utf-8") as f:
             f.write(chunk)
-                
+        extensive_chunk_count += 1
+    
     # === Compact circle index ===
+    CIRCLES_PER_FILE = 40_000 # 40k circles per file
     circle_compact_index_folder = PATH_exported # in databases_served/
     circle_compact_index_folder.mkdir(parents=True, exist_ok=True)
     print(f"Saving compact circle database files in {circle_compact_index_folder}...")
-    CHUNK_SIZE = 2_500_000  # 2.5 million characters per file
-    total_content = json.dumps(circle_compact_index, ensure_ascii=False, indent=STATIC_JSON_INDENT)
-    compact_chunk_count = len(total_content)//CHUNK_SIZE + 1
-    for i in range(0, compact_chunk_count):
-        chunk_file_path = circle_compact_index_folder / f"circle_participation_compact_index.json_{i}"
-        chunk = total_content[i * CHUNK_SIZE: (i+1) * CHUNK_SIZE]
+    compact_chunk_count = 0
+    for i, chunk in enumerate(split_json_tree(circle_compact_index, CIRCLES_PER_FILE)):
+        chunk_file_path = circle_compact_index_folder / f"circle_participation_compact_index_{i}.json"
         print(f"Writing chunk {i} of size {len(chunk)} characters to {chunk_file_path}...")
         with chunk_file_path.open("w+", encoding="utf-8") as f:
             f.write(chunk)
-
+        compact_chunk_count += 1
 
     # === Circle index metadata ===
     # Get file sizes
     extensive_total_size = 0
     compact_total_size = 0
     for i in range(0, extensive_chunk_count):
-        chunk_file_path = circle_extensive_index_folder / f"circle_participation_extensive_index.json_{i}"
+        chunk_file_path = circle_extensive_index_folder / f"circle_participation_extensive_index_{i}.json"
         size = chunk_file_path.stat().st_size
         extensive_total_size += size
 
     for i in range(0, compact_chunk_count):
-        chunk_file_path = circle_compact_index_folder / f"circle_participation_compact_index.json_{i}"
+        chunk_file_path = circle_compact_index_folder / f"circle_participation_compact_index_{i}.json"
         size = chunk_file_path.stat().st_size
         compact_total_size += size
         

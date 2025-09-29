@@ -3716,7 +3716,7 @@ if __name__ == '__main__':
                     Source("https://hatenanews.com/articles/201409/22341", (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="Features high resolution C1 circle map !"),
         ]
-        links = ["https://comiket.co.jp/", "__________________________________", "https://x.com/comiketofficial"]
+        links = ["https://comiket.co.jp/", "https://web.archive.org/web/19990117015250/http://www.inter-g7.or.jp/g2/manga/HTML/MARKET.html", "https://x.com/comiketofficial"]
 
         event_group = EventGroup(
             aliases=["Comic Market", "Comiket", "コミックマーケット", "コミケ", "C"],
