@@ -1285,5 +1285,20 @@
                 }
             ]
         }
+    ],
+    "locations": [
+        {
+            "iframe_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d405.0289070291701!2d139.7870744599309!3d35.69592640552837!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188eb36b54452d%3A0xf1a3e2377b154969!2z6LK444GX5Lya6K2w5a6kIOadseS6rOaWh-WFt-WFseWSjOS8mumkqCDmtYXojYnmqYs!5e0!3m2!1sen!2sfr!4v1759867497811!5m2!1sen!2sfr",
+            "description": "東京文具共和会館 2F",
+            "sources": [
+                {
+                    "source": "https://www.m3net.jp/event/1998s.php",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        }
     ]
 }

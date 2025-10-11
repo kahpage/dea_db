@@ -20131,10 +20131,10 @@
     ],
     "sources": [
         {
-            "source": "Date: https://puellabyte.github.io/events",
+            "source": "Date: Banner 47_20210126193207_imgIndex2021s.jpg",
             "type": [
-                "Likely",
-                "External"
+                "Reliable",
+                "Official"
             ]
         },
         {
@@ -20202,5 +20202,32 @@
             ]
         }
     ],
-    "comments": "Note: 島番号[A]～[R]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[ス]は第二展示場2階、[黒]～[金]はWeb会場です。"
+    "comments": "Note: 島番号[A]～[R]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[ス]は第二展示場2階、[黒]～[金]はWeb会場です。",
+    "locations": [
+        {
+            "iframe_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+            "description": "東京流通センター (TRC)",
+            "sources": [
+                {
+                    "source": "Banner 47_20210506023407_imgIndex2021sEnd.jpg",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "+ Web event (https://www.m3net.jp/m3_47/m3-47_WebEvent_Map.pdf)",
+            "sources": [
+                {
+                    "source": "Banner 47_20210506023407_imgIndex2021sEnd.jpg",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        }
+    ]
 }

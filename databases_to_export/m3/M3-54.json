@@ -23500,21 +23500,21 @@
     ],
     "sources": [
         {
-            "source": "Date: https://puellabyte.github.io/events",
-            "type": [
-                "Likely",
-                "External"
-            ]
-        },
-        {
-            "source": "Participating circles: https://www.m3net.jp/event/circle2024s.php",
+            "source": "Date: M3-54 (digital) catalog",
             "type": [
                 "Reliable",
                 "Official"
             ]
         },
         {
-            "source": "Note & Virtual participations: https://www.m3net.jp/event/circle2024s.php",
+            "source": "Participating circles: https://www.m3net.jp/event/circle2024f.php",
+            "type": [
+                "Reliable",
+                "Official"
+            ]
+        },
+        {
+            "source": "Note & Virtual participations: https://www.m3net.jp/event/circle2024f.php",
             "type": [
                 "Reliable",
                 "Official"
@@ -23526,7 +23526,7 @@
             "path": "54_M3tuushin54map_web.pdf",
             "sources": [
                 {
-                    "source": "https://www.m3net.jp/event/circle2024s.php",
+                    "source": "https://www.m3net.jp/event/circle2024f.php",
                     "type": [
                         "Reliable",
                         "Official"
@@ -23557,7 +23557,34 @@
                     ]
                 }
             ]
+        },
+        {
+            "path": "https://web.archive.org/web/20250427031227/https://www.m3net.jp/m3_54/M3-2024F.catalog.pdf",
+            "sources": [
+                {
+                    "source": "https://web.archive.org/web/20250427031227/https://www.m3net.jp/m3_54/M3-2024F.catalog.pdf",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
         }
     ],
-    "comments": "Note: 島番号[A]～[T]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[シ]は第二展示場2階、[黒]～[金]はWeb会場です。"
+    "comments": "Note: 島番号[A]～[T]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[シ]は第二展示場2階、[黒]～[金]はWeb会場です。",
+    "locations": [
+        {
+            "iframe_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+            "description": "東京流通センター (TRC) 第一展示場/第二展示場",
+            "sources": [
+                {
+                    "source": "M3-54 (digital) catalog",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        }
+    ]
 }

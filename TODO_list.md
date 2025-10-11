@@ -4,6 +4,8 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 
 ## Notes
 ### Planned
+- m3 cuts via scraping (to be found once again)
+-  https://x.com/m3doujin/status/1637997454103572480
 - https://catalog.m3net.jp/archive/2023s/circles.html
 - CC福岡ドーム
 - Note: circle.ms goes back to C83 (https://webcatalog-archives.circle.ms/)

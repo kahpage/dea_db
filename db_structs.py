@@ -140,6 +140,40 @@ class Medium:
             description=in_dict.get("description", None)
             )
 
+@dataclass
+class Location:
+    """
+    Event location
+    """
+    iframe_url: Optional[str] = None # iframe url to display a map (Google Maps, OpenStreetMap, etc)
+    description: Optional[str] = None # Location detail or description
+    sources: Optional[list[Source]] = field(default_factory=list)
+
+    comments: Optional[str] = None # Additionnal comments (unused for now).
+
+    def get_json(self) -> dict[str, Any]:
+        out_dict: dict[str, Any] = {}
+        if (self.iframe_url is not None) and (is_to_add(self.iframe_url)):
+            out_dict["iframe_url"] = self.iframe_url
+        if (self.description is not None) and (is_to_add(self.description)): # not None and not ""
+            out_dict["description"] = self.description
+        if (self.sources is not None) and (is_to_add(self.sources)): # not None and at least one
+            out_dict["sources"] = [source.get_json() for source in self.sources]
+        if (self.comments is not None) and (is_to_add(self.comments)): # not None and not ""
+            out_dict["comments"] = self.comments
+        return out_dict
+    
+    @staticmethod
+    def load_from_json(in_dict: dict[str, Any]) -> 'Location':
+        """Get Location instance from json dict."""
+        sources_raw = [Source.load_from_json(source) for source in in_dict.get("sources", [])]
+
+        return Location(
+            iframe_url=in_dict.get("iframe_url", None),
+            description=in_dict.get("description", None),
+            sources=sources_raw if is_to_add(sources_raw) else None,
+            comments=in_dict.get("comments", None)
+        )
 
 @dataclass
 class Circle:
@@ -211,6 +245,7 @@ class Event:
     
     circles: Optional[list[Circle]] = field(default_factory=list) # List of participating circles.
 
+    locations: Optional[list[Location]] = field(default_factory=list) # List of locations for that event.
     sources: Optional[list[Source]] = field(default_factory=list) # List here urls/comments on sources for that Event only. Non general, or circle specific sources should go in the respective circle.sources.
     media: Optional[list[Medium]] = field(default_factory=list) # List of media related to that specific event (banners, etc). Circle specific media should go in the respective circle.media.
 
@@ -238,6 +273,8 @@ class Event:
             out_dict["comments"] = self.comments
         if (self.description is not None) and (is_to_add(self.description)): # not None and not ""
             out_dict["description"] = self.description
+        if (self.locations is not None) and (is_to_add(self.locations)): # not None and at least one
+            out_dict["locations"] = [location.get_json() for location in self.locations]
 
         return out_dict
 
@@ -247,6 +284,8 @@ class Event:
         circles = [Circle.load_from_json(circle) for circle in in_dict.get("circles", [])]
         sources = [Source.load_from_json(source) for source in in_dict.get("sources", [])]
         media = [Medium.load_from_json(medium) for medium in in_dict.get("media", [])]
+        locations = [Location.load_from_json(location) for location in in_dict.get("locations", [])]
+
         links = in_dict.get("links", [])
 
         return Event(
@@ -257,7 +296,8 @@ class Event:
             media=media if is_to_add(media) else None,
             links=links if is_to_add(links) else None,
             comments=in_dict.get("comments", None),
-            description=in_dict.get("description", None)
+            description=in_dict.get("description", None),
+            locations=locations if is_to_add(locations) else None
         )
 
 @dataclass

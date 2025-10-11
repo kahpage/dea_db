@@ -19239,10 +19239,10 @@
     ],
     "sources": [
         {
-            "source": "Date: https://puellabyte.github.io/events",
+            "source": "Date: Banner 51_imgIndex2023S_0501.png",
             "type": [
-                "Likely",
-                "External"
+                "Reliable",
+                "Official"
             ]
         },
         {
@@ -19272,7 +19272,46 @@
                     ]
                 }
             ]
+        },
+        {
+            "path": "51_imgIndex2023S.png",
+            "sources": [
+                {
+                    "source": "https://web.archive.org/web/20230412061554/http://www.m3net.jp/img/imgIndex2023S.png",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "51_imgIndex2023S_0501.png",
+            "sources": [
+                {
+                    "source": "https://web.archive.org/web/20230502163708/https://www.m3net.jp/img/imgIndex2023S_0501.png",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
         }
     ],
-    "comments": "Note: on https://www.m3net.jp/event/circle2023s.php, M3tuushin53map_web.pdf is linked instead of M3tuushin51map_web.pdf\nNote: 島番号[A]～[Q]は第一展示場、[あ]～[お]は第二展示場1階、[カ]～[サ]は第二展示場2階、[黒]～[金]はWeb会場です。"
+    "comments": "Note: on https://www.m3net.jp/event/circle2023s.php, M3tuushin53map_web.pdf is linked instead of M3tuushin51map_web.pdf\nNote: 島番号[A]～[Q]は第一展示場、[あ]～[お]は第二展示場1階、[カ]～[サ]は第二展示場2階、[黒]～[金]はWeb会場です。",
+    "locations": [
+        {
+            "iframe_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+            "description": "東京流通センター (TRC) 第一展示場 第二展示場",
+            "sources": [
+                {
+                    "source": "Banner 51_imgIndex2023S_0501.png",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        }
+    ]
 }

@@ -11712,10 +11712,10 @@
     ],
     "sources": [
         {
-            "source": "Date: https://puellabyte.github.io/events",
+            "source": "Date: M3-31 catalog cover",
             "type": [
-                "Likely",
-                "External"
+                "Reliable",
+                "Official"
             ]
         },
         {
@@ -11768,6 +11768,21 @@
             "sources": [
                 {
                     "source": "https://web.archive.org/web/20130507091950/http://www.m3net.jp/img/imgIndex2013end.jpg",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        }
+    ],
+    "locations": [
+        {
+            "iframe_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+            "description": "東京流通センター (TRC 第一展示場/第二展示場)",
+            "sources": [
+                {
+                    "source": "M3-31 catalog cover",
                     "type": [
                         "Reliable",
                         "Official"
