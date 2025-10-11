@@ -18223,6 +18223,18 @@
     ],
     "media": [
         {
+            "path": "44_m3_44_cat.png",
+            "sources": [
+                {
+                    "source": "http://www.m3net.jp/attendance/catalog44.php",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
             "path": "44_M3tuushin44map_web.pdf",
             "sources": [
                 {

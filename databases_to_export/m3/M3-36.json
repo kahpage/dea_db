@@ -15519,6 +15519,18 @@
     ],
     "media": [
         {
+            "path": "36_m3_36_cat.png",
+            "sources": [
+                {
+                    "source": "http://www.m3net.jp/attendance/catalog36.php",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
             "path": "36_m3-36_plan.pdf",
             "sources": [
                 {

@@ -14787,6 +14787,18 @@
     ],
     "media": [
         {
+            "path": "37_m3_37_cat.png",
+            "sources": [
+                {
+                    "source": "http://www.m3net.jp/attendance/catalog37.php",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
             "path": "37_M3tuushin37map_web.pdf",
             "sources": [
                 {

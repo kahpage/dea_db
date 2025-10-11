@@ -21081,6 +21081,30 @@
     ],
     "media": [
         {
+            "path": "48_m3_48_catA.png",
+            "sources": [
+                {
+                    "source": "http://www.m3net.jp/attendance/catalog48.php",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
+            "path": "48_m3_48_catB.png",
+            "sources": [
+                {
+                    "source": "http://www.m3net.jp/attendance/catalog48.php",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
             "path": "48_M3tuushin48map_web.pdf",
             "sources": [
                 {

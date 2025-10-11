@@ -15118,6 +15118,18 @@
     ],
     "media": [
         {
+            "path": "55_m3_55_cat.png",
+            "sources": [
+                {
+                    "source": "http://www.m3net.jp/attendance/catalog55.php",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
             "path": "55_keyvisual.png",
             "sources": [
                 {

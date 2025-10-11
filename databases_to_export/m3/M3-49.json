@@ -20976,6 +20976,18 @@
     ],
     "media": [
         {
+            "path": "49_m3_49_cat.png",
+            "sources": [
+                {
+                    "source": "http://www.m3net.jp/attendance/catalog49.php",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
             "path": "49_M3tuushin49map_web.pdf",
             "sources": [
                 {

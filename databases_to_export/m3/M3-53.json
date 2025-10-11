@@ -20529,6 +20529,18 @@
     ],
     "media": [
         {
+            "path": "53_m3_53_cat.png",
+            "sources": [
+                {
+                    "source": "http://www.m3net.jp/attendance/catalog53.php",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        },
+        {
             "path": "53_M3tuushin53map_web.pdf",
             "sources": [
                 {

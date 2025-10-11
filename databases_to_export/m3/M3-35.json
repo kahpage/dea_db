@@ -15477,6 +15477,18 @@
                     ]
                 }
             ]
+        },
+        {
+            "path": "35_m3_35_cat.png",
+            "sources": [
+                {
+                    "source": "http://www.m3net.jp/attendance/catalog35.php",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
         }
     ],
     "locations": [
