@@ -36,5 +36,20 @@
             ],
             "comments": "表紙：おときた・たかお(700円)紙袋：くまだまり"
         }
+    ],
+    "locations": [
+        {
+            "iframe_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.189715345795!2d140.029803332015!3d35.647697212080125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6022821fd52ebfdf%3A0xcec0c09c4bed45e0!2sMakuhari%20Messe!5e0!3m2!1sen!2sfr!4v1760363597857!5m2!1sen!2sfr",
+            "description": "日本コンベンションセンター（幕張メッセ）第４～７展示場",
+            "sources": [
+                {
+                    "source": "https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        }
     ]
 }

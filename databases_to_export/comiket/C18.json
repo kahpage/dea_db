@@ -29,5 +29,20 @@
             ],
             "comments": "About C18 according to tweet, probably released at C19 (コミケの歴史19 + date matches)"
         }
+    ],
+    "locations": [
+        {
+            "iframe_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5961.142227937299!2d139.64313271598513!3d35.4464773766248!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60185cfc879b30db%3A0x8d76dbf7eaf7b911!2sYokohama%20Sanbo%20Hall%20Marineria!5e0!3m2!1sen!2sfr!4v1760362420414!5m2!1sen!2sfr",
+            "description": "横浜産業貿易ホール",
+            "sources": [
+                {
+                    "source": "https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ]
+        }
     ]
 }

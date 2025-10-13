@@ -10,7 +10,7 @@
 # https://webcatalog.circle.ms/
 
 
-from db_structs import Medium, Circle, Event, EventGroup, Source, ReliabilityTypes, OriginTypes
+from db_structs import Medium, Circle, Event, EventGroup, Source, ReliabilityTypes, OriginTypes, Location
 from pathlib import Path
 import json
 from bs4 import BeautifulSoup, Comment
@@ -57,6 +57,13 @@ if __name__ == '__main__':
             Medium("https://www.comiket.co.jp/info-a/C106/C106CtlgNotes.pdf",
                    [Source("https://www.comiket.co.jp/info-a/C106/C106CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）(除く東１～３ホール)、ＴＦＴホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2025.08.16 - 2025.08-17",
@@ -65,7 +72,8 @@ if __name__ == '__main__':
             sources=[
                 Source("Date: https://www.comiket.co.jp/info-a/CatalogShop.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -96,6 +104,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20250607011803/https://www.comiket.co.jp/info-a/C105/C105CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20250607011803/https://www.comiket.co.jp/info-a/C105/C105CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）全館",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2024.12.29 - 2024.12.30",
@@ -104,7 +119,8 @@ if __name__ == '__main__':
             sources=[
                 Source("Date: https://web.archive.org/web/20250112211002/https://comiket.co.jp/info-a/C105/C105distributions.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -139,6 +155,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20250528142328/https://www.comiket.co.jp/info-a/C104/C104CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20250528142328/https://www.comiket.co.jp/info-a/C104/C104CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),                  
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）全館",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2024.08.11 - 2024.08.12",
@@ -147,7 +170,8 @@ if __name__ == '__main__':
             sources=[
                 # Source("Date: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -181,6 +205,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20250404165729/https://www.comiket.co.jp/info-a/C103/C103CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20250404165729/https://www.comiket.co.jp/info-a/C103/C103CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）全館",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2023.12.30 - 2023.12.31",
@@ -189,7 +220,8 @@ if __name__ == '__main__':
             sources=[
                 Source("Date: https://web.archive.org/web/20250115003253/https://www.comiket.co.jp/info-a/C103/C103distributions.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -224,6 +256,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20230718060813/https://www2.comiket.co.jp/info-a/C102/C102CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20230718060813/https://www2.comiket.co.jp/info-a/C102/C102CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）全館",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2023.08.12 - 2023.08.13",
@@ -232,7 +271,8 @@ if __name__ == '__main__':
             sources=[
                 Source("Date: https://web.archive.org/web/20250404192004/https://www.comiket.co.jp/info-a/C102/C102distributions.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -260,6 +300,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20230720080945/https://www2.comiket.co.jp/info-a/C101/C101CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20230720080945/https://www2.comiket.co.jp/info-a/C101/C101CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）全館",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2012.12.30 - 2012.12.31",
@@ -268,7 +315,8 @@ if __name__ == '__main__':
             sources=[
                 Source("Date: https://web.archive.org/web/20230125004924/https://www2.comiket.co.jp/info-a/C101/C101distributions.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -299,6 +347,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20231127050808/https://www2.comiket.co.jp/info-c/C100/C100Appset.pdf",
                    [Source("https://web.archive.org/web/20231127050808/https://www2.comiket.co.jp/info-c/C100/C100Appset.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）全館",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2022.08.13 - 2022.08.14",
@@ -307,7 +362,8 @@ if __name__ == '__main__':
             sources=[
                 Source("Date: https://web.archive.org/web/20250405040850/https://www.comiket.co.jp/info-a/C100/C100distributions.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -335,6 +391,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20241207212737/https://www2.comiket.co.jp/info-c/C99A/C99AAppset.pdf",
                    [Source("https://web.archive.org/web/20241207212737/https://www2.comiket.co.jp/info-c/C99A/C99AAppset.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～６ホール＋西１～２ホール＋南１～２ホール     企業ブース: 西３～４ホール＋南３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2021.05.02 - 2021.05.02 → 2021.12.30 - 2021.12.31",
@@ -344,7 +407,8 @@ if __name__ == '__main__':
                 Source("Date: https://web.archive.org/web/20211224125426/https://www.comiket.co.jp/", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Postponed: https://www.comiket.co.jp/info-a/C99/C99Notice2.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -390,6 +454,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20210117023521/https://www.comiket.co.jp/info-a/C98/C98CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20210117023521/https://www.comiket.co.jp/info-a/C98/C98CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 西１～４ホール＋南１～４ホール     企業ブース: 青海展示棟",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2020.05.02 - 2020.05.05 (CANCELLED)",
@@ -398,7 +469,8 @@ if __name__ == '__main__':
             sources=[
                 Source("Date, Cancellation: https://www.comiket.co.jp/info-a/C98/C98Covid19Notice2.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -440,6 +512,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20191222101125/https://www2.comiket.co.jp/info-a/C97/C97CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20191222101125/https://www2.comiket.co.jp/info-a/C97/C97CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 西１～４ホール＋南１～４ホール     企業ブース: 青海展示棟",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2019.12.28 - 2019.12.31",
@@ -448,7 +527,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -492,6 +572,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20190714122807/https://www2.comiket.co.jp/info-a/C96/C96CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20190714122807/https://www2.comiket.co.jp/info-a/C96/C96CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 西１～４ホール＋南１～４ホール     企業ブース: 青海展示棟",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2019.08.09 - 2019.08.12",
@@ -500,7 +587,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -538,6 +626,13 @@ if __name__ == '__main__':
             Medium("http://web.archive.org/web/20181225091914/https://www2.comiket.co.jp/info-a/C95/C95CtlgNotes.pdf",
                    [Source("http://web.archive.org/web/20181225091914/https://www2.comiket.co.jp/info-a/C95/C95CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 東７・西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2018.12.29 - 2018.12.31",
@@ -546,7 +641,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -585,6 +681,13 @@ if __name__ == '__main__':
             Medium("http://web.archive.org/web/20180805092452/https://www2.comiket.co.jp/info-a/C94/C94CtlgNotes.pdf",
                    [Source("http://web.archive.org/web/20180805092452/https://www2.comiket.co.jp/info-a/C94/C94CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 東７・西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2018.08.10 - 2018.08.12",
@@ -593,7 +696,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -631,6 +735,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20171223135916/http://www2.comiket.co.jp/info-a/C93/C93CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20171223135916/http://www2.comiket.co.jp/info-a/C93/C93CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋東７～８ホール     企業ブース: 西１＋３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2017.12.29 - 2017.12.31",
@@ -639,7 +750,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -677,6 +789,13 @@ if __name__ == '__main__':
             Medium("http://web.archive.org/web/20170901210455/http://www2.comiket.co.jp/info-a/C92/C92CtlgNotes.pdf",
                    [Source("http://web.archive.org/web/20170901210455/http://www2.comiket.co.jp/info-a/C92/C92CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋東７～８ホール     企業ブース: 西１＋３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2017.08.11 - 2017.08.13",
@@ -685,7 +804,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -723,6 +843,13 @@ if __name__ == '__main__':
             Medium("http://web.archive.org/web/20170706163938/http://www.comiket.co.jp/info-a/C91/C91CtlgNotes.pdf",
                    [Source("http://web.archive.org/web/20170706163938/http://www.comiket.co.jp/info-a/C91/C91CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋東７ホール＋西１ホール     企業ブース: 西２＋３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2016.12.29 - 2016.12.31",
@@ -731,7 +858,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -769,6 +897,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20170706163059/http://www.comiket.co.jp/info-a/C90/C90CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20170706163059/http://www.comiket.co.jp/info-a/C90/C90CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西３～４ホール、西１～２ホール（３日目）     企業ブース: 西１～２ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2016.08.12 - 2016.08.14",
@@ -777,7 +912,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -815,6 +951,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20160307171702/http://www.comiket.co.jp/info-a/C89/C89CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20160307171702/http://www.comiket.co.jp/info-a/C89/C89CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2015.12.29 - 2015.12.31",
@@ -823,7 +966,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -863,6 +1007,13 @@ if __name__ == '__main__':
             Medium("88_1600px-C88-firstdaycircleticket.jpg",
                    [Source('https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%9F%E3%83%83%E3%82%AF%E3%83%9E%E3%83%BC%E3%82%B1%E3%83%83%E3%83%88', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2015.08.14 - 2015.08.16",
@@ -871,7 +1022,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -909,6 +1061,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20150723111350/http://www.comiket.co.jp/info-a/C87/C87CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20150723111350/http://www.comiket.co.jp/info-a/C87/C87CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2014.12.28 - 2014.12.30",
@@ -917,7 +1076,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -955,6 +1115,13 @@ if __name__ == '__main__':
             Medium("http://web.archive.org/web/20140813052412/http://www.comiket.co.jp/info-a/C86/C86CtlgNotes.pdf",
                    [Source("http://web.archive.org/web/20140813052412/http://www.comiket.co.jp/info-a/C86/C86CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2014.08.15 - 2014.08.17",
@@ -963,7 +1130,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -998,6 +1166,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20250720012010/https://www.comiket.co.jp/info-a/C85/C85CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20250720012010/https://www.comiket.co.jp/info-a/C85/C85CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2013.12.29 - 2013.12.31",
@@ -1006,7 +1181,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {dist_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1031,6 +1207,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20140508104230/http://www.comiket.co.jp/info-a/C84/C84CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20140508104230/http://www.comiket.co.jp/info-a/C84/C84CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2013.08.10 - 2013.08.12",
@@ -1039,7 +1222,8 @@ if __name__ == '__main__':
             sources=[
                 Source("Date: https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1061,6 +1245,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20130121010627/http://www.comiket.co.jp/info-a/C83/C83CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20130121010627/http://www.comiket.co.jp/info-a/C83/C83CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2012.12.29 - 2012.12.31",
@@ -1069,7 +1260,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1091,6 +1283,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20120803045334/http://www.comiket.co.jp/info-a/C82/C82CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20120803045334/http://www.comiket.co.jp/info-a/C82/C82CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2012.08.10 - 2012.08.12",
@@ -1099,7 +1298,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1121,6 +1321,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20120117065744/http://www.comiket.co.jp/info-a/C81/C81CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20120117065744/http://www.comiket.co.jp/info-a/C81/C81CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2011.12.29 - 2011.12.31",
@@ -1129,7 +1336,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1151,6 +1359,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/0/https://www.comiket.co.jp/info-a/C80/C80CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/0/https://www.comiket.co.jp/info-a/C80/C80CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2011.08.12 - 2011.08.14",
@@ -1159,7 +1374,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1181,6 +1397,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20110810042254/http://www.comiket.co.jp/info-a/C79/C79CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20110810042254/http://www.comiket.co.jp/info-a/C79/C79CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2010.12.29 - 2010.12.31",
@@ -1189,7 +1412,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1211,6 +1435,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20120121152321/http://www.comiket.co.jp/info-a/C78/C78CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20120121152321/http://www.comiket.co.jp/info-a/C78/C78CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2010.08.13 - 2010.08.15",
@@ -1219,7 +1450,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1241,6 +1473,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20140508100143/http://www.comiket.co.jp/info-a/C77/C77CtlgNotes.pdf",
                    [Source("_https://web.archive.org/web/20140508100143/http://www.comiket.co.jp/info-a/C77/C77CtlgNotes.pdf__", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2009.12.29 - 2009.12.31",
@@ -1249,7 +1488,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1271,6 +1511,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20140508101530/http://www.comiket.co.jp/info-a/C76/C76CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20140508101530/http://www.comiket.co.jp/info-a/C76/C76CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2009.08.14 - 2009.08.16",
@@ -1279,7 +1526,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1301,6 +1549,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20140508102929/http://www.comiket.co.jp/info-a/C75/C75CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20140508102929/http://www.comiket.co.jp/info-a/C75/C75CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2008.12.28 - 2008.12.30",
@@ -1309,7 +1564,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1331,6 +1587,13 @@ if __name__ == '__main__':
             Medium("https://web.archive.org/web/20110822081645/http://www.comiket.co.jp/info-a/C74/C74CtlgNotes.pdf",
                    [Source("https://web.archive.org/web/20110822081645/http://www.comiket.co.jp/info-a/C74/C74CtlgNotes.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３～４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2008.08.15 - 2008.08.17",
@@ -1339,7 +1602,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1359,6 +1623,13 @@ if __name__ == '__main__':
                    [Source(chrono_url, (ReliabilityTypes.Reliable, OriginTypes.Official))]
                    , comments="表紙：ペプシ（サークル：Pepu）"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール ",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2007.12.29 - 2007.12.31",
@@ -1367,7 +1638,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1387,6 +1659,13 @@ if __name__ == '__main__':
                    [Source(chrono_url, (ReliabilityTypes.Reliable, OriginTypes.Official))]
                    , comments="表紙：市原てつ乃＆雨宮カズユキ"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール ",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2007.08.17 - 2007.08.19",
@@ -1395,7 +1674,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1415,6 +1695,13 @@ if __name__ == '__main__':
                    [Source(chrono_url, (ReliabilityTypes.Reliable, OriginTypes.Official))]
                    , comments="表紙：結城信輝"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2006.12.29 - 2006.12.31",
@@ -1423,7 +1710,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -1446,6 +1734,13 @@ if __name__ == '__main__':
              Medium("https://archive.org/details/comiket-70-cd",
                     [Source('https://archive.org/details/comiket-70-cd', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2006.08.11 - 2006.08.13",
@@ -1454,7 +1749,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C70 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C70" / "process" / "c70_circles.json").open("r", encoding='utf-8') as f:
@@ -1483,6 +1779,13 @@ if __name__ == '__main__':
              Medium("https://archive.org/details/comiket-69-cd",
                     [Source('https://archive.org/details/comiket-69-cd', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2005.12.29 - 2005.12.30",
@@ -1491,7 +1794,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C69 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C69" / "process" / "c69_circles.json").open("r", encoding='utf-8') as f:
@@ -1520,6 +1824,13 @@ if __name__ == '__main__':
              Medium("https://archive.org/details/comiket-68-cd",
                     [Source('https://archive.org/details/comiket-68-cd', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2005.08.12 - 2005.08.14",
@@ -1528,7 +1839,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C68 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C68" / "process" / "c68_circles.json").open("r", encoding='utf-8') as f:
@@ -1557,6 +1869,13 @@ if __name__ == '__main__':
              Medium("67_i-img1200x1200-16951779417xwhua251864.jpg",
                     [Source('https://auctions.yahoo.co.jp/jp/auction/s1106995112', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2004.12.29 - 2004.12.30",
@@ -1565,7 +1884,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C67 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C67" / "process" / "c67_circles.json").open("r", encoding='utf-8') as f:
@@ -1594,6 +1914,13 @@ if __name__ == '__main__':
              Medium("66_i-img800x600-1557239468ealrlj33343.jpg",
                     [Source('https://auctions.yahoo.co.jp/jp/auction/u275679031', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2004.08.13 - 2004.08.15",
@@ -1602,7 +1929,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C66 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C66" / "process" / "c66_circles.json").open("r", encoding='utf-8') as f:
@@ -1631,6 +1959,13 @@ if __name__ == '__main__':
              Medium("65_i-img1200x1200-17376921017226rytx5418673.jpg",
                     [Source('https://auctions.yahoo.co.jp/jp/auction/c1170626690', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2003.12.28 - 2003.12.30",
@@ -1639,7 +1974,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C65 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C65" / "process" / "c65_circles.json").open("r", encoding='utf-8') as f:
@@ -1668,6 +2004,13 @@ if __name__ == '__main__':
              Medium("64_i-img800x600-1557239674j6pexz854657.jpg",
                     [Source('https://auctions.yahoo.co.jp/jp/auction/g345640356', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2003.08.15 - 2003.08.17",
@@ -1676,7 +2019,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C64 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C64" / "process" / "c64_circles.json").open("r", encoding='utf-8') as f:
@@ -1707,6 +2051,13 @@ if __name__ == '__main__':
              Medium("63_kamikomike_no13.jpg",
                     [Source('https://www.meiji.ac.jp/manga/yonezawa_lib/archives/exh-kamicomiket/exh-kamicomiket_archive03.html', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2002.12.28 - 2002.12.30",
@@ -1715,7 +2066,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C63 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C63" / "process" / "c63_circles.json").open("r", encoding='utf-8') as f:
@@ -1744,6 +2096,13 @@ if __name__ == '__main__':
              Medium("62_i-img800x600-1557239814ug8aga33662.jpg",
                     [Source('https://paypayfleamarket.yahoo.co.jp/item/t647136169', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2002.08.09 - 2002.08.11",
@@ -1752,7 +2111,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C62 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C62" / "process" / "c62_circles.json").open("r", encoding='utf-8') as f:
@@ -1781,6 +2141,13 @@ if __name__ == '__main__':
              Medium("61_i-img1200x1200-174046106435590wrazp462.jpg",
                     [Source('https://auctions.yahoo.co.jp/jp/auction/j1174790973', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2001.12.29 - 2001.12.30",
@@ -1789,7 +2156,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C61 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C61" / "process" / "c61_circles.json").open("r", encoding='utf-8') as f:
@@ -1818,6 +2186,13 @@ if __name__ == '__main__':
              Medium("60_i-img800x600-1557239962sklbtp17865.jpg",
                     [Source('https://auctions.yahoo.co.jp/jp/auction/s661029000', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2001.08.10 - 2001.08.12",
@@ -1826,7 +2201,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C60 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C60" / "process" / "c60_circles.json").open("r", encoding='utf-8') as f:
@@ -1855,6 +2231,13 @@ if __name__ == '__main__':
              Medium("59_m57650797079_3.jpg",
                     [Source('https://jp.mercari.com/item/m57650797079', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2000.12.29 - 2000.12.30",
@@ -1863,7 +2246,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C59 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C59" / "process" / "c59_circles.json").open("r", encoding='utf-8') as f:
@@ -1894,6 +2278,13 @@ if __name__ == '__main__':
              Medium("58_kamikomike_no07.jpg",
                     [Source('https://www.meiji.ac.jp/manga/yonezawa_lib/archives/exh-kamicomiket/exh-kamicomiket_archive03.html', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西４ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="2000.08.11 - 2000.08.13",
@@ -1902,7 +2293,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C58 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C58" / "process" / "c58_circles.json").open("r", encoding='utf-8') as f:
@@ -1931,6 +2323,13 @@ if __name__ == '__main__':
              Medium("57_i-img1200x1200-1674310121lgbdwn398162.jpg",
                     [Source('https://auctions.yahoo.co.jp/jp/auction/j1079327618', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール     企業ブース: 西３ホールと４ホールの一部",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1999.12.24 - 1999.12.26",
@@ -1939,7 +2338,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C57 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C57" / "process" / "c57_circles.json").open("r", encoding='utf-8') as f:
@@ -1968,6 +2368,13 @@ if __name__ == '__main__':
              Medium("56_i-img1200x1200-17427022313076obt5rx71826.jpg",
                     [Source('https://auctions.yahoo.co.jp/jp/auction/k1178114051', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３ホールと４ホールの一部",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1999.08.13 - 1999.08.15",
@@ -1976,7 +2383,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Participating circles: C56 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / "C56" / "process" / "c56_circles.json").open("r", encoding='utf-8') as f:
@@ -2001,6 +2409,13 @@ if __name__ == '__main__':
              Medium("55_m76573394901_2.jpg",
                     [Source('https://jp.mercari.com/item/m76573394901', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３ホールと４ホールの一部",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1998.12.29 - 1998.12.30",
@@ -2009,7 +2424,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2029,6 +2445,13 @@ if __name__ == '__main__':
              Medium("54_m14368885160_2.jpg",
                     [Source('https://jp.mercari.com/item/m14368885160', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３ホールと４ホールの一部",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1998.08.14 - 1998.08.16",
@@ -2037,7 +2460,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2057,6 +2481,13 @@ if __name__ == '__main__':
              Medium("53_i-img898x1198-1633932250bez9e6653709.jpg",
                     [Source('https://auctions.yahoo.co.jp/jp/auction/v1011531278', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３ホールと４ホールの一部",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1997.12.28 - 1997.12.29",
@@ -2065,7 +2496,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2091,6 +2523,13 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：おがきちかと小笠原史・猫玄(1,500円･2冊)うちわ：まつながあやこ 紙袋：ＣＨＯＣＯプレス：仙人の卵"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1997.08.15 - 1997.08.17",
@@ -2100,6 +2539,7 @@ if __name__ == '__main__':
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
+            locations=locations,
             comments="There seem to have been two catalogs, SIDE 1 and SIDE 2. I have no idea what these sides correspond to."
         )
         events_raw.append(event.get_json())
@@ -2120,6 +2560,13 @@ if __name__ == '__main__':
              Medium("51_i-img800x600-1557241035umdp3h784499.jpg",
                     [Source('https://auctions.yahoo.co.jp/jp/auction/t646685119', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）      サークル: 東１～３ホール＋東４～６ホール＋西１～２ホール     企業ブース: 西３ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1996.12.28 - 1996.12.29",
@@ -2128,7 +2575,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2148,6 +2596,13 @@ if __name__ == '__main__':
              Medium("50_i-img800x600-1557241139ftolj819078.jpg",
                     [Source('https://auctions.yahoo.co.jp/jp/auction/u276446504', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）東１～３ホール＋東４ホール＋西１～２ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="	1996.08.03 - 	1996.08.04",
@@ -2156,7 +2611,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2180,6 +2636,14 @@ if __name__ == '__main__':
              Medium("49_kamikomike_no09.jpg",
                     [Source('https://www.meiji.ac.jp/manga/yonezawa_lib/archives/exh-kamicomiket/exh-kamicomiket_archive03.html', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ａ館＋Ｂ館）＋東 京国際貿易センター（東館＋南館１Ｆ＋西館＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1995.12.29 - 1995.12.30",
@@ -2188,7 +2652,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2219,6 +2684,14 @@ if __name__ == '__main__':
                     [Source('https://auctions.yahoo.co.jp/jp/auction/n1177895362', (ReliabilityTypes.Guess, OriginTypes.External))]
                     , comments="Likely that second catalog's spine between the 48th and 47th.")
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ａ館＋Ｂ館）＋東 京国際貿易センター（東館＋南館１Ｆ＋西館＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1995.08.18 - 1995.08.20",
@@ -2228,6 +2701,7 @@ if __name__ == '__main__':
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
+            locations=locations,
             description="20th anniversary comiket, first 3-days event."
         )
         events_raw.append(event.get_json())
@@ -2250,6 +2724,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：グレビッチ栗原(1,000円)紙袋：タカハシマコプレス：門井亜矢"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ａ館＋Ｂ館）＋東 京国際貿易センター（東館＋南館１Ｆ＋西館＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1994.12.29 - 1994.12.30",
@@ -2258,7 +2740,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2280,6 +2763,14 @@ if __name__ == '__main__':
                     [Source('https://auctions.yahoo.co.jp/jp/auction/g1187119867', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：波羅ぽこん(1,000円)うちわ：介錯紙袋：川猫めぐみ"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ａ館＋Ｂ館）＋東 京国際貿易センター（東館＋南館１Ｆ＋西館＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1994.08.07 - 1994.08.08",
@@ -2288,7 +2779,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2310,6 +2802,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：相原ひでお(1,000円)紙袋：村田蓮爾"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ａ館＋Ｂ館）＋東 京国際貿易センター（東館＋南館１Ｆ＋西館＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1993.12.29 - 1993.12.30",
@@ -2318,7 +2818,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2340,6 +2841,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments=""),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ａ館＋Ｂ館）＋東 京国際貿易センター（東館＋南館１Ｆ＋西館＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1993.08.15 - 1993.08.16",
@@ -2348,7 +2857,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2368,6 +2878,14 @@ if __name__ == '__main__':
              Medium("43_kamikomike_no06.jpg",
                     [Source('https://www.meiji.ac.jp/manga/yonezawa_lib/archives/exh-kamicomiket/exh-kamicomiket_archive03.html', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ａ館＋Ｂ館）＋東 京国際貿易センター（東館＋南館１Ｆ＋西館＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1992.12.29 - 1992.12.30",
@@ -2376,7 +2894,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2396,6 +2915,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：たつねこ(800円)紙袋：水沢充"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ａ館＋Ｂ館＋Ｃ館 ）＋東京国際貿易センター（南館１Ｆ＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1992.08.15 - 1992.08.16",
@@ -2404,7 +2931,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2424,6 +2952,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：次元美良(800円)紙袋：まのとのま"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ａ館＋Ｂ館）＋東 京国際貿易センター（東館＋南館１・２Ｆ＋西館＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1991.12.29 - 1991.12.30",
@@ -2432,7 +2968,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2452,6 +2989,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：まのとのま(800円)うちわ：吾妻ひでお紙袋：まのとのま"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ａ館）＋東京国際 貿易センター（東館＋南館１Ｆ＋西館＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1991.08.16 - 1991.08.17",
@@ -2460,7 +3005,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2478,6 +3024,13 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：おときた・たかお(700円)紙袋：くまだまり"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.189715345795!2d140.029803332015!3d35.647697212080125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6022821fd52ebfdf%3A0xcec0c09c4bed45e0!2sMakuhari%20Messe!5e0!3m2!1sen!2sfr!4v1760363597857!5m2!1sen!2sfr",
+                description="日本コンベンションセンター（幕張メッセ）第４～７展示場",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1990.12.23 - 1990.12.24",
@@ -2486,7 +3039,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2511,6 +3065,13 @@ if __name__ == '__main__':
                     [Source('https://www.meiji.ac.jp/manga/yonezawa_lib/archives/exh-kamicomiket/exh-kamicomiket_archive03.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="Probably official goods."),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.189715345795!2d140.029803332015!3d35.647697212080125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6022821fd52ebfdf%3A0xcec0c09c4bed45e0!2sMakuhari%20Messe!5e0!3m2!1sen!2sfr!4v1760363597857!5m2!1sen!2sfr",
+                description="日本コンベンションセンター（幕張メッセ）第１～４展示場",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1990.08.18 - 1990.08.19",
@@ -2519,7 +3080,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2541,6 +3103,13 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：新田真子(600円)紙袋：へうがけん"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.189715345795!2d140.029803332015!3d35.647697212080125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6022821fd52ebfdf%3A0xcec0c09c4bed45e0!2sMakuhari%20Messe!5e0!3m2!1sen!2sfr!4v1760363597857!5m2!1sen!2sfr",
+                description="日本コンベンションセンター（幕張メッセ）第２～５展示場",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1989.12.23 - 1989.12.24",
@@ -2549,7 +3118,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2571,6 +3141,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：本多且典(600円)うちわ：たつねこ紙袋：へうがけん"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）：東京国際貿易センター（東館＋西館＋新館１Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1989.08.13 - 1989.08.14",
@@ -2579,7 +3157,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2601,6 +3180,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：杏夢(500円)紙袋：乙田基"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）：東京国際貿易センター（西館＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1989.03.25 - 1989.03.26",
@@ -2609,7 +3196,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2631,6 +3219,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：毛羽毛現(500円)うちわ：新田真子紙袋：乙田基"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）：東京国際貿易センター（西館＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1988.08.13 - 1988.08.14",
@@ -2639,7 +3235,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2661,6 +3258,13 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：迎夏生(400円)紙袋：Dr.モローテレカ：柴田文明／毛羽毛現"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC) 大展示場",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1987.12.26 - 1987.12.27",
@@ -2669,7 +3273,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2689,6 +3294,13 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：宇都宮斉(400円)うちわ：Ａｌｅｘ 紙袋：Dr.モロー テレカ：須賀邦彦／松田紘佳／おおや和美／真鍋譲治"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC) 大展示場",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1987.08.08 - 1987.08.09",
@@ -2697,7 +3309,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2719,6 +3332,13 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：竹田やよい(300円)紙袋：厦門潤テレカ：毛羽毛現／新田真子"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC) 大展示場",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1986.12.27 - 1986.12.28",
@@ -2727,7 +3347,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2747,6 +3368,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：乙田基(300円)うちわ：川猫めぐみ紙袋：弓月光 ／ 火鳥紅星テレカ：さえぐさじゅん"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）：東京国際貿易センター（西館＋新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1986.08.10",
@@ -2755,7 +3384,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2775,6 +3405,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：進上真樹(300円)紙袋：迎麻紀"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）：東京国際貿易センター（東館＋西館）",  
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1985.12.29",
@@ -2783,7 +3421,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2807,6 +3446,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：あろひろし(300円)うちわ：さえぐさじゅん／とりみき"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）：東京国際貿易センター（西館＋新館１Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1985.08.11",
@@ -2815,7 +3462,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2835,6 +3483,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：STUDIO　AWAKE(200円)"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際貿易センター（東館）",       
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1984.12.23",
@@ -2843,7 +3499,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2863,6 +3520,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：ＫＥＩＴＨ(200円)うちわ：吾妻ひでお"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ｂ館）＋東京国際 貿易センター（新館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1984.08.19",
@@ -2871,7 +3536,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2892,6 +3558,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：さえぐさじゅん(200円)"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際貿易センター（東館）",       
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1983.12.25",
@@ -2900,7 +3574,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2920,6 +3595,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="表紙：火野妖子(200円)うちわ：吾妻ひでお"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ｂ館）＋東京国際 貿易センター（新館１Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1983.08.07",
@@ -2928,7 +3611,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2950,6 +3634,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="ポスター：ありせみほ表紙：ありせみほ(100円)"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際見本市協会（Ｃ館）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1983.04.03",
@@ -2958,7 +3650,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -2976,6 +3669,14 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="ポスター：千之ナイフ表紙：千之ナイフ(100円)"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際貿易センター（南館１・２Ｆ）",
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1982.12.26",
@@ -2984,7 +3685,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations,
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3010,6 +3712,14 @@ if __name__ == '__main__':
              Medium("21_mmi_catalog_03.jpg",
                     [Source('https://nlab.itmedia.co.jp/cont/articles/3230088/', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際貿易センター（南館２Ｆ）",   
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1982.08.08",
@@ -3019,6 +3729,7 @@ if __name__ == '__main__':
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
+            locations=locations,
             comments="Note: According to the x post, C21 was the first comiket with a catalogue: https://x.com/comiketofficial/status/1079571967454277632"
         )
         events_raw.append(event.get_json())
@@ -3048,6 +3759,14 @@ if __name__ == '__main__':
                     [Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="ポスター：板橋節子"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際貿易センター（南館２Ｆ）",   
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1982.03.21",
@@ -3057,6 +3776,7 @@ if __name__ == '__main__':
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
+            locations=locations,
             comments="Blog post: https://soorce.hatenablog.com/entry/20061112/p1"
         )
         events_raw.append(event.get_json())
@@ -3079,6 +3799,14 @@ if __name__ == '__main__':
                     [Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="ポスター：吾妻ひでお"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+                description="東京国際見本市会場（晴海）： 東京国際貿易センター（南館２Ｆ）",   
+                comments="This venue was closed in 1996, above map points to today's the memorial monument.",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1981.12.20",
@@ -3087,7 +3815,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3108,6 +3837,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：くまだまり"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5961.142227937299!2d139.64313271598513!3d35.4464773766248!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60185cfc879b30db%3A0x8d76dbf7eaf7b911!2sYokohama%20Sanbo%20Hall%20Marineria!5e0!3m2!1sen!2sfr!4v1760362420414!5m2!1sen!2sfr",
+                description="横浜産業貿易ホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1981.08.15 - 1981.08.16",
@@ -3116,7 +3852,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3134,6 +3871,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：永久保貴一"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3244.735936164863!2d139.60797707568284!3d35.58490897261839!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018f5d5722acc63%3A0xbfb0f5c39fdad89!2sKawasaki%20Shimin%20Plaza!5e0!3m2!1sen!2sfr!4v1760362148011!5m2!1sen!2sfr",
+                description="川崎市民プラザ",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1981.04.05",
@@ -3142,7 +3886,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3164,6 +3909,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：さえぐさじゅん"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3244.735936164863!2d139.60797707568284!3d35.58490897261839!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018f5d5722acc63%3A0xbfb0f5c39fdad89!2sKawasaki%20Shimin%20Plaza!5e0!3m2!1sen!2sfr!4v1760362148011!5m2!1sen!2sfr",
+                description="川崎市民プラザ",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1980.12.14",
@@ -3172,7 +3924,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3208,6 +3961,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：竹沢コウ"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3244.735936164863!2d139.60797707568284!3d35.58490897261839!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018f5d5722acc63%3A0xbfb0f5c39fdad89!2sKawasaki%20Shimin%20Plaza!5e0!3m2!1sen!2sfr!4v1760362148011!5m2!1sen!2sfr",
+                description="川崎市民プラザ",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1980.09.14",
@@ -3216,7 +3976,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3248,6 +4009,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：星野安治"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3244.735936164863!2d139.60797707568284!3d35.58490897261839!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018f5d5722acc63%3A0xbfb0f5c39fdad89!2sKawasaki%20Shimin%20Plaza!5e0!3m2!1sen!2sfr!4v1760362148011!5m2!1sen!2sfr",
+                description="川崎市民プラザ",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1980.05.11",
@@ -3256,7 +4024,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3276,6 +4045,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：竹田やよい"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業会館　３・４Ｆ",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1979.12.23",
@@ -3284,7 +4060,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3310,6 +4087,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：水野流風"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1248.9858029814518!2d139.798220782935!3d35.71470094772258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188ec3d981d0f5%3A0x82b2ec9f4699aec6!2sTokyo%20Metropolitan%20Industrial%20Trade%20Center%20Taito%20Building!5e0!3m2!1sen!2sfr!4v1760362100834!5m2!1sen!2sfr",
+                description="東京都立産業会館　台東館",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1979.07.28 - 1979.07.29",
@@ -3318,7 +4102,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3336,6 +4121,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：あららぎるるる"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業会館　３・４Ｆ",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1979.04.08",
@@ -3344,7 +4136,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3362,6 +4155,13 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="ポスター：朔原萌"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業会館　３・４Ｆ",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1978.12.17",
@@ -3370,7 +4170,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3390,6 +4191,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：原田央男"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d51859.91488004924!2d139.3770644646894!3d35.67097679999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018e37fedeeaaab%3A0x483db6a0ce507bbd!2sYotsuyakokaido!5e0!3m2!1sen!2sfr!4v1760361911992!5m2!1sen!2sfr",
+                description="四谷公会堂 (probably the following point, venue now closed)",     
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1978.07.29 - 1978.07.30",
@@ -3398,7 +4206,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3418,6 +4227,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：鈴木哲也"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1978.04.02",
@@ -3426,7 +4242,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3444,6 +4261,13 @@ if __name__ == '__main__':
                      Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="ポスター：銀子"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1977.12.18",
@@ -3452,7 +4276,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3477,6 +4302,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：伝陽一郎"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1977.07.30 - 1977.07.31",
@@ -3485,7 +4317,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3503,6 +4336,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：さべあのま"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1977.04.10",
@@ -3511,7 +4351,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3529,6 +4370,13 @@ if __name__ == '__main__':
             #          Source('Authors: https://www.comiket.co.jp/archives/Chronology.html', (ReliabilityTypes.Likely, OriginTypes.External))]
             #         , comments="ポスター：高橋裕子"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2160.9687945399432!2d139.70678574028767!3d35.75584821059369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601892c0eb8cca71%3A0x36214c8725a0a0f3!2z5p2_5qmL55Sj6YCj5Lya6aSo!5e0!3m2!1sen!2sfr!4v1760361611071!5m2!1sen!2sfr",
+                description="板橋産業連合会館　３Ｆホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1976.12.19",
@@ -3537,7 +4385,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3553,6 +4402,13 @@ if __name__ == '__main__':
             #  Medium("",
             #         [Source('', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2160.9687945399432!2d139.70678574028767!3d35.75584821059369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601892c0eb8cca71%3A0x36214c8725a0a0f3!2z5p2_5qmL55Sj6YCj5Lya6aSo!5e0!3m2!1sen!2sfr!4v1760361611071!5m2!1sen!2sfr",
+                description="板橋産業連合会館　３Ｆホール",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1976.07.25",
@@ -3561,7 +4417,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3583,6 +4440,13 @@ if __name__ == '__main__':
              Medium("2_FSMNQ4_VIAAWMsl.jpg",
                     [Source('https://x.com/comiketofficial/status/1523175293519015936', (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2160.9687945399432!2d139.70678574028767!3d35.75584821059369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601892c0eb8cca71%3A0x36214c8725a0a0f3!2z5p2_5qmL55Sj6YCj5Lya6aSo!5e0!3m2!1sen!2sfr!4v1760361611071!5m2!1sen!2sfr",
+                description="板橋産業連合会館",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1976.04.04",
@@ -3591,7 +4455,8 @@ if __name__ == '__main__':
             sources=[
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+            ],
+            locations=locations
         )
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
@@ -3600,7 +4465,7 @@ if __name__ == '__main__':
 
     if True: # ==== C1 ====
         i = 1
-
+        
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
         media_ = [
@@ -3614,6 +4479,13 @@ if __name__ == '__main__':
                     [Source('https://posfie.com/@tokyoedit/p/BktoaLJ', (ReliabilityTypes.Likely, OriginTypes.External))]
                     , comments="Unknown authors !"),
             ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.339423208018!2d139.74552170616658!3d35.668193585125906!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b001afd24ff%3A0x92b590f8fb102739!2z5pel5pys5raI6Ziy5Lya6aSo!5e0!3m2!1sen!2sfr!4v1760361560330!5m2!1sen!2sfr",
+                description="虎ノ門日本消防会館会議室",
+                sources=[Source("https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
             dates="1975.12.21",
@@ -3623,6 +4495,7 @@ if __name__ == '__main__':
                 Source(f"Date: {chrono_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
+            locations=locations,
             comments="Some works apparently released at C1: https://pst-pallet.com/2018/12/07/comike/"
         )
         events_raw.append(event.get_json())

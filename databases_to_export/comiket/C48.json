@@ -110,5 +110,21 @@
             "comments": "Likely that second catalog's spine between the 48th and 47th."
         }
     ],
-    "description": "20th anniversary comiket, first 3-days event."
+    "description": "20th anniversary comiket, first 3-days event.",
+    "locations": [
+        {
+            "iframe_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.4982510010436!2d139.7770943!3d35.652544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018898058281359%3A0x3f19f43c3253a292!2sTokyo%20International%20Trade%20Fair%20Memorial%20Monument!5e0!3m2!1sen!2sfr!4v1760362615175!5m2!1sen!2sfr",
+            "description": "東京国際見本市会場（晴海）： 東京国際見本市協会（Ａ館＋Ｂ館）＋東 京国際貿易センター（東館＋南館１Ｆ＋西館＋新館１・２Ｆ）",
+            "sources": [
+                {
+                    "source": "https://www.comiket.co.jp/archives/Chronology.html",
+                    "type": [
+                        "Reliable",
+                        "Official"
+                    ]
+                }
+            ],
+            "comments": "This venue was closed in 1996, above map points to today's the memorial monument."
+        }
+    ]
 }
