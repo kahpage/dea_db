@@ -354,7 +354,7 @@ class EventGroup:
             description=in_dict.get("description", None)
         )
     
-    def save(self, folder: Path) -> None:
+    def save(self, folder: Path, indent: int | None = 4) -> None:
         """Save the EventGroup to a json file in the given folder."""
         if not self.aliases: # if None or not at least one
             raise ValueError(f"Invalid aliases for EventGroup, must be a list of at least one element {self.aliases=}")
@@ -384,14 +384,14 @@ class EventGroup:
         eg_json["events"] = events_compact
             
         with (folder / "event_group.json").open("w", encoding="utf-8") as f:
-            json.dump(eg_json, f, ensure_ascii=False, indent=4)
+            json.dump(eg_json, f, ensure_ascii=False, indent=indent)
 
         # === events individual json files ===
         for i,event in enumerate(self.events):
             event_json = event.get_json()
             
             with (folder / f"{event.aliases[0]}.json").open("w", encoding="utf-8") as f:
-                json.dump(event_json, f, ensure_ascii=False, indent=4)
+                json.dump(event_json, f, ensure_ascii=False, indent=indent)
     
     @staticmethod
     def load_from_folder(folder: Path) -> 'EventGroup':

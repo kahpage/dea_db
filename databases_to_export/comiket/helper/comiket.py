@@ -1136,7 +1136,7 @@ if __name__ == '__main__':
         events_raw.append(event.get_json())
         if SAVE_INTER_JSON:
             with (save_folder_path / f"C{i:03d}.json").open("w+", encoding='utf-8') as f:
-                json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+                json.dump(event.get_json(), f, indent=None, ensure_ascii=False)
 
     if True: # ==== C85 ====
         i = 85
@@ -1184,10 +1184,15 @@ if __name__ == '__main__':
             ],
             locations=locations,
         )
-        events_raw.append(event.get_json())
+        event_raw = event.get_json()
+        with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+
+        events_raw.append(event_raw)
         if SAVE_INTER_JSON:
             with (save_folder_path / f"C{i:03d}.json").open("w+", encoding='utf-8') as f:
-                json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+                json.dump(event_raw, f, indent=None, ensure_ascii=False)
 
     if True: # ==== C84 ====
         i = 84
@@ -1225,10 +1230,15 @@ if __name__ == '__main__':
             ],
             locations=locations,
         )
-        events_raw.append(event.get_json())
+        event_raw = event.get_json()
+        with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+
+        events_raw.append(event_raw)
         if SAVE_INTER_JSON:
             with (save_folder_path / f"C{i:03d}.json").open("w+", encoding='utf-8') as f:
-                json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+                json.dump(event_raw, f, indent=None, ensure_ascii=False)
 
     if True: # ==== C83 ====
         i = 83
@@ -1265,14 +1275,14 @@ if __name__ == '__main__':
         )
         
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "c83" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
 
         events_raw.append(event_raw)
         if SAVE_INTER_JSON:
             with (save_folder_path / f"C{i:03d}.json").open("w+", encoding='utf-8') as f:
-                json.dump(event_raw, f, indent=4, ensure_ascii=False)
+                json.dump(event_raw, f, indent=None, ensure_ascii=False)
 
     if True: # ==== C82 ====
         i = 82
@@ -4619,6 +4629,6 @@ if __name__ == '__main__':
             event_group_raw = event_group.get_json()
             event_group_raw["events"] = events_raw[::-1]
             event_group_new = EventGroup.load_from_json_old(event_group_raw)
-        event_group_new.save(save_folder_path)
+        event_group_new.save(save_folder_path, indent=None)
             
 
