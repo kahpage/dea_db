@@ -38,6 +38,7 @@ if __name__ == '__main__':
     
     if True: # ==== C106 ====
         i = 106
+        print(f"Processing c{i} ...")
 
         circles_ = []
         media_ = [
@@ -82,6 +83,7 @@ if __name__ == '__main__':
 
     if True: # ==== C105 ====
         i = 105
+        print(f"Processing c{i} ...")
 
         circles_ = []
         media_ = [
@@ -130,6 +132,7 @@ if __name__ == '__main__':
             
     if True: # ==== C104 ====
         i = 104
+        print(f"Processing c{i} ...")
 
         circles_ = []
         media_ = [
@@ -180,6 +183,7 @@ if __name__ == '__main__':
 
     if True: # ==== C103 ====
         i = 103
+        print(f"Processing c{i} ...")
 
         circles_ = []
         media_ = [
@@ -230,6 +234,7 @@ if __name__ == '__main__':
 
     if True: # ==== C102 ====
         i = 102
+        print(f"Processing c{i} ...")
 
         circles_ = []
         media_ = [
@@ -281,6 +286,7 @@ if __name__ == '__main__':
 
     if True: # ==== C101 ====
         i = 101
+        print(f"Processing c{i} ...")
 
         circles_ = []
         media_ = [
@@ -325,6 +331,7 @@ if __name__ == '__main__':
 
     if True: # ==== C100 ====
         i = 100
+        print(f"Processing c{i} ...")
 
         circles_ = []
         media_ = [
@@ -372,6 +379,7 @@ if __name__ == '__main__':
 
     if True: # ==== C99 ====
         i = 99
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250404190005/https://www.comiket.co.jp/info-a/C99A/C99Adistributions.html'
@@ -417,6 +425,7 @@ if __name__ == '__main__':
 
     if True: # ==== C98 ====
         i = 98
+        print(f"Processing c{i} ...")
 
         circles_ = []
         media_ = [
@@ -479,6 +488,7 @@ if __name__ == '__main__':
 
     if True: # ==== C97 ====
         i = 97
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250307200729/https://www.comiket.co.jp/info-a/C97/C97distributions.html'
@@ -538,6 +548,7 @@ if __name__ == '__main__':
 
     if True: # ==== C96 ====
         i = 96
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250405002744/https://www.comiket.co.jp/info-a/C96/C96distributions.html'
@@ -597,6 +608,7 @@ if __name__ == '__main__':
 
     if True: # ==== C95 ====
         i = 95
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250621082023/https://comiket.co.jp/info-a/C95/C95distributions.html'
@@ -652,6 +664,7 @@ if __name__ == '__main__':
 
     if True: # ==== C94 ====
         i = 94
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250404235221/https://www.comiket.co.jp/info-a/C94/C94distributions.html'
@@ -706,6 +719,7 @@ if __name__ == '__main__':
 
     if True: # ==== C93 ====
         i = 93
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250114175314/https://www.comiket.co.jp/info-a/C93/C93distributions.html'
@@ -753,13 +767,19 @@ if __name__ == '__main__':
             ],
             locations=locations,
         )
-        events_raw.append(event.get_json())
+        event_raw = event.get_json()
+        with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+
+        events_raw.append(event_raw)
         if SAVE_INTER_JSON:
             with (save_folder_path / f"C{i:03d}.json").open("w+", encoding='utf-8') as f:
-                json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+                json.dump(event_raw, f, indent=None, ensure_ascii=False)
 
     if True: # ==== C92 ====
         i = 92
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250114195114/https://www.comiket.co.jp/info-a/C92/C92distributions.html'
@@ -819,6 +839,7 @@ if __name__ == '__main__':
 
     if True: # ==== C91 ====
         i = 91
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250114195114/https://www.comiket.co.jp/info-a/C91/C91distributions.html'
@@ -879,6 +900,7 @@ if __name__ == '__main__':
 
     if True: # ==== C90 ====
         i = 90
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250114103757/https://www.comiket.co.jp/info-a/C90/C90distributions.html'
@@ -938,6 +960,7 @@ if __name__ == '__main__':
 
     if True: # ==== C89 ====
         i = 89
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250114180440/https://www.comiket.co.jp/info-a/C89/C89distributions.html'
@@ -997,6 +1020,7 @@ if __name__ == '__main__':
 
     if True: # ==== C88 ====
         i = 88
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250115023056/https://www.comiket.co.jp/info-a/C88/C88distributions.html'
@@ -1058,6 +1082,7 @@ if __name__ == '__main__':
 
     if True: # ==== C87 ====
         i = 87
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250114195114/https://www.comiket.co.jp/info-a/C87/C87distributions.html'
@@ -1117,6 +1142,7 @@ if __name__ == '__main__':
 
     if True: # ==== C86 ====
         i = 86
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20250115004137/https://www.comiket.co.jp/info-a/C86/C86distributions.html'
@@ -1176,6 +1202,7 @@ if __name__ == '__main__':
 
     if True: # ==== C85 ====
         i = 85
+        print(f"Processing c{i} ...")
 
         circles_ = []
         dist_url = 'https://web.archive.org/web/20140209004153/https://www.comiket.co.jp/'
@@ -1232,6 +1259,7 @@ if __name__ == '__main__':
 
     if True: # ==== C84 ====
         i = 84
+        print(f"Processing c{i} ...")
 
         circles_ = []
         media_ = [
@@ -1278,6 +1306,7 @@ if __name__ == '__main__':
 
     if True: # ==== C83 ====
         i = 83
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1322,6 +1351,7 @@ if __name__ == '__main__':
 
     if True: # ==== C82 ====
         i = 82
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1360,6 +1390,7 @@ if __name__ == '__main__':
        
     if True: # ==== C81 ====
         i = 81
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1398,6 +1429,7 @@ if __name__ == '__main__':
      
     if True: # ==== C80 ====
         i = 80
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1436,6 +1468,7 @@ if __name__ == '__main__':
 
     if True: # ==== C79 ====
         i = 79
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1474,6 +1507,7 @@ if __name__ == '__main__':
 
     if True: # ==== C78 ====
         i = 78
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1512,6 +1546,7 @@ if __name__ == '__main__':
 
     if True: # ==== C77 ====
         i = 77
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1550,6 +1585,7 @@ if __name__ == '__main__':
 
     if True: # ==== C76 ====
         i = 76
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1588,6 +1624,7 @@ if __name__ == '__main__':
 
     if True: # ==== C75 ====
         i = 75
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1626,6 +1663,7 @@ if __name__ == '__main__':
 
     if True: # ==== C74 ====
         i = 74
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1664,6 +1702,7 @@ if __name__ == '__main__':
 
     if True: # ==== C73 ====
         i = 73
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1700,6 +1739,7 @@ if __name__ == '__main__':
 
     if True: # ==== C72 ====
         i = 72
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1736,6 +1776,7 @@ if __name__ == '__main__':
 
     if True: # ==== C71 ====
         i = 71
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1772,6 +1813,7 @@ if __name__ == '__main__':
 
     if True: # ==== C70 ====
         i = 70
+        print(f"Processing c{i} ...")
 
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
         media_ = [
@@ -1816,6 +1858,7 @@ if __name__ == '__main__':
 
     if True: # ==== C69 ====
         i = 69
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1861,6 +1904,7 @@ if __name__ == '__main__':
 
     if True: # ==== C68 ====
         i = 68
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1906,6 +1950,7 @@ if __name__ == '__main__':
 
     if True: # ==== C67 ====
         i = 67
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1951,6 +1996,7 @@ if __name__ == '__main__':
 
     if True: # ==== C66 ====
         i = 66
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -1996,6 +2042,7 @@ if __name__ == '__main__':
 
     if True: # ==== C65 ====
         i = 65
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2041,6 +2088,7 @@ if __name__ == '__main__':
 
     if True: # ==== C64 ====
         i = 64
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2086,6 +2134,7 @@ if __name__ == '__main__':
 
     if True: # ==== C63 ====
         i = 63
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2133,6 +2182,7 @@ if __name__ == '__main__':
 
     if True: # ==== C62 ====
         i = 62
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2178,6 +2228,7 @@ if __name__ == '__main__':
 
     if True: # ==== C61 ====
         i = 61
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2223,6 +2274,7 @@ if __name__ == '__main__':
 
     if True: # ==== C60 ====
         i = 60
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2268,6 +2320,7 @@ if __name__ == '__main__':
 
     if True: # ==== C59 ====
         i = 59
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2313,6 +2366,7 @@ if __name__ == '__main__':
 
     if True: # ==== C58 ====
         i = 58
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2360,6 +2414,7 @@ if __name__ == '__main__':
 
     if True: # ==== C57 ====
         i = 57
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2405,6 +2460,7 @@ if __name__ == '__main__':
 
     if True: # ==== C56 ====
         i = 56
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2450,6 +2506,7 @@ if __name__ == '__main__':
 
     if True: # ==== C55 ====
         i = 55
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2486,6 +2543,7 @@ if __name__ == '__main__':
 
     if True: # ==== C54 ====
         i = 54
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2522,6 +2580,7 @@ if __name__ == '__main__':
 
     if True: # ==== C53 ====
         i = 53
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2558,6 +2617,7 @@ if __name__ == '__main__':
 
     if True: # ==== C52 ====
         i = 52
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2601,6 +2661,7 @@ if __name__ == '__main__':
 
     if True: # ==== C51 ====
         i = 51
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2637,6 +2698,7 @@ if __name__ == '__main__':
 
     if True: # ==== C50 ====
         i = 50
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2673,6 +2735,7 @@ if __name__ == '__main__':
 
     if True: # ==== C49 ====
         i = 49
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2714,6 +2777,7 @@ if __name__ == '__main__':
 
     if True: # ==== C48 ====
         i = 48
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2763,6 +2827,7 @@ if __name__ == '__main__':
 
     if True: # ==== C47 ====
         i = 47
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2802,6 +2867,7 @@ if __name__ == '__main__':
 
     if True: # ==== C46 ====
         i = 46
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2841,6 +2907,7 @@ if __name__ == '__main__':
 
     if True: # ==== C45 ====
         i = 45
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2880,6 +2947,7 @@ if __name__ == '__main__':
 
     if True: # ==== C44 ====
         i = 44
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2919,6 +2987,7 @@ if __name__ == '__main__':
 
     if True: # ==== C43 ====
         i = 43
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2956,6 +3025,7 @@ if __name__ == '__main__':
 
     if True: # ==== C42 ====
         i = 42
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -2993,6 +3063,7 @@ if __name__ == '__main__':
 
     if True: # ==== C41 ====
         i = 41
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3030,6 +3101,7 @@ if __name__ == '__main__':
 
     if True: # ==== C40 ====
         i = 40
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3067,6 +3139,7 @@ if __name__ == '__main__':
 
     if True: # ==== C39 ====
         i = 39
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3101,6 +3174,7 @@ if __name__ == '__main__':
 
     if True: # ==== C38 ====
         i = 38
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3142,6 +3216,7 @@ if __name__ == '__main__':
 
     if True: # ==== C37 ====
         i = 37
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3180,6 +3255,7 @@ if __name__ == '__main__':
 
     if True: # ==== C36 ====
         i = 36
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3219,6 +3295,7 @@ if __name__ == '__main__':
 
     if True: # ==== C35 ====
         i = 35
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3258,6 +3335,7 @@ if __name__ == '__main__':
 
     if True: # ==== C34 ====
         i = 34
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3297,6 +3375,7 @@ if __name__ == '__main__':
 
     if True: # ==== C33 ====
         i = 33
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3335,6 +3414,7 @@ if __name__ == '__main__':
 
     if True: # ==== C32 ====
         i = 32
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3371,6 +3451,7 @@ if __name__ == '__main__':
 
     if True: # ==== C31 ====
         i = 31
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3409,6 +3490,7 @@ if __name__ == '__main__':
 
     if True: # ==== C30 ====
         i = 30
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3446,6 +3528,7 @@ if __name__ == '__main__':
 
     if True: # ==== C29 ====
         i = 29
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3483,6 +3566,7 @@ if __name__ == '__main__':
 
     if True: # ==== C28 ====
         i = 28
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3524,6 +3608,7 @@ if __name__ == '__main__':
 
     if True: # ==== C27 ====
         i = 27
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3561,6 +3646,7 @@ if __name__ == '__main__':
 
     if True: # ==== C26 ====
         i = 26
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3598,6 +3684,7 @@ if __name__ == '__main__':
 
     if True: # ==== C25 ====
         i = 25
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3636,6 +3723,7 @@ if __name__ == '__main__':
 
     if True: # ==== C24 ====
         i = 24
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3673,6 +3761,7 @@ if __name__ == '__main__':
 
     if True: # ==== C23 ====
         i = 23
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3712,6 +3801,7 @@ if __name__ == '__main__':
 
     if True: # ==== C22 ====
         i = 22
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3747,6 +3837,7 @@ if __name__ == '__main__':
 
     if True: # ==== C21 ====
         i = 21
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3791,6 +3882,7 @@ if __name__ == '__main__':
 
     if True: # ==== C20 ====
         i = 20
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3838,6 +3930,7 @@ if __name__ == '__main__':
 
     if True: # ==== C19 ====
         i = 19
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3877,6 +3970,7 @@ if __name__ == '__main__':
 
     if True: # ==== C18 ====
         i = 18
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3914,6 +4008,7 @@ if __name__ == '__main__':
 
     if True: # ==== C17 ====
         i = 17
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3948,6 +4043,7 @@ if __name__ == '__main__':
 
     if True: # ==== C16 ====
         i = 16
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -3986,6 +4082,7 @@ if __name__ == '__main__':
 
     if True: # ==== C15 ====
         i = 15
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4038,6 +4135,7 @@ if __name__ == '__main__':
 
     if True: # ==== C14 ====
         i = 14
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4086,6 +4184,7 @@ if __name__ == '__main__':
 
     if True: # ==== C13 ====
         i = 13
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4122,6 +4221,7 @@ if __name__ == '__main__':
 
     if True: # ==== C12 ====
         i = 12
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4164,6 +4264,7 @@ if __name__ == '__main__':
 
     if True: # ==== C11 ====
         i = 11
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4198,6 +4299,7 @@ if __name__ == '__main__':
 
     if True: # ==== C10 ====
         i = 10
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4232,6 +4334,7 @@ if __name__ == '__main__':
 
     if True: # ==== C9 ====
         i = 9
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4268,6 +4371,7 @@ if __name__ == '__main__':
 
     if True: # ==== C8 ====
         i = 8
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4304,6 +4408,7 @@ if __name__ == '__main__':
 
     if True: # ==== C7 ====
         i = 7
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4338,6 +4443,7 @@ if __name__ == '__main__':
 
     if True: # ==== C6 ====
         i = 6
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4379,6 +4485,7 @@ if __name__ == '__main__':
 
     if True: # ==== C5 ====
         i = 5
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4413,6 +4520,7 @@ if __name__ == '__main__':
 
     if True: # ==== C4 ====
         i = 4
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4447,6 +4555,7 @@ if __name__ == '__main__':
 
     if True: # ==== C3 ====
         i = 3
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4479,6 +4588,7 @@ if __name__ == '__main__':
 
     if True: # ==== C2 ====
         i = 2
+        print(f"Processing c{i} ...")
 
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
@@ -4517,6 +4627,7 @@ if __name__ == '__main__':
 
     if True: # ==== C1 ====
         i = 1
+        print(f"Processing c{i} ...")
         
         circles_ = []
         chrono_url = "https://web.archive.org/web/20250710153917/https://www.comiket.co.jp/archives/Chronology.html"
