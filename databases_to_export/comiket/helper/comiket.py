@@ -915,10 +915,15 @@ if __name__ == '__main__':
             ],
             locations=locations,
         )
-        events_raw.append(event.get_json())
+        event_raw = event.get_json()
+        with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+
+        events_raw.append(event_raw)
         if SAVE_INTER_JSON:
             with (save_folder_path / f"C{i:03d}.json").open("w+", encoding='utf-8') as f:
-                json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+                json.dump(event_raw, f, indent=None, ensure_ascii=False)
 
     if True: # ==== C89 ====
         i = 89
