@@ -13,9 +13,9 @@
 from db_structs import Medium, Circle, Event, EventGroup, Source, ReliabilityTypes, OriginTypes, Location
 from pathlib import Path
 import json
-from bs4 import BeautifulSoup, Comment
-import re
-import requests
+# from bs4 import BeautifulSoup, Comment
+# import re
+# import requests
 from typing import Any
 
 def prefix_all_circle_media_of_event(event_raw: dict[str, Any], prefix: str) -> None:
