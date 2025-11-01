@@ -3,7 +3,7 @@ from pathlib import Path
 import shutil
 import re
 
-for event_num in range(83, 101):
+for event_num in range(83, 105 + 1):
     PATH_FOLDER = Path(__file__).parent
     PATH_media = PATH_FOLDER.parent / "media"
     PATH_circle_images = PATH_media / f"{event_num}webcatalog" / "circle_images"
