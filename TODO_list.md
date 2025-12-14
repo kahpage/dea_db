@@ -4,6 +4,9 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 
 ## Notes
 ### Planned
+- Perhaps https://yugeisai.com/content3/circle/
+- the ガタケット (see puella)
+- https://afongcp.wixsite.com/sc-clist
 - m3 cuts via scraping (to be found once again)
 -  https://x.com/m3doujin/status/1637997454103572480
 - https://catalog.m3net.jp/archive/2023s/circles.html
