@@ -4,6 +4,8 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 
 ## Notes
 ### Planned
+- https://checklist.familiar-life.info/?e=243410
+- events in booth scrape events.json
 - Perhaps https://yugeisai.com/content3/circle/
 - the ガタケット (see puella)
 - https://afongcp.wixsite.com/sc-clist
