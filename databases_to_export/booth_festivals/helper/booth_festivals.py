@@ -50,7 +50,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "apollo" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -75,7 +76,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "apollo" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -100,7 +102,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "apollo" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -124,7 +127,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "apollo" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -149,7 +153,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "apollo" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -174,7 +179,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "apollo" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -199,7 +205,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "apollo" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -224,7 +231,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "apollo" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -249,7 +257,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "apollo" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -274,7 +283,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "apollo" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -298,7 +308,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "apollo" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -324,7 +335,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "booth_festivals" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -347,7 +359,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "booth_festivals" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -370,7 +383,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "booth_festivals" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -393,7 +407,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "booth_festivals" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -416,7 +431,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "booth_festivals" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -439,7 +455,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "booth_festivals" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -462,7 +479,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "booth_festivals" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -485,7 +503,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "booth_festivals" / f"{name}.json").open("r", encoding='utf-8') as f:
@@ -508,7 +527,8 @@ if __name__ == '__main__':
                 Source(f"Date: {event_url}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source(f"Participating circles: {event_url} (website scrape on 2025.12.15)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
-            links=[event_url]
+            links=[event_url],
+            comments="Note: Participating circles deduced from list of items marked with event tag. Since only 1 tag can be added, products sold at multiple events may be missing from this list."
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "booth_festivals" / f"{name}.json").open("r", encoding='utf-8') as f:
