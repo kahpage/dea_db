@@ -3,7 +3,14 @@
 Just a bunch of random, not ordered notes and links to process at a later point.
 
 ## Notes
+## TODO
 ### Planned
+- Click on "サークル配置図はこちらから" https://web.archive.org/web/20210920025821/https://www.cevio-festa.com/circlelist.php
+- list here https://web.archive.org/web/20190307112245/https://cevio-festa.com/link.php
+- CeVIO_SUMMIT https://x.com/CeVIO_SUMMIT/status/914138950469541888
+- https://web.archive.org/web/20180224032549/http://kyoto-vocalo.info/v-world/
+- 京都ボカロ合同 https://x.com/kouhou/status/701380131105812480
+- ボーカロイドパラダイス関西 かがみねのお茶会 ずんだぱ～てぃ２ インタネパラダイス ルカPARADISE ミクオPARADISE (https://web.archive.org/web/20221004105227/https://birdzberth.com/ceviofesta/)
 - https://web.archive.org/web/20240820042236/http://koromu-toho.com/
 - All events referred in koromu main pages, such as "東方名月祭" at https://web.archive.org/web/20100812102851/http://koromu-toho.com/
 - "	冬の忘れ物" at https://web.archive.org/web/20120111005256/http://koromu-toho.com/index.php
@@ -122,10 +129,35 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 - https://web.archive.org/web/20240713164338/https://ttc.ninja-web.net/kantai-parade/kantai-parade02.jpg
 * https://pbs.twimg.com/media/DWp0NDbVoAA36hv?format=jpg&name=large
 
-### TODO other
+### To browse for other events
+- Booth festivals
+- Comiket
+- M3
+- MComi
+- Hinamizawa village assembly
+- keyparty
+- gensou ningyou sai
+- koromu
+- maikomitouhousai_maibaracomuniket2010
+- rts
+- yougagudann
+- kagaocha
+- tvm
+- vocaloid station / street
+- vocalovers
+- vopara
 
-- Browse already browsed events (comiket, vopara, yougakudann, ...) and find all mentionned events
-- http://www.ahoge.com/
-- https://blackangel.main.jp/
-- https://oddb.main.jp/
-- http://suite.s164.xrea.com/
+## Done
+### "Skipped"
+- Not exhaustive enough http://www.ahoge.com/
+- Circles or live events, but not much it seems http://suite.s164.xrea.com/
+- Mainly db of circles with published works https://oddb.main.jp/
+- DB of circles https://blackangel.main.jp/
+
+## Live events, perhaps todo but well
+
+- "風薫るナイト２" https://web.archive.org/web/20231005002708/http://aya.2-d.jp/kaze2/
+- thonly
+- maybe https://web.archive.org/web/20100228215539/http://reitaisai-cd.com:80/music.html
+- "Ark of Phantasm" & "ろくろっく" https://web.archive.org/web/20071025053005/http://www.dojinmusic.net/ys4/html/10_02_01_35.html
+- "Flowering Night 2007" https://web.archive.org/web/20070329050934/http://www.flowering-night.net/

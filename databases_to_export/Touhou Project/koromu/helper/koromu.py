@@ -948,7 +948,7 @@ if __name__ == '__main__':
 
     # ==== event group ====
     media = []
-    links = []
+    links = ["http://koromu-toho.com/", "http://karen.saiin.net/~kouroumu-toho/", "https://x.com/koromu_th"]
 
     event_group = EventGroup(
         aliases=["東方紅楼夢", "Touhou Kouroumu", "TK"],
