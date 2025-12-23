@@ -4,6 +4,11 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 
 ## Notes
 ### Planned
+- https://web.archive.org/web/20240820042236/http://koromu-toho.com/
+- All events referred in koromu main pages, such as "東方名月祭" at https://web.archive.org/web/20100812102851/http://koromu-toho.com/
+- "	冬の忘れ物" at https://web.archive.org/web/20120111005256/http://koromu-toho.com/index.php
+- "夢の世紀 魅知の旅" alongside koromu 9.5, koromu 9.5 already done
+- "夢の世紀魅知の旅 再訪" alongside koromu 19.5, koromu 19.5 already done
 - https://checklist.familiar-life.info/?e=243410
 - events in booth scrape events.json
 - Perhaps https://yugeisai.com/content3/circle/

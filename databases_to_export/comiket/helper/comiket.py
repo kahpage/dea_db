@@ -33,7 +33,7 @@ def prefix_all_circle_media_of_event(event_raw: dict[str, Any], prefix: str) -> 
 
 if __name__ == '__main__':
     SAVE_INTER_JSON = False
-    save_folder_path = Path(__file__).parent
+    save_folder_path = Path(__file__).parent.parent
     events_raw: list[Any] = []
     
     if True: # ==== C106 ====
@@ -4820,7 +4820,7 @@ if __name__ == '__main__':
         links = ["https://comiket.co.jp/", "https://web.archive.org/web/19990117015250/http://www.inter-g7.or.jp/g2/manga/HTML/MARKET.html", "https://x.com/comiketofficial"]
 
         event_group = EventGroup(
-            aliases=["Comic Market", "Comiket", "コミックマーケット", "コミケ", "C"],
+            aliases=["Comiket", "Comic Market", "コミックマーケット", "コミケ", "C"],
             events=[],
             media=media,
             links=links,
