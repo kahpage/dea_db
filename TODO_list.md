@@ -5,6 +5,9 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 ## Notes
 ## TODO
 ### Planned
+- https://web.archive.org/web/20020203230529/http://sakura.comike.to/gensouhenge/top.htm
+- https://web.archive.org/web/20011118184858/http://sakura.comike.to/ecoket/link.htm
+- https://www.comiket.co.jp/info-a/C57/C57event.html
 - Click on "サークル配置図はこちらから" https://web.archive.org/web/20210920025821/https://www.cevio-festa.com/circlelist.php
 - list here https://web.archive.org/web/20190307112245/https://cevio-festa.com/link.php
 - CeVIO_SUMMIT https://x.com/CeVIO_SUMMIT/status/914138950469541888
@@ -161,3 +164,4 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 - maybe https://web.archive.org/web/20100228215539/http://reitaisai-cd.com:80/music.html
 - "Ark of Phantasm" & "ろくろっく" https://web.archive.org/web/20071025053005/http://www.dojinmusic.net/ys4/html/10_02_01_35.html
 - "Flowering Night 2007" https://web.archive.org/web/20070329050934/http://www.flowering-night.net/
+- https://www.m3net.jp/pdf/M3Festa.pdf
