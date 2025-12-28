@@ -5,6 +5,17 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 ## Notes
 ## TODO
 ### Planned
+- 'ウタマス' such as here https://web.archive.org/web/20110603112909/http://ketto.com/mimiken/alllist.cgi?30,%83%45%83%5E%83%7D%83%58
+- event list ! https://web.archive.org/web/20100925090924/https://ketto.com/mimiken/ken.cgi
+- https://web.archive.org/web/*/http://ketto.com/mimiken/alist.cgi*
+- TRPG即売会in超会議2016 https://web.archive.org/web/20190517084624/http://ketto.com/tvm/trpg1circle.htm
+- events under archived https://ketto.xsrv.jp or https://ketto.com, such as https://ketto.xsrv.jp/html/mimiken/clist.cgi?ai15 or https://ketto.xsrv.jp/html/mimiken/clist.cgi?aiket1
+- mimiket https://ketto.com/tvm/tvm33ippan.htm
+- "初音祭" https://ketto.com/tvm/tvm22ippan.htm
+- "ニコニコ超会議2012" https://ketto.com/tvm/tvm20ippan.htm
+- "サンシャインシティ" & "サンシャイン・クリエイション40" https://ketto.com/tvm/tvm4ippan.htm
+- "耳キャラONLY同人誌即売会「みみけっと18」" https://ketto.com/tvm/tvm3ippan.htm
+- Commercial: DreamParty https://vgmdb.net/event/340
 - https://web.archive.org/web/20020203230529/http://sakura.comike.to/gensouhenge/top.htm
 - https://web.archive.org/web/20011118184858/http://sakura.comike.to/ecoket/link.htm
 - https://www.comiket.co.jp/info-a/C57/C57event.html
