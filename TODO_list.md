@@ -5,6 +5,9 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 ## Notes
 ## TODO
 ### Planned
+- vomas tweeter for covers
+- "2009年6月7日 鏡音オンリーイベント「よい鏡音を！」" etc https://vocaloid-fantasia.com/support05.htm
+- "utau fantasia" https://web.archive.org/web/20160402101808/http://vocaloid-fantasia.com/gazou/utaufan.gif
 - 'ウタマス' such as here https://web.archive.org/web/20110603112909/http://ketto.com/mimiken/alllist.cgi?30,%83%45%83%5E%83%7D%83%58
 - event list ! https://web.archive.org/web/20100925090924/https://ketto.com/mimiken/ken.cgi
 - https://web.archive.org/web/*/http://ketto.com/mimiken/alist.cgi*
@@ -176,3 +179,5 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 - "Ark of Phantasm" & "ろくろっく" https://web.archive.org/web/20071025053005/http://www.dojinmusic.net/ys4/html/10_02_01_35.html
 - "Flowering Night 2007" https://web.archive.org/web/20070329050934/http://www.flowering-night.net/
 - https://www.m3net.jp/pdf/M3Festa.pdf
+- https://vocaloid-fantasia.com/mmd02.htm
+- https://vocaloid-fantasia.com/mmd03.htm
