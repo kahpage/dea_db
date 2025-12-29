@@ -56,7 +56,6 @@ if __name__ == '__main__':
             
     PATH_exported.mkdir(parents=True, exist_ok=True)
 
-
     # ============================================================
     #  Database indexing
     # ============================================================
@@ -340,3 +339,84 @@ if __name__ == '__main__':
     print(f"Saving circle index metadata file at {circle_index_metadata_file_path}...")
     with circle_index_metadata_file_path.open("w+", encoding="utf-8") as f:
         json.dump(out_metadata, f, ensure_ascii=False, indent=STATIC_JSON_INDENT)
+
+    # ============================================================
+    #  Verification index (basically a dump of the db, but some details only)
+    # ============================================================
+    print("====== Creating verification index ... ======")
+    def recursive_database_indexing_verify(folder: Path) -> dict[str, Any]:
+        """Recursive search and database indexer.
+        ret = { "@databases": {eg1: {eg_db_1}, ...}, "@count": n, subcategory1: {}, subcategory2: {},...}
+        """
+        verify_db_this_folder: dict[str, Any] = {"@databases": {}, "@count": 0}
+        for dir in (dir for dir in folder.iterdir() if dir.is_dir()):
+            folder_name = dir.name
+            if not is_eg_db(dir): # Normal folder
+                verify_db_this_folder[folder_name] = recursive_database_indexing_verify(dir)
+                verify_db_this_folder["@count"] += verify_db_this_folder[folder_name]["@count"] # Increase count
+            else: # Database folder
+                # try opening eg
+                db_file_path = dir / 'event_group.json'
+                try:
+                    with db_file_path.open("r", encoding="utf-8") as f:
+                        content = json.load(f)
+                    if not isinstance(content, dict):
+                        raise ValueError(f"WARNING: invalid format, invalid described structure in {db_file_path}")
+                    if "aliases" not in content:
+                        raise ValueError(f"WARNING: invalid format, 'aliases' should be in json file in {db_file_path}")
+                    print(f"db file found at {db_file_path}")
+                except Exception as ex:
+                    print(f"WARNING: json file {db_file_path} 's format is invalid ! ({ex})")
+                    continue
+
+                # Process event group
+                event_names = content.get("events", [])
+                event_objects: dict[str, dict[str, Any]] = {}
+                for event_name in event_names:
+                    # Try opening corresponding event file
+                    try:
+                        with (dir / f"{event_name}.json").open("r", encoding="utf-8") as ef:
+                            event_content = json.load(ef)
+                        if not isinstance(event_content, dict):
+                            raise ValueError(f"WARNING: invalid format, invalid described structure in {db_file_path}")
+                        if "aliases" not in event_content:
+                            raise ValueError(f"WARNING: invalid format, 'aliases' should be in json file in {db_file_path}")
+                    except Exception as ex:
+                        print(f"WARNING: json file {dir / f'{event_name}.json'} 's format is invalid ! ({ex})")
+                        continue
+                    # Process event content
+                    media_raw = event_content.get("media", [])
+                    media = []
+                    for m in media_raw:
+                        media.append(m.get("path", ""))
+                    event_objects[event_name] = {
+                        "name": event_content["aliases"][0], # First alias
+                        "dates": event_content.get("dates", ""),
+                        "location": event_content.get("locations", [None])[0], # First location only
+                        "media": media, # Path only
+                        "circle_count": len(event_content.get("circles")) if event_content.get("circles") else None,
+                    }
+
+                eg_media = []
+                for m in content.get("media", []):
+                    media_path = m.get("path", "")
+                    if media_path:
+                        eg_media.append(media_path)
+                eg_object = {
+                    "name": content["aliases"][0], # First alias
+                    "events": event_objects,
+                    "media": eg_media, # Path only
+                    "links": content.get("links", []),
+                }
+                verify_db_this_folder["@databases"][dir.name] = eg_object
+                verify_db_this_folder["@count"] += 1
+
+        return verify_db_this_folder
+
+    verify_db_this_folder = recursive_database_indexing_verify(PATH_databases_to_export)
+    verify_db_file_path = PATH_exported / "verify_index.json"
+    verify_db_file_path.parent.mkdir(parents=True, exist_ok=True)
+    print(f"Saving verify database file at {verify_db_file_path}...")
+    with verify_db_file_path.open("w+", encoding="utf-8") as f:
+        json.dump(verify_db_this_folder, f, ensure_ascii=False, indent=STATIC_JSON_INDENT)
+    
