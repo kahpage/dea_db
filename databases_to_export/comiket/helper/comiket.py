@@ -4781,7 +4781,7 @@ if __name__ == '__main__':
                    [Source("https://gigazine.net/news/20120314-comiket/", (ReliabilityTypes.Likely, OriginTypes.External))]),
             Medium("c31-39_08.jpg",
                    [Source("https://gigazine.net/news/20120314-comiket/", (ReliabilityTypes.Likely, OriginTypes.External))]),
-            Medium("c40-49_09_m.jpg",
+            Medium("c40-49_09.jpg",
                    [Source("https://gigazine.net/news/20120314-comiket/", (ReliabilityTypes.Likely, OriginTypes.External))]),
             Medium("c50+_10.jpg",
                    [Source("https://gigazine.net/news/20120314-comiket/", (ReliabilityTypes.Likely, OriginTypes.External))]),
