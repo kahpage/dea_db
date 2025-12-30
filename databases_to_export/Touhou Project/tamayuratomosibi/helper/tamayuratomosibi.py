@@ -58,8 +58,7 @@ if __name__ == '__main__':
                 Source("Aliase (official transcription): https://web.archive.org/web/20250917015413/https://tamayuratomosibi.tumblr.com/", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Aliase (Tamayura no Tomosibi): Tumblr url 'https://tamayuratomosibi.tumblr.com/'", (ReliabilityTypes.Reliable, OriginTypes.Official)),
                 Source("Alt: https://touhougarakuta.com/news/250815b/", (ReliabilityTypes.Reliable, OriginTypes.OfficialExt)),
-                Source("Participating circles: See tamayuratomosibi/helper/web/tamayuratomosibi1/main.py for detailled sources", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: media '1_hampai.png' or https://hamp.ai/event/tamayuratomosibi2025?subEvent=%E3%81%9F%E3%81%BE%E3%82%86%E3%82%89%E3%81%AE%E7%81%AF%E3%81%AF%E5%A4%9C%E3%82%92%E9%82%84%E3%81%8F", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )

@@ -5,6 +5,7 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 ## Notes
 ## TODO
 ### Planned
+- https://dic.nicovideo.jp/a/dear%20master%21#circles and all vocadb events https://vocadb.net/E/6978
 - https://hamp.ai/market-list
 - related to tamayuratomosibi https://thwiki.cc/%E4%B8%9C%E6%96%B9STATION
 - vomas tweeter for covers
