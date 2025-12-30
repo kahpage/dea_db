@@ -5,6 +5,8 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 ## Notes
 ## TODO
 ### Planned
+- https://hamp.ai/market-list
+- related to tamayuratomosibi https://thwiki.cc/%E4%B8%9C%E6%96%B9STATION
 - vomas tweeter for covers
 - "2009年6月7日 鏡音オンリーイベント「よい鏡音を！」" etc https://vocaloid-fantasia.com/support05.htm
 - "utau fantasia" https://web.archive.org/web/20160402101808/http://vocaloid-fantasia.com/gazou/utaufan.gif
