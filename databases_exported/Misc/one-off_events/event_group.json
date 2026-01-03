@@ -1,0 +1,1 @@
+{"aliases": ["One-off events"], "description": "Events that seem to have happened only once, avoids creating separate event groups for them.", "events": {"幻想音楽祭": {"index": 0, "dates": "2019.03.02", "circle_count": 91}}}
