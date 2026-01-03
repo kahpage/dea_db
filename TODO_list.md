@@ -5,6 +5,21 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 ## Notes
 ## TODO
 ### Planned
+- https://web.archive.org/web/20130613232656/http://kyoukai.biz/link.htm
+- Circle lists of other events (境界から視えた外界-至- already done): https://web.archive.org/web/20170504223846/http://project-d.biz/tohosaiji/circle_list.html
+- Circle lists of other events (境界から視えた外界-結- already done): https://web.archive.org/web/20150728094209/http://project-d.biz/tohosaiji/circle_list.html
+- https://web.archive.org/web/20140113193419/http://yumemichi.koromu-toho.com/
+- "艦これオンリー　提督の宴" & others https://web.archive.org/web/20131216025430/http://chusikoku.tohosai.com/
+- Circle list is archived: https://web.archive.org/web/20140328235413/http://comic-stream.com/
+- https://web.archive.org/web/20140517034053/http://comic-stream.com/
+- Where Houraigekisen 9 was held https://web.archive.org/web/20141101234955/http://tosanmatsuri.sokubaikai.com/
+- pixiv events such as here https://www.pixiv.net/event_detail.php?event_id=2932 (see scrape)
+- Note on SDF: basically the same guy (maekawasdf) organized a crap ton of events, all had wix sites but archives unusable, has made announcement for (all?) of them on their tweeter (https://x.com/mae_kawa) and has pixiv links, could be enough to get most of the events
+- https://web.archive.org/web/20190113001919/http://maekawasdf.wixsite.com/sdf1117
+- "https://web.archive.org/web/20130221020451/http://maekawasdf.wix.com/garukatu"
+- "ハトポポコ", same guy as houraigekisenyoui https://web.archive.org/web/20221206232819/https://maekawasdf.wixsite.com/hatopopoko
+- https://web.archive.org/web/20130818103130/http://www.sdf-event.jp/
+- other event banners https://www.sdf-event.jp/
 - https://dic.nicovideo.jp/a/dear%20master%21#circles and all vocadb events https://vocadb.net/E/6978
 - https://hamp.ai/market-list
 - related to tamayuratomosibi https://thwiki.cc/%E4%B8%9C%E6%96%B9STATION
@@ -184,3 +199,4 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 - https://www.m3net.jp/pdf/M3Festa.pdf
 - https://vocaloid-fantasia.com/mmd02.htm
 - https://vocaloid-fantasia.com/mmd03.htm
+- https://web.archive.org/web/20141228080000/http://www.yuuhei-satellite.jp/live/hourai/ https://x.com/mae_kawa/status/532524639432347648
