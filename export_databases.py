@@ -1,50 +1,273 @@
 # =====================================================================
-# Export the databases
+#  Export the databases
 # =====================================================================
 
 import shutil
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, TypedDict
 from dataclasses import dataclass, field
 from db_structs import is_eg_db
 
-# =========== User variable definitions ===========
-
 PATH_CURRENT_DIR = Path(__file__).parent
 PATH_ROOT = PATH_CURRENT_DIR.parent
+
+# =====================================================================
+#  User-defined variables
+# =====================================================================
 PATH_exported = PATH_CURRENT_DIR / "databases_exported"
 PATH_databases_to_export = PATH_CURRENT_DIR / "databases_to_export" # databases_to_export/ folder                                 -> Input
 
 DB_FILE_ENCODING = "utf-8"
-
 STATIC_JSON_INDENT: int | None = None # None to remove indent, int otherwise (e.g. 4)
 
-def clean_database_to_event_group(content: dict[str, Any]) -> dict[str, Any]:
-    """Retrieve only content relevant to the event list."""
-    out_dict: dict[str, Any] = {}
-    out_dict["aliases"] = content["aliases"]
-    out_dict["events"] = content.get("events", [])
-    
-    return out_dict
+CIRCLE_INDEX_CIRCLES_PER_FILE = 10_000 # 10k circles per file
+CIRCLE_COMPACT_INDEX_CIRCLES_PER_FILE = 40_000 # 40k circles per file
 
+# =====================================================================
+#  Utilities
+# =====================================================================
+class RecurIndexResult(TypedDict):
+    """Used for typing in recursive_indexing."""
+    circle_index: dict[str, Any]         # Circles
+    circle_compact_index: dict[str, Any] # Circles (compact)
+    event_list_index: dict[str, Any]     # For Event List
+    verify_index: dict[str, Any]         # For Verify, event_index but more exhaustive
+
+@dataclass
+class ParticipatingCircle: # Circle for that index
+    names: list[str] = field(default_factory=list) # aliases & pen_names
+    misc: list[str] = field(default_factory=list) # Other fields to search in, e.g. comments
+
+    def get_json(self) -> dict[str, Any]:
+        out_dict = {"names": self.names}
+        if self.misc:
+            out_dict["misc"] = self.misc
+        return out_dict
+    
+    def get_compact_json(self) -> list[str]:
+        """Returns a compact version of the circle, with only names and event_name."""
+        return self.names
+    
+    
+def split_json_tree(data: dict[str, Any], max_items: int) -> Any:
+    """Splits a nested JSON tree into multiple JSON strings, each with up to max_items items in lists.
+    Yields JSON strings."""
+    file_index = 1
+    item_count = 0
+    current_root = {}
+
+    def flush():
+        """Yield the current root as a JSON string and reset counters"""
+        nonlocal file_index, current_root, item_count
+        if item_count == 0:
+            return
+        yield json.dumps(current_root, ensure_ascii=False, indent=None)
+        file_index += 1
+        current_root = {}
+        item_count = 0
+
+    def ensure_path(path_keys):
+        """Ensure nested dicts exist in current_root for the given path, rebuild the path if necessary"""
+        node = current_root
+        for k in path_keys:
+            if k not in node:
+                node[k] = {}
+            node = node[k]
+        return node
+
+    def traverse(node, path_keys):
+        nonlocal item_count
+        nonlocal current_root
+
+        if isinstance(node, list): # Circle list i.e. event
+            out_list = []
+            parent = ensure_path(path_keys[:-1])
+            parent[path_keys[-1]] = out_list
+
+            for item in node:
+                if item_count >= max_items:
+                    # yield current and reset
+                    yield from flush()
+                    parent = ensure_path(path_keys[:-1])
+                    out_list = []
+                    parent[path_keys[-1]] = out_list
+
+                out_list.append(item)
+                item_count += 1
+
+                if item_count >= max_items:
+                    yield from flush()
+                    parent = ensure_path(path_keys[:-1])
+                    out_list = []
+                    parent[path_keys[-1]] = out_list
+
+        elif isinstance(node, dict): # Subcategory
+            for k, v in node.items():
+                yield from traverse(v, path_keys + [k])
+
+        else: # leaf value (not list/dict)
+            raise ValueError("Invalid structure: leaf value encountered")
+
+    # Traverse the whole tree
+    yield from traverse(data, [])
+    yield from flush()
+
+# =====================================================================
+#  Step functions
+# =====================================================================
+def recursive_indexing(folder: Path) -> RecurIndexResult:
+    """Recursive search and database indexer."""
+    # ===== Initialize indexes =====
+    circle_index_here: dict[str, Any] = {}
+    circle_compact_index_here: dict[str, Any] = {}
+    event_list_index_here: dict[str, Any] = {"@databases": {}, "@count": 0}
+    verify_index_here: dict[str, Any] = {"@databases": {}, "@count": 0}
+
+    # ===== Process subfolders =====
+    for i, dir in enumerate(dir for dir in folder.iterdir() if dir.is_dir()): # For all dirs
+        dirname = dir.name
+        if not is_eg_db(dir): # ==== Normal folder ====
+            recur_result = recursive_indexing(dir)
+
+            # === Circle indexes (compact and normal) ===
+            circle_index_here[dirname] = recur_result["circle_index"]
+            circle_compact_index_here[dirname] = recur_result["circle_compact_index"]
+
+            # === Event index ===
+            event_list_index_here[dirname] = recur_result["event_list_index"]
+            event_list_index_here["@count"] += recur_result["event_list_index"]["@count"] # Increase count
+            
+            # === Verify index ===
+            verify_index_here[dirname] = recur_result["verify_index"]
+            verify_index_here["@count"] += recur_result["verify_index"]["@count"] # Increase count
+        
+        else: # ==== Database folder ====
+            print("==== Processing database:", dir)
+            path_eg_db = dir / 'event_group.json'
+            eg_data: dict[str, Any]
+            with path_eg_db.open("r", encoding=DB_FILE_ENCODING) as f:
+                eg_data = json.load(f)
+            eg_events = eg_data.get("events", [])
+            
+            # ==== Prepare/eg ====
+            # === Circle indexes (compact and normal) ===
+            circle_index_events: dict[str, list[Any]] = {}
+            circle_compact_index_events: dict[str, list[Any]] = {}
+            
+            # === Event index ===
+            event_list_event_objects: dict[str, dict[str, Any]] = {} # {index:, dates:, circle_count:}
+            
+            # === Verify index ===
+            verify_event_objects: dict[str, dict[str, Any]] = {}
+
+            # ==== Event details ====
+            for j, event_name in enumerate(eg_events):
+                print("  - Event:", event_name)
+                path_event = dir / f"{event_name}.json"
+                event_data: dict[str, Any]
+                with path_event.open("r", encoding=DB_FILE_ENCODING) as ef:
+                    event_data = json.load(ef)
+                circles = event_data.get("circles", [])
+
+                # === Circle indexes (compact and normal) ===
+                if circles:
+                    circle_list_here: list[Any] = []
+                    circle_compact_list_here: list[Any] = []
+                    for circle in circles:
+                        names = []
+                        names.extend(circle.get("aliases", []))
+                        names.extend(circle.get("pen_names", []))
+                        misc = []
+                        misc.append(circle.get("comments", ""))
+                        misc.extend(circle.get("links", []))
+
+                        pc = ParticipatingCircle(names=names, misc=misc)
+                        circle_list_here.append(pc.get_json())
+                        circle_compact_list_here.append(pc.get_compact_json())
+
+                    circle_index_events[event_name] = circle_list_here
+                    circle_compact_index_events[event_name] = circle_compact_list_here
+                    
+                # === Event index ===
+                circle_count = len(circles) if circles else None
+                new_event = {
+                    "index": j,
+                    "dates": event_data.get("dates", ""),
+                    "circle_count": circle_count,
+                }
+                event_list_event_objects[event_name] = new_event
+
+                # === Verify index ===
+                media_raw = event_data.get("media", [])
+                media: list[str] = [] # Path only
+                for m in media_raw:
+                    media.append(m.get("path", ""))
+                circles = event_data.get("circles", [])
+                location = event_data.get("locations", [None])[0] # First location only
+                new_event = {
+                    "name": event_data["aliases"][0], # First alias
+                    "dates": event_data.get("dates", ""),
+                }
+                if media:
+                    new_event["media"] = media 
+                if location:
+                    new_event["location"] = location
+                if circles:
+                    new_event["circle_count"] = len(circles)
+                verify_event_objects[event_name] = new_event
+
+            # ==== Post process ====
+            # === Circle indexes (compact and normal) ===
+            circle_index_here[dir.name] = circle_index_events
+            circle_compact_index_here[dir.name] = circle_compact_index_events
+
+            # === Event index ===
+            eg_object = {
+                "aliases": eg_data.get("aliases", []),
+                "events": event_list_event_objects,
+            }
+            event_list_index_here["@databases"][dir.name] = eg_object
+            event_list_index_here["@count"] += len(eg_events)
+
+            # === Verify index ===
+            verify_eg_media = []
+            for m in eg_data.get("media", []):
+                media_path = m.get("path", "")
+                if media_path:
+                    verify_eg_media.append(media_path)
+            eg_object = {
+                "name": eg_data["aliases"][0], # First alias
+                "events": verify_event_objects,
+                "media": verify_eg_media, # Path only
+                "links": eg_data.get("links", []),
+            }
+            verify_index_here["@databases"][dir.name] = eg_object
+            verify_index_here["@count"] += 1
+
+    # ===== Return =====
+    result = RecurIndexResult(
+        circle_index=circle_index_here,
+        circle_compact_index=circle_compact_index_here,
+        event_list_index=event_list_index_here,
+        verify_index=verify_index_here,
+    )
+    return result
+
+# =====================================================================
+#  Main script
+# =====================================================================
 if __name__ == '__main__':
+    # ===== Main execution =====
     print("======= EXPORTING DATABASES... =======")
     print(f"{PATH_databases_to_export=}")
     print(f"{PATH_exported=}")
 
-    # ============================================================
-    #  Cleaning old exports 
-    # ============================================================
-    if not PATH_databases_to_export.is_dir():
-        print("WARNING: Invalid paths. Please create an empty databases_served/ folder if it is missing.")
-        print("Aborted !")
-        exit()
-
+    # ===== Cleaning old exports =====
     exists_folders: list[Path] = []
     if PATH_exported.is_dir():
         exists_folders.append(PATH_exported)
-    
+
     if exists_folders:
         print(f"====== Clearing old {', '.join(f.stem for f in exists_folders)} folder{'s' if len(exists_folders)>2 else ''}... ======")
         ans = input(f"The content of the following folders will be deleted:\n{'\n'.join(str(folder) for folder in exists_folders)}\nEnter YES to confirm:\n")
@@ -54,260 +277,39 @@ if __name__ == '__main__':
         for folder in exists_folders:
             shutil.rmtree(folder)
             
+    # ===== Create folders =====
     PATH_exported.mkdir(parents=True, exist_ok=True)
 
-    # ============================================================
-    #  Database indexing
-    # ============================================================
-    def recursive_database_indexing(folder: Path) -> tuple[dict[str, Any], dict[str, Any]]:
-        """Recursive search and database indexer.
-        ret[0] = { "@databases": [], "@count": n, subcategory1: {}, subcategory2: {},...}
-        ret[1] = { "@databases": {eg1: {eg_db_1}, ...}, "@count": n, subcategory1: {}, subcategory2: {},...}
-        """
-        index_this_folder: dict[str, Any] = {"@databases": [], "@count": 0}
-        eg_db_this_folder: dict[str, Any] = {"@databases": {}, "@count": 0}
-        for dir in (dir for dir in folder.iterdir() if dir.is_dir()):
-            folder_name = dir.name
-            if not is_eg_db(dir): # Normal folder
-                index_this_folder[folder_name], eg_db_this_folder[folder_name] = recursive_database_indexing(dir)
-                index_this_folder["@count"] += index_this_folder[folder_name]["@count"] # Increase count
-                eg_db_this_folder["@count"] += index_this_folder[folder_name]["@count"]
-            else: # Database folder
-                # try opening eg
-                db_file_path = dir / 'event_group.json'
-                try:
-                    with db_file_path.open("r", encoding="utf-8") as f:
-                        content = json.load(f)
-                    if not isinstance(content, dict):
-                        raise ValueError(f"WARNING: invalid format, invalid described structure in {db_file_path}")
-                    if "aliases" not in content:
-                        raise ValueError(f"WARNING: invalid format, 'aliases' should be in json file in {db_file_path}")
-                    index_this_folder["@databases"].append(dir.name)
-                    index_this_folder["@count"] += 1
-                    eg_db_this_folder["@databases"][dir.name] = clean_database_to_event_group(content)
-                    eg_db_this_folder["@count"] += 1
-                    print(f"db file found at {db_file_path}")
-                except Exception as ex:
-                    print(f"WARNING: json file {db_file_path} 's format is invalid ! ({ex})")
-        return index_this_folder, eg_db_this_folder
+    # ===== Indexes =====
+    print("====== Generating indexes... ======")
+    recur_indexes = recursive_indexing(PATH_databases_to_export)
 
-    def recursive_copy_from_database_index(index: dict[str, Any], root_path_list: list[str] = []) -> None:
-        """Copies the databases to databases_served/ and public/databases/ while preserving the folder structure, using the database index"""
-        for db_name in index.get("@databases", []):
-            # For databases of current folder
-            db_folder_path = PATH_databases_to_export / "/".join(root_path_list) / db_name
-            db_file_path = db_folder_path / "event_group.json"
-            # new_db_file_path = PATH_public_databases  / "/".join(root_path_list) / db_name / "event_group.json" # new path
-            new_db_file_path = PATH_exported  / "/".join(root_path_list) / db_name / "event_group.json" # new path
-            
-            print(f"mkdir {new_db_file_path.parent} for json database ...")
-            new_db_file_path.parent.mkdir(parents=True, exist_ok=True)
+    circle_index = recur_indexes["circle_index"]
+    circle_compact_index = recur_indexes["circle_compact_index"]
+    event_list_index = recur_indexes["event_list_index"]
+    verify_index = recur_indexes["verify_index"]
 
-            # Open event_group.json
-            with db_file_path.open("r", encoding="utf-8") as f:
-                old_content = json.load(f)
-            # Export event_group.json
-            with new_db_file_path.open("w+", encoding="utf-8") as f:
-                json.dump(old_content, f, ensure_ascii=False, indent=STATIC_JSON_INDENT) # remove indent
-            # Export the events too
-            for event_alias0 in old_content.get("events", {}):
-                with (db_folder_path / f"{event_alias0}.json").open("r", encoding="utf-8") as f:
-                    event_content = json.load(f)
-                with (new_db_file_path.parent / f"{event_alias0}.json").open("w+", encoding="utf-8") as f:
-                    json.dump(event_content, f, ensure_ascii=False, indent=STATIC_JSON_INDENT)
-
-            # # Copy media folder if exists # DEPRECATED
-            # new_media_path = PATH_exported  / "/".join(root_path_list) / db_name / "media" # new media path
-            # # new_media_path = PATH_served_databases / "/".join(root_path_list) / db_name / "media" # new media path
-            # print(f"mkdir {new_media_path} ...")
-            # new_media_path.mkdir(parents=True, exist_ok=True)
-            # old_media_folder_path = db_folder_path / "media"
-            # if old_media_folder_path.exists() and old_media_folder_path.is_dir():
-            #     print(f"Running shutil.copytree({old_media_folder_path}, {new_media_path})...")
-            #     shutil.copytree(old_media_folder_path, new_media_path, dirs_exist_ok=True)
-        
-        for subfolder_name in index:
-            if subfolder_name not in ["@databases", "@count"]:
-                recursive_copy_from_database_index(index[subfolder_name], root_path_list + [subfolder_name])
-
-    print("====== Finding all databases in databases_to_export ... ======")    
-    database_index, event_list_index = recursive_database_indexing(PATH_databases_to_export)
-
-    print("====== Copying found databases to databases_served/ ... ======")
-    recursive_copy_from_database_index(database_index)
-    
-    # index_file_path = PATH_static_databases / "database_file_index.json"
-    index_file_path = PATH_exported / "database_file_index.json"
-    index_file_path.parent.mkdir(parents=True, exist_ok=True)
-    print(f"Saving index file at {index_file_path}...")
-    with index_file_path.open("w+", encoding="utf-8") as f:
-        json.dump(database_index, f, ensure_ascii=False, indent=STATIC_JSON_INDENT)
-        
-    # eg_db_file_path = PATH_static_databases / "event_list_index.json"
-    eg_db_file_path = PATH_exported / "event_list_index.json"
-    eg_db_file_path.parent.mkdir(parents=True, exist_ok=True)
-    print(f"Saving event groups database file at {eg_db_file_path}...")
-    with eg_db_file_path.open("w+", encoding="utf-8") as f:
-        json.dump(event_list_index, f, ensure_ascii=False, indent=STATIC_JSON_INDENT)
-    
-    # ============================================================
-    #  Circle participation index
-    # ============================================================
-    print("====== Indexing circles ... ======")
-    @dataclass
-    class ParticipatingCircle: # Circle for that index
-        names: list[str] = field(default_factory=list) # aliases & pen_names
-        misc: list[str] = field(default_factory=list) # Other fields to search in, e.g. comments
-
-        def get_json(self) -> dict[str, Any]:
-            out_dict = {
-                "names": self.names,
-            }
-            if self.misc:
-                out_dict["misc"] = self.misc
-            return out_dict
-        
-        def get_compact_json(self) -> list[str]:
-            """Returns a compact version of the circle, with only names and event_name."""
-            return self.names
-    
-    # circle_index: list[ParticipatingCircle] = []
-    def recursive_circle_index(index: dict[str, Any], root_path_list: list[str] = []) -> tuple[dict[str,Any], dict[str,Any]]:
-        """Indexes all participating circles for events, using the database index. Makes a complete and a compacted (only limited fields) index"""
-        this_circle_index: dict[str,Any] = {}
-        this_circle_compact_index: dict[str,Any] = {}
-        for db_name in index.get("@databases", []): # db_name is the eg
-            # For databases of current folder
-            db_folder_path = PATH_databases_to_export / "/".join(root_path_list) / db_name
-            db_file_path = db_folder_path / "event_group.json"
-
-            with db_file_path.open("r+", encoding="utf-8") as f:
-                eg_content = json.load(f)
-
-            if "events" not in eg_content or not eg_content["events"]:
-                continue
-            
-            this_circle_index[db_name] = {} # if dict: event_group, if list: event and elems are circles
-            this_circle_compact_index[db_name] = {}
-
-            for event_alias0 in eg_content["events"]:
-                with (db_folder_path / f"{event_alias0}.json").open("r+", encoding="utf-8") as ef:
-                    event = json.load(ef)
-
-                if "aliases" not in event or not event["aliases"]:
-                    continue
-                if "circles" not in event or not event['circles']:
-                    continue
-                
-                event_circle_index = []
-                event_circle_compact_index = []
-                for circle in event['circles']:
-                    names = []
-                    if "aliases" in circle:
-                        names.extend(circle["aliases"])
-                    if "pen_names" in circle:
-                        names.extend(circle["pen_names"])
-                    misc = []
-                    if "comments" in circle:
-                        misc.append(circle["comments"])
-                    if "links" in circle and circle["links"]:
-                        misc.extend(circle["links"])
-                    pc = ParticipatingCircle(names=names,misc=misc)
-                    event_circle_index.append(pc.get_json())
-                    event_circle_compact_index.append(pc.get_compact_json()) # just a list of names
-
-                    this_circle_index[db_name][ event['aliases'][0] ] = event_circle_index
-                    this_circle_compact_index[db_name][ event['aliases'][0] ] = event_circle_compact_index
-
-        for subfolder_name in index:
-            if subfolder_name not in ["@databases", "@count"]:
-                this_circle_index[subfolder_name], this_circle_compact_index[subfolder_name] = recursive_circle_index(index[subfolder_name], root_path_list + [subfolder_name])
-        return this_circle_index, this_circle_compact_index
-
-    circle_index, circle_compact_index = recursive_circle_index(database_index)
-
-    
-    def split_json_tree(data, max_items):
-        file_index = 1
-        item_count = 0
-        current_root = {}
-
-        def flush():
-            """Yield the current root as a JSON string and reset counters"""
-            nonlocal file_index, current_root, item_count
-            if item_count == 0:
-                return
-            yield json.dumps(current_root, ensure_ascii=False, indent=None)
-            file_index += 1
-            current_root = {}
-            item_count = 0
-
-        def ensure_path(path_keys):
-            """Ensure nested dicts exist in current_root for the given path, rebuild the path if necessary"""
-            node = current_root
-            for k in path_keys:
-                if k not in node:
-                    node[k] = {}
-                node = node[k]
-            return node
-
-        def traverse(node, path_keys):
-            nonlocal item_count
-            nonlocal current_root
-
-            if isinstance(node, list): # Circle list i.e. event
-                out_list = []
-                parent = ensure_path(path_keys[:-1])
-                parent[path_keys[-1]] = out_list
-
-                for item in node:
-                    if item_count >= max_items:
-                        # yield current and reset
-                        yield from flush()
-                        parent = ensure_path(path_keys[:-1])
-                        out_list = []
-                        parent[path_keys[-1]] = out_list
-
-                    out_list.append(item)
-                    item_count += 1
-
-                    if item_count >= max_items:
-                        yield from flush()
-                        parent = ensure_path(path_keys[:-1])
-                        out_list = []
-                        parent[path_keys[-1]] = out_list
-
-            elif isinstance(node, dict): # Subcategory
-                for k, v in node.items():
-                    yield from traverse(v, path_keys + [k])
-
-            else: # leaf value (not list/dict)
-                raise ValueError("Invalid structure: leaf value encountered")
-
-        # Traverse the whole tree
-        yield from traverse(data, [])
-        yield from flush()
-
-    # === Extensive circle index ===
-    CIRCLES_PER_FILE = 10_000 # 10k circles per file
-    circle_extensive_index_folder = PATH_exported # in databases_served/
+    # ===== Export indexes =====
+    print("====== Exporting indexes... ======")
+    # === Circle indexes (compact and normal) ===
+    print("Exporting circle index...")
+    circle_extensive_index_folder = PATH_exported # in databases_exported/
     circle_extensive_index_folder.mkdir(parents=True, exist_ok=True)
     print(f"Saving extensive circle database files in {circle_extensive_index_folder}...")
     extensive_chunk_count = 0
-    for i, chunk in enumerate(split_json_tree(circle_index, CIRCLES_PER_FILE)):
+    for i, chunk in enumerate(split_json_tree(circle_index, CIRCLE_INDEX_CIRCLES_PER_FILE)):
         chunk_file_path = circle_extensive_index_folder / f"circle_participation_extensive_index_{i}.json"
         print(f"Writing chunk {i} of size {len(chunk)} characters to {chunk_file_path}...")
         with chunk_file_path.open("w+", encoding="utf-8") as f:
             f.write(chunk)
         extensive_chunk_count += 1
     
-    # === Compact circle index ===
-    CIRCLES_PER_FILE = 40_000 # 40k circles per file
-    circle_compact_index_folder = PATH_exported # in databases_served/
+    print("Exporting compact circle index...")
+    circle_compact_index_folder = PATH_exported # in databases_exported/
     circle_compact_index_folder.mkdir(parents=True, exist_ok=True)
     print(f"Saving compact circle database files in {circle_compact_index_folder}...")
     compact_chunk_count = 0
-    for i, chunk in enumerate(split_json_tree(circle_compact_index, CIRCLES_PER_FILE)):
+    for i, chunk in enumerate(split_json_tree(circle_compact_index, CIRCLE_COMPACT_INDEX_CIRCLES_PER_FILE)):
         chunk_file_path = circle_compact_index_folder / f"circle_participation_compact_index_{i}.json"
         print(f"Writing chunk {i} of size {len(chunk)} characters to {chunk_file_path}...")
         with chunk_file_path.open("w+", encoding="utf-8") as f:
@@ -334,89 +336,20 @@ if __name__ == '__main__':
         "extensive_total_size": extensive_total_size,
         "compact_total_size": compact_total_size,
     }
-
     circle_index_metadata_file_path = PATH_exported / "circle_index_metadata.json"
     print(f"Saving circle index metadata file at {circle_index_metadata_file_path}...")
     with circle_index_metadata_file_path.open("w+", encoding="utf-8") as f:
         json.dump(out_metadata, f, ensure_ascii=False, indent=STATIC_JSON_INDENT)
 
-    # ============================================================
-    #  Verification index (basically a dump of the db, but some details only)
-    # ============================================================
-    print("====== Creating verification index ... ======")
-    def recursive_database_indexing_verify(folder: Path) -> dict[str, Any]:
-        """Recursive search and database indexer.
-        ret = { "@databases": {eg1: {eg_db_1}, ...}, "@count": n, subcategory1: {}, subcategory2: {},...}
-        """
-        verify_db_this_folder: dict[str, Any] = {"@databases": {}, "@count": 0}
-        for dir in (dir for dir in folder.iterdir() if dir.is_dir()):
-            folder_name = dir.name
-            if not is_eg_db(dir): # Normal folder
-                verify_db_this_folder[folder_name] = recursive_database_indexing_verify(dir)
-                verify_db_this_folder["@count"] += verify_db_this_folder[folder_name]["@count"] # Increase count
-            else: # Database folder
-                # try opening eg
-                db_file_path = dir / 'event_group.json'
-                try:
-                    with db_file_path.open("r", encoding="utf-8") as f:
-                        content = json.load(f)
-                    if not isinstance(content, dict):
-                        raise ValueError(f"WARNING: invalid format, invalid described structure in {db_file_path}")
-                    if "aliases" not in content:
-                        raise ValueError(f"WARNING: invalid format, 'aliases' should be in json file in {db_file_path}")
-                    print(f"db file found at {db_file_path}")
-                except Exception as ex:
-                    print(f"WARNING: json file {db_file_path} 's format is invalid ! ({ex})")
-                    continue
-
-                # Process event group
-                event_names = content.get("events", [])
-                event_objects: dict[str, dict[str, Any]] = {}
-                for event_name in event_names:
-                    # Try opening corresponding event file
-                    try:
-                        with (dir / f"{event_name}.json").open("r", encoding="utf-8") as ef:
-                            event_content = json.load(ef)
-                        if not isinstance(event_content, dict):
-                            raise ValueError(f"WARNING: invalid format, invalid described structure in {db_file_path}")
-                        if "aliases" not in event_content:
-                            raise ValueError(f"WARNING: invalid format, 'aliases' should be in json file in {db_file_path}")
-                    except Exception as ex:
-                        print(f"WARNING: json file {dir / f'{event_name}.json'} 's format is invalid ! ({ex})")
-                        continue
-                    # Process event content
-                    media_raw = event_content.get("media", [])
-                    media = []
-                    for m in media_raw:
-                        media.append(m.get("path", ""))
-                    event_objects[event_name] = {
-                        "name": event_content["aliases"][0], # First alias
-                        "dates": event_content.get("dates", ""),
-                        "location": event_content.get("locations", [None])[0], # First location only
-                        "media": media, # Path only
-                        "circle_count": len(event_content.get("circles")) if event_content.get("circles") else None,
-                    }
-
-                eg_media = []
-                for m in content.get("media", []):
-                    media_path = m.get("path", "")
-                    if media_path:
-                        eg_media.append(media_path)
-                eg_object = {
-                    "name": content["aliases"][0], # First alias
-                    "events": event_objects,
-                    "media": eg_media, # Path only
-                    "links": content.get("links", []),
-                }
-                verify_db_this_folder["@databases"][dir.name] = eg_object
-                verify_db_this_folder["@count"] += 1
-
-        return verify_db_this_folder
-
-    verify_db_this_folder = recursive_database_indexing_verify(PATH_databases_to_export)
-    verify_db_file_path = PATH_exported / "verify_index.json"
-    verify_db_file_path.parent.mkdir(parents=True, exist_ok=True)
-    print(f"Saving verify database file at {verify_db_file_path}...")
-    with verify_db_file_path.open("w+", encoding="utf-8") as f:
-        json.dump(verify_db_this_folder, f, ensure_ascii=False, indent=STATIC_JSON_INDENT)
+    # === Event index ===
+    print("Exporting event list index...")
+    path_event_list_index = PATH_exported / "event_list_index.json"
+    with path_event_list_index.open("w", encoding=DB_FILE_ENCODING) as ef:
+        json.dump(event_list_index, ef, indent=STATIC_JSON_INDENT, ensure_ascii=False)
+    # === Verify index ===
+    print("Exporting verify index...")
+    path_verify_index = PATH_exported / "verify_index.json"
+    with path_verify_index.open("w", encoding=DB_FILE_ENCODING) as vf:
+        json.dump(verify_index, vf, indent=STATIC_JSON_INDENT, ensure_ascii=False)
     
+    print("======= EXPORT COMPLETE =======")
