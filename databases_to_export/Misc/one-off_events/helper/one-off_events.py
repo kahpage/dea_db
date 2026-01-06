@@ -63,14 +63,47 @@ if __name__ == '__main__':
         event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
     
+    if True: # ==== touhousugeimatsuri ====
+        name = "touhousugeimatsuri"
+        print(f"Processing {name} ...")
+        circles_ = []
+        media_ = [
+            Medium("touhousugeimatsuri/sugeilogo.gif",
+                   [Source("https://web.archive.org/web/20100926130402/http://ketto.com/sugei/", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("touhousugeimatsuri/sugei1hyousi.jpg",
+                   [Source("https://web.archive.org/web/20100927055641/http://ketto.com/sugei/sugei1ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            # Medium("touhousugeimatsuri/",
+            #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3245.794139163642!2d139.7214917753278!3d35.55878603669134!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1767562526864!5m2!1sen!2sfr",
+                description="大田区産業プラザPiO１階大展示ホール",
+                sources=[Source("https://web.archive.org/web/20100926130402/http://ketto.com/sugei/", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
+        event = Event(
+            aliases=["東方素芸祭", "Touhou Sugei Matsuri"],
+            dates="2010.06.13",
+            circles=circles_,
+            media=media_,
+            sources=[
+                Source("Date: https://web.archive.org/web/20100926130402/http://ketto.com/sugei/", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20100927065217/http://ketto.com/mimiken/alllist.cgi?91", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            links=["http://ketto.com/sugei/"], # Links
+            description="Touhou project-themed doujin event.",
+            comments=None
+        )
+        event_raw = event.get_json()
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
+    
     # ==== event group ====
     media = [
-        # Medium("",
-        #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
-        # Medium("",
-        #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
-        # Medium("",
-        #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
         # Medium("",
         #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
     ]

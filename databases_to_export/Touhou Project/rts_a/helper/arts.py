@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
         circles_ = []
         media_ = [
-            Medium(f"{i}_arts{i}.png",
+            Medium(f"{i}_arts{i}.jpg",
                    [Source(thwikicc, (ReliabilityTypes.Likely, OriginTypes.External))]),
             ]
         locations = [
@@ -282,7 +282,7 @@ if __name__ == '__main__':
 
         circles_ = []
         media_ = [
-            Medium(f"{i}_arts{i}.png",
+            Medium(f"{i}_arts{i}.jpg",
                    [Source(main_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
         locations = [
@@ -319,7 +319,7 @@ if __name__ == '__main__':
 
         circles_ = []
         media_ = [
-            Medium(f"{i}_arts{i}.png",
+            Medium(f"{i}_arts{i}.jpg",
                    [Source(main_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
         locations = [
@@ -356,7 +356,7 @@ if __name__ == '__main__':
 
         circles_ = []
         media_ = [
-            Medium(f"{i}_arts{i}.png",
+            Medium(f"{i}_arts{i}.jpg",
                    [Source(main_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
         locations = [
@@ -393,7 +393,7 @@ if __name__ == '__main__':
 
         circles_ = []
         media_ = [
-            Medium(f"{i}_arts{i}.png",
+            Medium(f"{i}_arts{i}.jpg",
                    [Source(main_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
         locations = [
@@ -430,7 +430,7 @@ if __name__ == '__main__':
 
         circles_ = []
         media_ = [
-            Medium(f"{i}_arts{i}.png",
+            Medium(f"{i}_arts{i}.jpg",
                    [Source(main_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             ]
         locations = [

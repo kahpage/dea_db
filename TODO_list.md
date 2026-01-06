@@ -5,6 +5,14 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 ## Notes
 ## TODO
 ### Planned
+- all events of https://www.puniket.com/
+- 幻想人形祭・長 circle list: https://web.archive.org/web/20150414122543/http://yougakudan.blogspot.jp/?m=0
+- see what's archived here: https://shiosyakeyakini.info/ (yougagudann was at https://shiosyakeyakini.info/touhouEvent/pb_event.php?id=51)
+- ようせいげんき！ https://web.archive.org/web/20100831015410/http://www.puniket.com/cirno/cirno_list01.htm
+- all events under https://ttc.ninja-web.net/
+- kemoket
+- puniket
+- https://web.archive.org/web/20100926130402/http://ketto.com/sugei/
 - https://web.archive.org/web/20130613232656/http://kyoukai.biz/link.htm
 - Circle lists of other events (境界から視えた外界-至- already done): https://web.archive.org/web/20170504223846/http://project-d.biz/tohosaiji/circle_list.html
 - Circle lists of other events (境界から視えた外界-結- already done): https://web.archive.org/web/20150728094209/http://project-d.biz/tohosaiji/circle_list.html
@@ -161,8 +169,7 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 - https://web.archive.org/web/20160805175219/http://ttc.ninja-web.net/toukensai/zuo_bami_mono.jpg
 - https://web.archive.org/web/20160805175212/http://ttc.ninja-web.net/toukensai/toukensai02.jpg
 - https://web.archive.org/web/20190406062521/http://ttc.ninja-web.net/aug-memories/aug-memories.jpg
-- https://web.archive.org/web/20240713164338/https://ttc.ninja-web.net/kantai-parade/kantai-parade02.jpg
-* https://pbs.twimg.com/media/DWp0NDbVoAA36hv?format=jpg&name=large
+- https://pbs.twimg.com/media/DWp0NDbVoAA36hv?format=jpg&name=large
 
 ### To browse for other events
 - Booth festivals
@@ -181,6 +188,12 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 - vocaloid station / street
 - vocalovers
 - vopara
+
+### To Group
+- ninja series
+  * vopara
+  * kantai parade
+  * key party 
 
 ## Done
 ### "Skipped"
