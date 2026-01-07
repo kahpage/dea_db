@@ -5,6 +5,10 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 ## Notes
 ## TODO
 ### Planned
+- web.archive.org/web/20120524220835/http://www.aoboo.jp/tohotenjinkyo/link.html, http://tenjinkyo.web.fc2.com/06link.html
+- All from http://www.aoboo.jp (e.g.: https://web.archive.org/web/20090622084715/http://www.aoboo.jp/tohotenjinkyo/circle.html#)
+- COMIC CITY福岡21 and its series
+- +other sources of youseigenki circle lists:「紅のひろば９」　「このはな咲夜４」　「ようせいげんき！４」「遊音ファンタジウム２」）サークル配置リスト https://web.archive.org/web/20130323154552/http://www.puniket.com/aka/2013_0127_lisi02.htm
 - all events of https://www.puniket.com/
 - 幻想人形祭・長 circle list: https://web.archive.org/web/20150414122543/http://yougakudan.blogspot.jp/?m=0
 - see what's archived here: https://shiosyakeyakini.info/ (yougagudann was at https://shiosyakeyakini.info/touhouEvent/pb_event.php?id=51)
@@ -122,9 +126,6 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 - https://web.archive.org/web/20150311191527/http://ttc.ninja-web.net:80/vp-ex/paper_vp-ex.htm
 - 京都ボカロ合同
 - ようせいげんき！ (source: https://web.archive.org/web/20110811213205/http://www.puniket.com/cirno/cirno_list01.htm)
-- Comiket
-- RTS
-- M3
 - 鏡音 PARADISE (is it vopara as well ?) (https://web.archive.org/web/20120309003013/http://ttc.ninja-web.net/vo-para/index.html)
 - VOCALOID STATION https://web.archive.org/web/20111006170202/http://slash.sakuraweb.com/event/vo_sta/
 - MUSIC COMMUNICATION https://web.archive.org/web/20111004102842/http://m-comi.birdzberth.com/ & https://web.archive.org/web/20120320070201/http://vo-para.birdzberth.com/
@@ -188,6 +189,7 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 - vocaloid station / street
 - vocalovers
 - vopara
+- https://www.puniket.com/cirno/
 
 ### To Group
 - ninja series

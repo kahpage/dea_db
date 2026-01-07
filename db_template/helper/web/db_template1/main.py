@@ -48,7 +48,7 @@ if __name__ == '__main__':
                     position=position,
                     pen_names=[penname],
                     aliases=[name],
-                    links=[clean_link(link) for link in links],
+                    links=[clean_link(link) for link in links] if links else None,
                 )
                 circles.append(circle)
 

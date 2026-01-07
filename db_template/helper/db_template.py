@@ -43,7 +43,8 @@ if __name__ == '__main__':
                 Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
-            comments=None
+            comments=None,
+            description=None,
         )
         event_raw = event.get_json()
         # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:

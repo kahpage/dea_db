@@ -28,7 +28,7 @@ if __name__ == '__main__':
         locations = [
             Location(
                 iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3245.794139163642!2d139.7214917753278!3d35.55878603669134!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1767611219328!5m2!1sen!2sfr",
-                description="大田区産業プラザPiO 大展示ホール ",
+                description="大田区産業プラザPiO 大展示ホール",
                 sources=[Source("Official event poster, see media.", (ReliabilityTypes.Reliable, OriginTypes.Official))]
             ),
         ]
