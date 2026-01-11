@@ -837,14 +837,14 @@ if __name__ == '__main__':
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm21ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm21", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20170629083518/http://ketto.com/mimiken/alist2.cgi?95", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 22 ====
@@ -878,14 +878,14 @@ if __name__ == '__main__':
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm22ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm22", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20170629042947/http://ketto.com/mimiken/alist2.cgi?101", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 23 ====
@@ -1005,14 +1005,14 @@ if __name__ == '__main__':
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm25ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm25", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20170629055913id_/http://ketto.com/mimiken/alist2.cgi?140", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 26 ====
@@ -1041,19 +1041,19 @@ if __name__ == '__main__':
             aliases=["THE VOC@LOiD M＠STER 26 Night Special", "ボーマス26", "VOM@S26", "tvm26",
                      "THE VOC＠LOiD M＠STER 26",
                      ],
-            dates="2013.08.30",
+            dates="2013.08.30 - 2013.08.31",
             circles=circles_,
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm26ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm26", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20170629091251/http://ketto.com/mimiken/alist2.cgi?12", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 27 ====
@@ -1080,19 +1080,19 @@ if __name__ == '__main__':
         ]
         event = Event(
             aliases=["THE VOC＠LOiD M＠STER 27", "ボーマス27", "VOM@S27"],
-            dates="2013.11.27",
+            dates="2013.11.17",
             circles=circles_,
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm27ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm27", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20170629064318/http://ketto.com/mimiken/alist2.cgi?33", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 28 ====
@@ -1127,19 +1127,19 @@ if __name__ == '__main__':
             aliases=["THE VOC＠LOiD 超 M＠STER 28", "ボーマス28", "VOM@S28", "tvm28",
                      "THE VOC＠LOiD M＠STER 28", "THE VOC＠LOiD CHOU M＠STER 28"
                      ],
-            dates="2014.04.26",
+            dates="2014.04.26 - 2014.04.27",
             circles=circles_,
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm28ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm28", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20140729151127/http://ketto.com/mimiken/alist2.cgi?149", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 29 ====
@@ -1172,14 +1172,14 @@ if __name__ == '__main__':
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm29ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm29", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20140701163534/http://ketto.com/mimiken/alist2.cgi?67", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 30 ====
@@ -1212,14 +1212,14 @@ if __name__ == '__main__':
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm30ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm30", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20141211002218/http://ketto.com/mimiken/alist2.cgi?134", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 31 ====
@@ -1253,19 +1253,19 @@ if __name__ == '__main__':
             aliases=["THE VOC＠LOiD 超 M＠STER 31", "ボーマス31", "VOM@S31", "tvm31",
                      "THE VOC＠LOiD M＠STER 31", "THE VOC＠LOiD CHOU M＠STER 31"
                     ],
-            dates="2015.04.25",
+            dates="2015.04.25 - 2015.04.26",
             circles=circles_,
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm31ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm31", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20150321141805/http://ketto.com/mimiken/alist2.cgi?157", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 32 ====
@@ -1298,14 +1298,15 @@ if __name__ == '__main__':
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm32ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm32", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20170629050649/http://ketto.com/mimiken/alist2.cgi?166", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            comments="Circle list probably includes circles from the 'スプラケット' event held simultaneously."
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 33 ====
@@ -1338,14 +1339,16 @@ if __name__ == '__main__':
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm33ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm33", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20170629132140/http://ketto.com/mimiken/alist2.cgi?124", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("みみけ33 circles excluded: https://web.archive.org/web/20160412121418/http://ketto.com/mimiken/alist2.cgi?124,%82%DD%82%DD%82%AF33", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            comments="Circle list may include circles from other events held simulatneously, I excluded known 'みみけ33' circles."
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 34 ====
@@ -1375,19 +1378,19 @@ if __name__ == '__main__':
             aliases=["THE VOC＠LOiD 超 M＠STER 34", "ボーマス34", "VOM@S34", "tvm34",
                      "THE VOC＠LOiD M＠STER 34", "THE VOC＠LOiD CHOU M＠STER 34"
                      ],
-            dates="2016.04.29",
+            dates="2016.04.29 - 2016.04.30",
             circles=circles_,
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm34ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm34", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20170629075447/http://ketto.com/mimiken/alist2.cgi?9", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 35 ====
@@ -1420,14 +1423,15 @@ if __name__ == '__main__':
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm35ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm35", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20170629052407/http://ketto.com/mimiken/alist2.cgi?73", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            comments="Circle list may include circles of events held simultaneously."
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 36 ====
@@ -1460,14 +1464,14 @@ if __name__ == '__main__':
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm36ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm36", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20170317005530/http://ketto.com/mimiken/alist2.cgi?144,%83%7B%81%5B%83%7D%83X36", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 37 ====
@@ -1504,14 +1508,14 @@ if __name__ == '__main__':
             media=media_,
             sources=[
                 Source("Date: https://ketto.com/tvm/tvm37ippan.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles (DEAD): https://ketto.xsrv.jp/html/mimiken/clist.cgi?tvm37", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://web.archive.org/web/20170629102334/http://ketto.com/mimiken/alist2.cgi?31", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
         )
         event_raw = event.get_json()
-        # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
-        #     circles_raw = json.load(f)
-        # event_raw["circles"] = circles_raw
+        with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
         events_raw.append(event_raw)
 
     if True: # ==== tvm 38 ====

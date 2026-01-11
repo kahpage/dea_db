@@ -5,6 +5,9 @@ Just a bunch of random, not ordered notes and links to process at a later point.
 ## Notes
 ## TODO
 ### Planned
+- "スプラケット" https://ketto.com/tvm/tvm32ippan.htm
+- There are other events at subdomains of http://project-d.biz/tengu/, such as https://web.archive.org/web/20110822165139/http://project-d.biz/eiyasho/circle-list.html
+- みんなのUTAU 2013
 - web.archive.org/web/20120524220835/http://www.aoboo.jp/tohotenjinkyo/link.html, http://tenjinkyo.web.fc2.com/06link.html
 - All from http://www.aoboo.jp (e.g.: https://web.archive.org/web/20090622084715/http://www.aoboo.jp/tohotenjinkyo/circle.html#)
 - COMIC CITY福岡21 and its series
