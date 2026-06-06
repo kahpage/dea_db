@@ -242,7 +242,7 @@ class Event:
     """
     aliases: list[str] = field(default_factory=list) # Names of the event, the first being the default one. e.g. ['C95', 'コミックマーケット95']
     dates: str = "" # Dates. Format: "YYYY-MM-DD" for 1 day event, "YYYY-MM-DD,YYYY-MM-DD" for multi day (begin,end). If cancelled, append " CANCELLED" (e.g. 2021.02.27 CANCELLED)
-    
+
     circles: Optional[list[Circle]] = field(default_factory=list) # List of participating circles.
 
     locations: Optional[list[Location]] = field(default_factory=list) # List of locations for that event.
@@ -253,7 +253,8 @@ class Event:
 
     comments: Optional[str] = None # Additionnal comments
     description: Optional[str] = None # Description shown on event_detail pages to describe that event.
-    
+    last_edited: Optional[str] = None # Date of last edition (Update of event-related info and contained fields)
+
     def get_json(self) -> dict[str, Any]:
         if not self.aliases: # if None or not at least one
             raise ValueError(f"Invalid aliases for Event, must be a list of at least one element {self.aliases=}")
@@ -275,6 +276,8 @@ class Event:
             out_dict["description"] = self.description
         if (self.locations is not None) and (is_to_add(self.locations)): # not None and at least one
             out_dict["locations"] = [location.get_json() for location in self.locations]
+        if (self.last_edited is not None) and (is_to_add(self.last_edited)):
+            out_dict["last_edited"] = self.last_edited
 
         return out_dict
 
@@ -297,7 +300,8 @@ class Event:
             links=links if is_to_add(links) else None,
             comments=in_dict.get("comments", None),
             description=in_dict.get("description", None),
-            locations=locations if is_to_add(locations) else None
+            locations=locations if is_to_add(locations) else None,
+            last_edited=in_dict.get("last_edited", None)
         )
 
 @dataclass
@@ -316,6 +320,7 @@ class EventGroup:
 
     comments: Optional[str] = None # Additionnal comments
     description: Optional[str] = None # Description shown on event_group_detail pages to describe that event group.
+    last_edited: Optional[str] = None # Date of last edition (Update of associated events such as new event entries, but not of per-event updates)
 
     def get_json(self) -> dict[str, Any]:
         if not self.aliases: # if None or not at least one
@@ -334,6 +339,9 @@ class EventGroup:
             out_dict["comments"] = self.comments
         if (self.description is not None) and (is_to_add(self.description)): # not None and not ""
             out_dict["description"] = self.description
+        if (self.last_edited is not None) and (is_to_add(self.last_edited)):
+            out_dict["last_edited"] = self.last_edited
+
             
         return out_dict
 
@@ -351,7 +359,8 @@ class EventGroup:
             media=media if is_to_add(media) else None,
             links=links if is_to_add(links) else None,
             comments=in_dict.get("comments", None),
-            description=in_dict.get("description", None)
+            description=in_dict.get("description", None),
+            last_edited=in_dict.get("last_edited", None)
         )
     
     def save(self, folder: Path, indent: int | None = 4) -> None:
@@ -371,7 +380,10 @@ class EventGroup:
             eg_json["comments"] = self.comments
         if (self.description is not None) and (is_to_add(self.description)): # not None and not ""
             eg_json["description"] = self.description
+        if (self.last_edited is not None) and (is_to_add(self.last_edited)):
+            eg_json["last_edited"] = self.last_edited
         
+        # Compacted event info for the event_group_detail page
         events_compact = {}
         for i, event in enumerate(self.events):
             if event.aliases[0] in events_compact:
@@ -379,6 +391,7 @@ class EventGroup:
             events_compact[event.aliases[0]] = {
                 "index": i,  # Index in the list of events
                 "dates": event.dates,
+                "last_edited": event.last_edited,
                 "circle_count": len(event.circles) if event.circles else None,
             }
         eg_json["events"] = events_compact
@@ -424,7 +437,8 @@ class EventGroup:
             media=media if is_to_add(media) else None,
             links=links if is_to_add(links) else None,
             comments=eg_raw.get("comments", None),
-            description=eg_raw.get("description", None)
+            description=eg_raw.get("description", None),
+            last_edited=eg_raw.get("last_edited", None)
         )
 if __name__ == '__main__':
     pass
@@ -433,8 +447,3 @@ if __name__ == '__main__':
 
     # with (folder / "eg_test.json").open("w", encoding="utf-8") as f:
     #     json.dump(eg.get_json(), f, ensure_ascii=False, indent=4)
-
-
-    # TODO now: 
-    # - change export_databases
-    # - rq: EventDetail.vue's function get_event_db(response_data) is where the correct event db was searched for

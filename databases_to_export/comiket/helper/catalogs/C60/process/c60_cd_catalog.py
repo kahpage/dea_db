@@ -231,6 +231,8 @@ if __name__ == '__main__':
             print(f"Unknown genre code at line {i} (key={raw_entry[6]}, {raw_entry[7]}): {raw_entry=}")
             exit()
         name = cleanup(raw_entry[7])
+        if not name:
+            continue
         name_kana = cleanup(raw_entry[8])
         pen_name = cleanup(raw_entry[9])
         product_name = cleanup(raw_entry[10])
@@ -255,7 +257,7 @@ if __name__ == '__main__':
     # =====================================
     # Dump circles to JSON
     # =====================================
-    with open(Path(__file__).parent / f'c{NUM}_circles.json', 'w+', encoding='utf-8') as f:
+    with open(Path(__file__).parent.parent / f'c{NUM}_circles.json', 'w+', encoding='utf-8') as f:
         json.dump(circles_raw, f, indent=4, ensure_ascii=False)
 
     print(f"{len(circles_raw)} circles data saved to c{NUM}_circles.json")

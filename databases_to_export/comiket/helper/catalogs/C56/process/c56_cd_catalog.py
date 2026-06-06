@@ -166,6 +166,9 @@ if __name__ == '__main__':
         
     for raw_entry in raw_entries:
         try:
+            name = cleanup(raw_entry[7])
+            if not name:
+                continue
             page = cleanup(raw_entry[0])
             index_in_page = cleanup(raw_entry[1])
             event_day = cleanup(raw_entry[2])
@@ -173,7 +176,6 @@ if __name__ == '__main__':
             block = cleanup(raw_entry[4])
             booth_numder = cleanup(raw_entry[5])
             genre = cleanup(GENRES[int(raw_entry[6])])
-            name = cleanup(raw_entry[7])
             pen_name = cleanup(raw_entry[8])
             product_name = cleanup(raw_entry[9])
             url = cleanup(raw_entry[10])
@@ -184,7 +186,6 @@ if __name__ == '__main__':
         except Exception as e:
             print(f'{raw_entry=}')
             raise e
-        
         circles_raw.append(Circle(
             aliases=[name],
             pen_names=[pen_name],
@@ -254,7 +255,7 @@ if __name__ == '__main__':
     # =====================================
     # Dump circles to JSON
     # =====================================
-    with open(Path(__file__).parent / 'c56_circles.json', 'w+', encoding='utf-8') as f:
+    with open(Path(__file__).parent.parent / 'c56_circles.json', 'w+', encoding='utf-8') as f:
         json.dump(circles_raw, f, indent=4, ensure_ascii=False)
 
     print(f"{len(circles_raw)} circles data saved to c56_circles.json")

@@ -37,6 +37,7 @@ if __name__ == '__main__':
                 # Source("Participating circles (1): ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -71,6 +72,7 @@ if __name__ == '__main__':
                 # Source("Participating circles (1): ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -104,6 +106,7 @@ if __name__ == '__main__':
                 # Source("Participating circles (1): ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -137,6 +140,7 @@ if __name__ == '__main__':
                 # Source("Participating circles (1): ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -170,6 +174,7 @@ if __name__ == '__main__':
                 # Source("Participating circles (1): ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -203,6 +208,7 @@ if __name__ == '__main__':
                 # Source("Participating circles (1): ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -236,6 +242,7 @@ if __name__ == '__main__':
                 # Source("Participating circles (1): ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -258,13 +265,14 @@ if __name__ == '__main__':
         media=media,
         links=links,
         description="Extra events related to Comiket.",
-        # comments=f""
+        # comments=f"",
+        last_edited="2026.05.30"
     )
     for event_raw in events_raw:
         event = Event.load_from_json(event_raw)
         event_group.events.append(event)
     
-    print("Saving arts database...")
+    print("Saving comiket_extra database...")
     event_group.save(save_folder_path, indent=None)
 
     print("Done")

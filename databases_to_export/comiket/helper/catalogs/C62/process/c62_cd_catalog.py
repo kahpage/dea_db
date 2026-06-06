@@ -246,7 +246,7 @@ if __name__ == '__main__':
     # =====================================
     # Dump circles to JSON
     # =====================================
-    with open(Path(__file__).parent / f'c{NUM}_circles.json', 'w+', encoding='utf-8') as f:
+    with open(Path(__file__).parent.parent / f'c{NUM}_circles.json', 'w+', encoding='utf-8') as f:
         json.dump(circles_raw, f, indent=4, ensure_ascii=False)
 
     print(f"{len(circles_raw)} circles data saved to c{NUM}_circles.json")

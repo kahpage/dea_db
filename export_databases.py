@@ -205,6 +205,7 @@ def recursive_indexing(folder: Path) -> RecurIndexResult:
                     media.append(m.get("path", ""))
                 circles = event_data.get("circles", [])
                 location = event_data.get("locations", [None])[0] # First location only
+                last_edited = event_data.get("last_edited", None)
                 new_event = {
                     "name": event_data["aliases"][0], # First alias
                     "dates": event_data.get("dates", ""),
@@ -215,6 +216,8 @@ def recursive_indexing(folder: Path) -> RecurIndexResult:
                     new_event["location"] = location
                 if circles:
                     new_event["circle_count"] = len(circles)
+                if last_edited:
+                    new_event["last_edited"] = last_edited
                 verify_event_objects[event_name] = new_event
 
             # ==== Post process ====
@@ -227,6 +230,11 @@ def recursive_indexing(folder: Path) -> RecurIndexResult:
                 "aliases": eg_data.get("aliases", []),
                 "events": event_list_event_objects,
             }
+            # Last edited
+            eg_last_edited = eg_data.get("last_edited", None)
+            if eg_last_edited:
+                eg_object["last_edited"] = eg_last_edited
+            
             event_list_index_here["@databases"][dir.name] = eg_object
             event_list_index_here["@count"] += len(eg_events)
 

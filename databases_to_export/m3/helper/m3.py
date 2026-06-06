@@ -1,3427 +1,2747 @@
 # https://www.m3net.jp/event/index.php
 
-from db_structs import Medium, Circle, Event, EventGroup, Source, ReliabilityTypes, OriginTypes
+from db_structs import (
+    Medium,
+    Circle,
+    Event,
+    EventGroup,
+    Source,
+    ReliabilityTypes,
+    OriginTypes,
+    Location,
+    is_to_add,
+)
 from pathlib import Path
 import json
+from typing import Any
 from bs4 import BeautifulSoup, Comment
 import re
 import requests
+import lxml
 
-if __name__ == '__main__':
-    save_folder_path = Path(__file__).parent
-    events: list[Event] = []
-    
-    if False:
-        # ==== M3-01 ====
-        with Path(__file__).with_name("raw01.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        details_with_cuts = switch_details[1:]
+PATH_M3_HELPER = Path(__file__).parent
+PATH_M3 = PATH_M3_HELPER.parent
+PATH_M3_MEDIA = PATH_M3 / "media"
 
-        circles_: list[Circle] = []
-        for d in details_with_cuts:
-            rows = d.select("table tr")
-            rows_image_blocks = [d for d in rows if d.select_one("table img")]
-            rows_name_blocks = [d for d in rows if not d.select_one("table img")]
-            # print(len(rows_image_blocks), len(rows_name_blocks))
+if __name__ == "__main__":
+    save_folder_path = PATH_M3
+    events_raw: list[Any] = []
+    active_events: list[int | str] = list(range(1, 100)) + ["大阪"]
 
-            for i in range(len(rows_image_blocks)):
-                cut_blocks = rows_image_blocks[i].select("td")
-                name_blocks = rows_name_blocks[i].select("td")
-                for j in range(len(cut_blocks)):
-                    img_tags = cut_blocks[j].select_one("img")
-                    img_name = re.search(r"/([^/]+)$", img_tags["src"]).group(1)
-                    img_file_name = f'01_cut_{img_name}'
-                    
-                    # # download image
-                    # img_resp = requests.get(f"https://www.m3net.jp/img/event/m3_02/{img_name}")
-                    # if img_resp.status_code != 200:
-                    #     raise ValueError(f"Failed to fetch image {img_name}, status code: {img_resp.status_code}")
-                    # img_path = save_folder_path / f'01_cut_{img_name}'
-                    # with img_path.open("wb") as img_file:
-                    #     img_file.write(img_resp.content)
-
-                    circles_.append(Circle(
-                        aliases=[f"{name_blocks[j].get_text(strip=True)}"],
-                        media=[Medium(img_file_name, 
-                                      [Source("https://www.m3net.jp/event/1998s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])],
-                        links=[name_blocks[j].select_one("a")["href"] if name_blocks[j].select_one("a") else None],
-                        comments=cut_blocks[j].get_text(strip=True)
-                    ))
-
+    i = 1
+    if i in active_events:  # ==== M3-01 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/1998s.php"
 
         media_ = [
-            Medium("01_m3_01.jpg",
-                   [Source("https://www.m3net.jp/event/1998s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
-            ]
+            Medium(
+                "01_m3_01.jpg",
+                [
+                    Source(
+                        "https://www.m3net.jp/event/1998s.php",
+                        (ReliabilityTypes.Reliable, OriginTypes.Official),
+                    )
+                ],
+            )
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d405.0289070291701!2d139.7870744599309!3d35.69592640552837!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188eb36b54452d%3A0xf1a3e2377b154969!2z6LK444GX5Lya6K2w5a6kIOadseS6rOaWh-WFt-WFseWSjOS8mumkqCDmtYXojYnmqYs!5e0!3m2!1sen!2sfr!4v1759867497811!5m2!1sen!2sfr",
+                description="東京文具共和会館 2F",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=["M3-01", "M3-1998春", "M3-98春"],
+            aliases=[f"M3-{i:02d}", "M3-1998春", "M3-98春"],
             dates="1998.03.21",
+            circles=[],
+            media=media_,
+            sources=[
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.30",
+        )
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
+
+    i = 2
+    if i in active_events:  # ==== M3-02 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/1998f.php"
+
+        media_ = [
+            Medium(
+                "02_m3_02.jpg",
+                [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))],
+            )
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="TRC (東京流通センター)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
+        event = Event(
+            aliases=[f"M3-{i:02d}", "M3-1998秋", "M3-98秋"],
+            dates="1998.09.20",
+            circles=[],
+            media=media_,
+            sources=[
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+                Source(
+                    f"Positions: deduced from cut image file names at {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.30",
+        )
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
+
+    i = 3
+    if i in active_events:  # ==== M3-03 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/1999s.php"
+
+        media_ = [
+            Medium(
+                "03_m3_03.jpg",
+                [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))],
+            )
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d405.0289070291701!2d139.7870744599309!3d35.69592640552837!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188eb36b54452d%3A0xf1a3e2377b154969!2z6LK444GX5Lya6K2w5a6kIOadseS6rOaWh-WFt-WFseWSjOS8mumkqCDmtYXojYnmqYs!5e0!3m2!1sen!2sfr!4v1759867497811!5m2!1sen!2sfr",
+                description="東京文具共和会館 2F",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
+        event = Event(
+            aliases=[f"M3-{i:02d}", "M3-1999春", "M3-99春"],
+            dates="1999.04.18",
+            circles=[],
+            media=media_,
+            sources=[
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.30",
+        )
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
+
+    i = 4
+    if i in active_events:  # ==== M3-04 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/1999f.php"
+
+        circles_: list[Circle] = []
+        media = [
+            Medium(
+                "04_m3_04.jpg",
+                [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))],
+            ),
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.1426955868546!2d139.787468075688!3d35.69810597258177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188eb459950641%3A0x99332c088b0f7aa5!2sTokyo%20Wholesale%20Center%20Cooperative!5e0!3m2!1sen!2sfr!4v1760203962030!5m2!1sen!2sfr",
+                description="東京卸商センター 3F",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
+        event = Event(
+            aliases=[f"M3-{i:02d}", "M3-1999秋", "M3-99秋"],
+            dates="1999.10.03",
             circles=circles_,
             media=media_,
             sources=[
-                Source("Date: https://www.m3net.jp/event/1998s.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles: https://www.m3net.jp/event/1998s.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.30",
         )
-        events.append(event)
-        with (save_folder_path / "m3-01.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
-       
-    # ==== M3-02 ====
-    if False:
-        with Path(__file__).with_name("raw02.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        details_with_cuts = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" in switch_names[i].get_text(strip=True)]
-        # details_with_descriptions = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" not in switch_names[i].get_text(strip=True)] # Only first is enough
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-        circles_: list[Circle] = []
-        for d in details_with_cuts:
-            rows = d.select("table tr")
-            rows_image_blocks = [d for d in rows if d.select_one("table img")]
-            rows_name_blocks = [d for d in rows if not d.select_one("table img")]
-            # print(len(rows_image_blocks), len(rows_name_blocks))
+    i = 5
+    if i in active_events:  # ==== M3- ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2000s.php"
 
-            for i in range(len(rows_image_blocks)):
-                cut_blocks = rows_image_blocks[i].select("td")
-                name_blocks = rows_name_blocks[i].select("td")
-                for j in range(len(cut_blocks)):
-                    img_tags = cut_blocks[j].select_one("img")
-                    img_name = re.search(r"/([^/]+)$", img_tags["src"]).group(1)
-                    img_file_name = f'02_cut_{img_name}'
-                    
-                    # # download image
-                    # img_resp = requests.get(f"https://www.m3net.jp/img/event/m3_02/{img_name}")
-                    # if img_resp.status_code != 200:
-                    #     raise ValueError(f"Failed to fetch image {img_name}, status code: {img_resp.status_code}")
-                    # img_path = save_folder_path / f'02_cut_{img_name}'
-                    # with img_path.open("wb") as img_file:
-                    #     img_file.write(img_resp.content)
-
-                    circles_.append(Circle(
-                        aliases=[f"{name_blocks[j].get_text(strip=True)}"],
-                        media=[Medium(img_file_name, 
-                                      [Source("https://www.m3net.jp/event/1998f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])],
-                        links=[name_blocks[j].select_one("a")["href"] if name_blocks[j].select_one("a") else None],
-                        comments=cut_blocks[j].get_text(strip=True)
-                    ))
-
-        media = [
-            Medium("2_m3_02.jpg",
-                   [Source("https://www.m3net.jp/event/1999s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.1426955868546!2d139.787468075688!3d35.69810597258177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188eb459950641%3A0x99332c088b0f7aa5!2sTokyo%20Wholesale%20Center%20Cooperative!5e0!3m2!1sen!2sfr!4v1760203962030!5m2!1sen!2sfr",
+                description="東京卸商センター 3F",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=["M3-02", "M3-1999秋", "M3-98秋"],
-            dates="1998.09.20",
-            circles=circles_,
-            media=media,
-            sources=[
-                Source("Date: https://www.m3net.jp/event/1998f.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source("Participating circles: https://www.m3net.jp/event/1998f.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-            ]
-        )
-        events.append(event)
-        with (save_folder_path / "m3-02.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
-       
-    # ==== M3-03 ====
-    if False:
-        n = 3
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        details_with_cuts = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" in switch_names[i].get_text(strip=True)]
-        details_with_descriptions = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" not in switch_names[i].get_text(strip=True)] # Only first is enough
-
-        circles_: list[Circle] = []
-        for di in range(len(details_with_cuts)):
-            d = details_with_cuts[di]
-            rows = d.select("table tr")
-            rows_image_blocks = [d for d in rows if d.select_one("table img")]
-            rows_name_blocks = [d for d in rows if not d.select_one("table img")]
-            # print(len(rows_image_blocks), len(rows_name_blocks))
-            # get position dict
-            position_table = details_with_descriptions[di].select_one("table")
-            position_dict = {}
-            for row in position_table.select("tr"):
-                cols = row.select("td")
-                name = cols[1].get_text(strip=True)
-                position = cols[0].get_text(strip=True)
-                position_dict[name] = position
-
-            for i in range(len(rows_image_blocks)):
-                cut_blocks = rows_image_blocks[i].select("td")
-                name_blocks = rows_name_blocks[i].select("td")
-                
-                for j in range(len(cut_blocks)):
-                    img_tags = cut_blocks[j].select_one("img")
-                    img_name = re.search(r"/([^/]+)$", img_tags["src"]).group(1)
-                    img_file_name = f'{n:02d}_cut_{img_name}'
-
-                    position = position_dict.get(name_blocks[j].get_text(strip=True), "")
-                    if not position:
-                        print("WARNING: No position found for circle:", name_blocks[j].get_text(strip=True))
-                                            
-                    # # download image
-                    # img_resp = requests.get(f"https://www.m3net.jp/img/event/m3_{n:02d}/{img_name}")
-                    # if img_resp.status_code != 200:
-                    #     raise ValueError(f"Failed to fetch image {img_name}, status code: {img_resp.status_code}")
-                    # img_path = save_folder_path / f'{n:02d}_cut_{img_name}'
-                    # with img_path.open("wb") as img_file:
-                    #     img_file.write(img_resp.content)
-
-                    circles_.append(Circle(
-                        aliases=[f"{name_blocks[j].get_text(strip=True)}"],
-                        media=[Medium(img_file_name, 
-                                      [Source("https://www.m3net.jp/event/1999s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])],
-                        links=[name_blocks[j].select_one("a")["href"] if name_blocks[j].select_one("a") else None],
-                        comments=cut_blocks[j].get_text(strip=True),
-                        position=position
-                    ))
-
-        media = [
-            Medium(f"{n:02d}_m3_{n:02d}.jpg",
-                   [Source("https://www.m3net.jp/event/1999s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
-        ]
-        event = Event(
-            aliases=[f"M3-{n:02d}", "M3-1999春", "M3-99春"],
-            dates="1999.04.18",
-            circles=circles_,
-            media=media,
-            sources=[
-                Source("Date, Participating circles: https://www.m3net.jp/event/1999s.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
-        )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
-
-
-    # ==== M3-04 ====
-    if False:
-        n = 4
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        details_with_cuts = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" in switch_names[i].get_text(strip=True)]
-        details_with_descriptions = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" not in switch_names[i].get_text(strip=True)] # Only first is enough
-
-        circles_: list[Circle] = []
-        for di in range(len(details_with_cuts)):
-            d = details_with_cuts[di]
-            rows = d.select("table tr")
-            rows_image_blocks = [d for d in rows if d.select_one("table img")]
-            rows_name_blocks = [d for d in rows if not d.select_one("table img")]
-            # print(len(rows_image_blocks), len(rows_name_blocks))
-            # get position dict
-            position_table = details_with_descriptions[di].select_one("table")
-            position_dict = {}
-            for row in position_table.select("tr"):
-                cols = row.select("td")
-                name = cols[1].get_text(strip=True)
-                position = cols[0].get_text(strip=True)
-                position_dict[name] = position
-
-            for i in range(len(rows_image_blocks)):
-                cut_blocks = rows_image_blocks[i].select("td")
-                name_blocks = rows_name_blocks[i].select("td")
-                
-                for j in range(len(cut_blocks)):
-                    img_tags = cut_blocks[j].select_one("img")
-                    img_name = re.search(r"/([^/]+)$", img_tags["src"]).group(1)
-                    img_file_name = f'{n:02d}_cut_{img_name}'
-
-                    position = position_dict.get(name_blocks[j].get_text(strip=True), "")
-                    if not position:
-                        print("WARNING: No position found for circle:", name_blocks[j].get_text(strip=True))
-                                            
-                    # # download image
-                    # img_resp = requests.get(f"https://www.m3net.jp/img/event/m3_{n:02d}/{img_name}")
-                    # if img_resp.status_code != 200:
-                    #     raise ValueError(f"Failed to fetch image {img_name}, status code: {img_resp.status_code}")
-                    # img_path = save_folder_path / f'{n:02d}_cut_{img_name}'
-                    # with img_path.open("wb") as img_file:
-                    #     img_file.write(img_resp.content)
-                    if img_file_name == f"{n:02d}_cut_na.jpg":
-                        media = None
-                    else:
-                        media = [Medium(img_file_name, 
-                                      [Source("https://www.m3net.jp/event/1999s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])]
-                    circles_.append(Circle(
-                        aliases=[f"{name_blocks[j].get_text(strip=True)}"],
-                        media=media,
-                        links=[name_blocks[j].select_one("a")["href"] if name_blocks[j].select_one("a") else None],
-                        comments=cut_blocks[j].get_text(strip=True),
-                        position=position
-                    ))
-
-        media = [
-            Medium(f"{n:02d}_m3_{n:02d}.jpg",
-                   [Source("https://www.m3net.jp/event/1999f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
-            Medium(f"{n:02d}_cut_na.jpg",
-                   [Source("https://www.m3net.jp/event/1999f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
-        ]
-        event = Event(
-            aliases=[f"M3-{n:02d}", "M3-1999秋", "M3-99秋"],
-            dates="1999.10.03",
-            circles=circles_,
-            media=media,
-            sources=[
-                Source("Date, Participating circles: https://www.m3net.jp/event/1999f.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
-        )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
-
-    # ==== M3-05 ====
-    if False:
-        n = 5
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        details_with_cuts = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" in switch_names[i].get_text(strip=True)]
-        details_with_descriptions = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" not in switch_names[i].get_text(strip=True)] # Only first is enough
-
-        circles_: list[Circle] = []
-        for di in range(len(details_with_cuts)):
-            d = details_with_cuts[di]
-            rows = d.select("table tr")
-            rows_image_blocks = [d for d in rows if d.select_one("table img")]
-            rows_name_blocks = [d for d in rows if not d.select_one("table img")]
-            # print(len(rows_image_blocks), len(rows_name_blocks))
-            # get position dict
-            position_table = details_with_descriptions[di].select_one("table")
-            position_dict = {}
-            for row in position_table.select("tr"):
-                cols = row.select("td")
-                name = cols[1].get_text(strip=True)
-                position = cols[0].get_text(strip=True)
-                position_dict[name] = position
-
-            for i in range(len(rows_image_blocks)):
-                cut_blocks = rows_image_blocks[i].select("td")
-                name_blocks = rows_name_blocks[i].select("td")
-                
-                for j in range(len(cut_blocks)):
-                    img_tags = cut_blocks[j].select_one("img")
-                    img_name = re.search(r"/([^/]+)$", img_tags["src"]).group(1)
-                    img_file_name = f'{n:02d}_cut_{img_name}'
-
-                    position = position_dict.get(name_blocks[j].get_text(strip=True), "")
-                    if not position:
-                        print("WARNING: No position found for circle:", name_blocks[j].get_text(strip=True))
-                                            
-                    # # download image
-                    # img_resp = requests.get(f"https://www.m3net.jp/img/event/m3_{n:02d}/{img_name}")
-                    # if img_resp.status_code != 200:
-                    #     raise ValueError(f"Failed to fetch image {img_name}, status code: {img_resp.status_code}")
-                    # img_path = save_folder_path / f'{n:02d}_cut_{img_name}'
-                    # with img_path.open("wb") as img_file:
-                    #     img_file.write(img_resp.content)
-
-                    # Process images
-                    if img_file_name == f"{n:02d}_cut_na.jpg":
-                        media = None
-                    else:
-                        media = [Medium(img_file_name, 
-                                      [Source("https://www.m3net.jp/event/2000s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])]
-                    circles_.append(Circle(
-                        aliases=[f"{name_blocks[j].get_text(strip=True)}"],
-                        media=media,
-                        links=[name_blocks[j].select_one("a")["href"] if name_blocks[j].select_one("a") else None],
-                        comments=cut_blocks[j].get_text(strip=True),
-                        position=position
-                    ))
-
-        media = [
-            Medium(f"{n:02d}_cut_na.jpg",
-                   [Source("https://www.m3net.jp/event/2000s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
-        ]
-        event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2000春"],
+            aliases=[f"M3-{i:02d}", "M3-2000春"],
             dates="2000.04.23",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date, Participating circles: https://www.m3net.jp/event/2000s.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.30",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-06 ====
-    if False:
-        n = 6
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            type = switch_names[i].get_text(strip=True).strip(" ][")
-            d = switch_details[i]
-            rows = d.select("table tr")
-            for row in rows:
-                cols = row.select("td")
+    i = 6
+    if i in active_events:  # ==== M3-06 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2000f.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                a_tag = cols[1].select_one("a")
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-                    
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links,
-                    comments=f'Genre: {type}\n{comment}',
-                    position=f'{position}'
-                ))
-
-        media = [
-            Medium(f"{n:02d}_cut_na.jpg",
-                   [Source("https://www.m3net.jp/event/2000f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="TRC 東京流通センター",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2000秋"],
+            aliases=[f"M3-{i:02d}", "M3-2000秋"],
             dates="2000.11.05",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date, Participating circles: https://www.m3net.jp/event/2000f.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-07 ====
-    if False:
-        n = 7
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        details_with_cuts = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" in switch_names[i].get_text(strip=True)]
-        details_with_descriptions = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" not in switch_names[i].get_text(strip=True)] # Only first is enough
+    i = 7
+    if i in active_events:  # ==== M3-07 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2001s.php"
 
-        circles_: list[Circle] = []
-        for di in range(len(details_with_cuts)):
-            d = details_with_cuts[di]
-            rows = d.select("table tr")
-            rows_image_blocks = [d for d in rows if d.select_one("table img")]
-            rows_name_blocks = [d for d in rows if not d.select_one("table img")]
-            # print(len(rows_image_blocks), len(rows_name_blocks))
-            # get position dict
-            position_table = details_with_descriptions[di].select_one("table")
-            position_dict = {}
-            for row in position_table.select("tr"):
-                cols = row.select("td")
-                name = cols[1].get_text(strip=True)
-                position = cols[0].get_text(strip=True)
-                position_dict[name] = position
-
-            for i in range(len(rows_image_blocks)):
-                cut_blocks = rows_image_blocks[i].select("td")
-                name_blocks = rows_name_blocks[i].select("td")
-                
-                for j in range(len(cut_blocks)):
-                    img_tags = cut_blocks[j].select_one("img")
-                    img_name = re.search(r"/([^/]+)$", img_tags["src"]).group(1)
-                    img_file_name = f'{n:02d}_cut_{img_name}'
-
-                    position = position_dict.get(name_blocks[j].get_text(strip=True), "")
-                    if not position:
-                        print("WARNING: No position found for circle:", name_blocks[j].get_text(strip=True))
-                                            
-                    # # download image
-                    # img_resp = requests.get(f"https://www.m3net.jp/img/event/m3_{n:02d}/{img_name}")
-                    # if img_resp.status_code != 200:
-                    #     raise ValueError(f"Failed to fetch image {img_name}, status code: {img_resp.status_code}")
-                    # img_path = save_folder_path / f'{n:02d}_cut_{img_name}'
-                    # with img_path.open("wb") as img_file:
-                    #     img_file.write(img_resp.content)
-
-                    # Process images
-                    if img_file_name == f"{n:02d}_cut_na.jpg":
-                        media = None
-                    else:
-                        media = [Medium(img_file_name, 
-                                      [Source("https://www.m3net.jp/event/2001s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])]
-                    circles_.append(Circle(
-                        aliases=[f"{name_blocks[j].get_text(strip=True)}"],
-                        media=media,
-                        links=[name_blocks[j].select_one("a")["href"] if name_blocks[j].select_one("a") else None],
-                        comments=cut_blocks[j].get_text(strip=True),
-                        position=position
-                    ))
-
-        media = [
-            Medium(f"{n:02d}_cut_na.jpg",
-                   [Source("https://www.m3net.jp/event/2001s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d405.0289070291701!2d139.7870744599309!3d35.69592640552837!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188eb36b54452d%3A0xf1a3e2377b154969!2z6LK444GX5Lya6K2w5a6kIOadseS6rOaWh-WFt-WFseWSjOS8mumkqCDmtYXojYnmqYs!5e0!3m2!1sen!2sfr!4v1759867497811!5m2!1sen!2sfr",
+                description="東京文具共和会館 2・3F",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2001春"],
+            aliases=[f"M3-{i:02d}", "M3-2001春"],
             dates="2001.04.30",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date, Participating circles: https://www.m3net.jp/event/2001s.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-08 ====
-    if False:
-        n = 8
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        details_with_cuts = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" in switch_names[i].get_text(strip=True)]
-        details_with_descriptions = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" not in switch_names[i].get_text(strip=True)] # Only first is enough
+    i = 8
+    if i in active_events:  # ==== M3-08 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2001f.php"
 
-        circles_: list[Circle] = []
-        for di in range(len(details_with_cuts)):
-            d = details_with_cuts[di]
-            rows = d.select("table tr")
-            rows_image_blocks = [d for d in rows if d.select_one("table img")]
-            rows_name_blocks = [d for d in rows if not d.select_one("table img")]
-            # print(len(rows_image_blocks), len(rows_name_blocks))
-            # get position dict
-            position_table = details_with_descriptions[di].select_one("table")
-            position_dict = {}
-            for row in position_table.select("tr"):
-                cols = row.select("td")
-                name = cols[1].get_text(strip=True)
-                position = cols[0].get_text(strip=True)
-                position_dict[name] = position
-
-            for i in range(len(rows_image_blocks)):
-                cut_blocks = rows_image_blocks[i].select("td")
-                name_blocks = rows_name_blocks[i].select("td")
-                
-                for j in range(len(cut_blocks)):
-                    img_tags = cut_blocks[j].select_one("img")
-                    img_name = re.search(r"/([^/]+)$", img_tags["src"]).group(1)
-                    img_file_name = f'{n:02d}_cut_{img_name}'
-
-                    position = position_dict.get(name_blocks[j].get_text(strip=True), "")
-                    if not position:
-                        print("WARNING: No position found for circle:", name_blocks[j].get_text(strip=True))
-                                            
-                    # # download image
-                    # img_resp = requests.get(f"https://www.m3net.jp/img/event/m3_{n:02d}/{img_name}")
-                    # if img_resp.status_code != 200:
-                    #     raise ValueError(f"Failed to fetch image {img_name}, status code: {img_resp.status_code}")
-                    # img_path = save_folder_path / f'{n:02d}_cut_{img_name}'
-                    # with img_path.open("wb") as img_file:
-                    #     img_file.write(img_resp.content)
-
-                    # Process images
-                    if img_file_name == f"{n:02d}_cut_na.jpg":
-                        media = None
-                    else:
-                        media = [Medium(img_file_name, 
-                                      [Source("https://www.m3net.jp/event/2001f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])]
-                    circles_.append(Circle(
-                        aliases=[f"{name_blocks[j].get_text(strip=True)}"],
-                        media=media,
-                        links=[name_blocks[j].select_one("a")["href"] if name_blocks[j].select_one("a") else None],
-                        comments=cut_blocks[j].get_text(strip=True),
-                        position=position
-                    ))
-
-        media = [
-            Medium(f"{n:02d}_cut_na.jpg",
-                   [Source("https://www.m3net.jp/event/2001f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.1426955868546!2d139.787468075688!3d35.69810597258177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188eb459950641%3A0x99332c088b0f7aa5!2sTokyo%20Wholesale%20Center%20Cooperative!5e0!3m2!1sen!2sfr!4v1760203962030!5m2!1sen!2sfr",
+                description="東京卸商センター 3F",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2001秋"],
+            aliases=[f"M3-{i:02d}", "M3-2001秋"],
             dates="2001.10.21",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date, Participating circles: https://www.m3net.jp/event/2001f.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-09 ====
-    if False:
-        n = 9
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        details_with_cuts = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" in switch_names[i].get_text(strip=True)]
-        details_with_descriptions = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" not in switch_names[i].get_text(strip=True)] # Only first is enough
+    i = 9
+    if i in active_events:  # ==== M3-09 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2002s.php"
 
-        circles_: list[Circle] = []
-        for di in range(len(details_with_cuts)):
-            d = details_with_cuts[di]
-            rows = d.select("table tr")
-            rows_image_blocks = [d for d in rows if d.select_one("table img")]
-            rows_name_blocks = [d for d in rows if not d.select_one("table img")]
-            # print(len(rows_image_blocks), len(rows_name_blocks))
-            # get position dict
-            position_table = details_with_descriptions[di].select_one("table")
-            position_dict = {}
-            genre = switch_names[di*2].get_text(strip=True).strip(" ][").strip(" ()/1234567890")
-            
-            for row in position_table.select("tr"):
-                cols = row.select("td")
-                name = cols[1].get_text(strip=True)
-                position = cols[0].get_text(strip=True)
-                position_dict[name] = position
-
-            for i in range(len(rows_image_blocks)):
-                cut_blocks = rows_image_blocks[i].select("td")
-                name_blocks = rows_name_blocks[i].select("td")
-                
-                for j in range(len(cut_blocks)):
-                    img_tags = cut_blocks[j].select_one("img")
-                    img_name = re.search(r"/([^/]+)$", img_tags["src"]).group(1)
-                    img_file_name = f'{n:02d}_cut_{img_name}'
-            
-                    position = position_dict.get(name_blocks[j].get_text(strip=True), "")
-                    if not position:
-                        print("WARNING: No position found for circle:", name_blocks[j].get_text(strip=True))
-                                            
-                    # # download image
-                    # img_resp = requests.get(f"https://www.m3net.jp/img/event/m3_{n:02d}/{img_name}")
-                    # if img_resp.status_code != 200:
-                    #     raise ValueError(f"Failed to fetch image {img_name}, status code: {img_resp.status_code}")
-                    # img_path = save_folder_path / f'{n:02d}_cut_{img_name}'
-                    # with img_path.open("wb") as img_file:
-                    #     img_file.write(img_resp.content)
-
-                    # Process images
-                    if img_file_name == f"{n:02d}_cut_na.jpg":
-                        media = None
-                    else:
-                        media = [Medium(img_file_name, 
-                                      [Source("https://www.m3net.jp/event/2002s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])]
-                    circles_.append(Circle(
-                        aliases=[f"{name_blocks[j].get_text(strip=True)}"],
-                        media=media,
-                        links=[name_blocks[j].select_one("a")["href"] if name_blocks[j].select_one("a") else None],
-                        comments=f"Genre: {genre}\n{cut_blocks[j].get_text(strip=True)}",
-                        position=position
-                    ))
-
-        media = [
-            Medium(f"{n:02d}_cut_na.jpg",
-                   [Source("https://www.m3net.jp/event/2002s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.1426955868546!2d139.787468075688!3d35.69810597258177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188eb459950641%3A0x99332c088b0f7aa5!2sTokyo%20Wholesale%20Center%20Cooperative!5e0!3m2!1sen!2sfr!4v1760203962030!5m2!1sen!2sfr",
+                description="東京卸商センター 3F",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2002春"],
+            aliases=[f"M3-{i:02d}", "M3-2002春"],
             dates="2002.04.28",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date, Participating circles: https://www.m3net.jp/event/2002s.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-10 ====
-    if False:
-        n = 10
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        details_with_cuts = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" in switch_names[i].get_text(strip=True)]
-        details_with_descriptions = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" not in switch_names[i].get_text(strip=True)] # Only first is enough
+    i = 10
+    if i in active_events:  # ==== M3-10 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2002f.php"
 
-        circles_: list[Circle] = []
-        for di in range(len(details_with_cuts)):
-            d = details_with_cuts[di]
-            rows = d.select("table tr")
-            rows_image_blocks = [d for d in rows if d.select_one("table img")]
-            rows_name_blocks = [d for d in rows if not d.select_one("table img")]
-            # print(len(rows_image_blocks), len(rows_name_blocks))
-            # get position dict
-            position_table = details_with_descriptions[di].select_one("table")
-            position_dict = {}
-            genre = switch_names[di*2].get_text(strip=True).strip(" ][").strip(" ()/1234567890")
-            
-            for row in position_table.select("tr"):
-                cols = row.select("td")
-                name = cols[1].get_text(strip=True)
-                position = cols[0].get_text(strip=True)
-                position_dict[name] = position
-
-            for i in range(len(rows_image_blocks)):
-                cut_blocks = rows_image_blocks[i].select("td")
-                name_blocks = rows_name_blocks[i].select("td")
-                
-                for j in range(len(cut_blocks)):
-                    img_tags = cut_blocks[j].select_one("img")
-                    img_name = re.search(r"/([^/]+)$", img_tags["src"]).group(1)
-                    img_file_name = f'{n:02d}_cut_{img_name}'
-            
-                    position = position_dict.get(name_blocks[j].get_text(strip=True), "")
-                    if not position:
-                        print("WARNING: No position found for circle:", name_blocks[j].get_text(strip=True))
-                                            
-                    # # download image
-                    # img_resp = requests.get(f"https://www.m3net.jp/img/event/m3_{n:02d}/{img_name}")
-                    # if img_resp.status_code != 200:
-                    #     raise ValueError(f"Failed to fetch image {img_name}, status code: {img_resp.status_code}")
-                    # img_path = save_folder_path / f'{n:02d}_cut_{img_name}'
-                    # with img_path.open("wb") as img_file:
-                    #     img_file.write(img_resp.content)
-
-                    # Process images
-                    if img_file_name == f"{n:02d}_cut_na.jpg":
-                        media = None
-                    else:
-                        media = [Medium(img_file_name, 
-                                      [Source("https://www.m3net.jp/event/2002f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])]
-                    links = [name_blocks[j].select_one("a")["href"] if name_blocks[j].select_one("a") else None]
-                    circles_.append(Circle(
-                        aliases=[f"{name_blocks[j].get_text(strip=True)}"],
-                        media=media,
-                        links=links if links else None,
-                        comments=f"Genre: {genre}\n{cut_blocks[j].get_text(strip=True)}",
-                        position=position
-                    ))
-
-        media = [
-            Medium(f"{n:02d}_cut_na.jpg",
-                   [Source("https://www.m3net.jp/event/2002f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.1426955868546!2d139.787468075688!3d35.69810597258177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188eb459950641%3A0x99332c088b0f7aa5!2sTokyo%20Wholesale%20Center%20Cooperative!5e0!3m2!1sen!2sfr!4v1760203962030!5m2!1sen!2sfr",
+                description="東京卸商センター3F展示場",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2002秋"],
+            aliases=[f"M3-{i:02d}", "M3-2002秋"],
             dates="2002.10.27",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date, Participating circles: https://www.m3net.jp/event/2002f.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-11 ====
-    if False:
-        n = 11
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            genre = switch_names[i].get_text(strip=True).strip(" ][")
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 11
+    if i in active_events:  # ==== M3-11 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2003s.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a")
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-                pos = position if position[-1] in ["a", "b"] else position + "0" # ensure it has correct digit count
-                if int(pos, 16) < int("10b", 16): # convert to hex
-                    media_name = "11_cut01.jpg"
-                elif int(pos, 16) < int("20b", 16):
-                    media_name = "11_cut02.jpg"
-                elif int(pos, 16) < int("30b", 16):
-                    media_name = "11_cut03.jpg"
-                elif int(pos, 16) < int("40b", 16):
-                    media_name = "11_cut04.jpg"
-                elif int(pos, 16) < int("50b", 16):
-                    media_name = "11_cut05.jpg"
-                elif int(pos, 16) < int("60b", 16):
-                    media_name = "11_cut06.jpg"
-                elif int(pos, 16) < int("70b", 16):
-                    media_name = "11_cut07.jpg"
-                elif int(pos, 16) < int("80b", 16):
-                    media_name = "11_cut08.jpg"
-                elif int(pos, 16) < int("90b", 16):
-                    media_name = "11_cut09.jpg"
-                elif int(pos, 16) < int("100b", 16):
-                    media_name = "11_cut10.jpg"
-                elif int(pos, 16) < int("110b", 16):
-                    media_name = "11_cut11.jpg"
-                else:
-                    print(f"WARNING: unmatched position for {position} as {name}")
-
-                media = [
-                    Medium(f"{media_name}",
-                           [Source("https://www.m3net.jp/event/2003s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
-                ]
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    media=media,
-                    links=links if links else None,
-                    comments=f"Genre: {genre}\n{comment}",
-                    position=position
-                ))
-
-        media = [
-            Medium(f"{n:02d}_cut_na.jpg",
-                   [Source("https://www.m3net.jp/event/2003s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        media_ = [
+            Medium(
+                "11_20030430055714_m3_11_cat.jpg",
+                [
+                    Source(
+                        "https://web.archive.org/web/20030430055714/http://mmm.panic.or.jp:80/image/m3_11_cat.jpg",
+                        (ReliabilityTypes.Reliable, OriginTypes.Official),
+                    )
+                ],
+            )
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO (大展示ホール)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2003春"],
+            aliases=[f"M3-{i:02d}", "M3-2003春"],
             dates="2003.05.04",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date, Participating circles: https://www.m3net.jp/event/2003s.php", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-12 ====
-    if False:
-        n = 12
-        page = "https://www.m3net.jp/event/2003f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            genre = switch_names[i].get_text(strip=True).strip(" ][")
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 12
+    if i in active_events:  # ==== M3-12 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2003f.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a")
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-                pos = position if position[-1] in ["a", "b"] else position + "0" # ensure it has correct digit count
-                if pos in ["78b", "93b", "94a", "94b", "95a", "95b", "96a", "96b", "97a", "97b"]:
-                    media_name = f"{n:02d}_cut11.jpg"
-                elif int(pos, 16) < int("9b", 16): # convert to hex
-                    media_name = f"{n:02d}_cut01.jpg"
-                elif int(pos, 16) < int("19b", 16):
-                    media_name = f"{n:02d}_cut02.jpg"
-                elif int(pos, 16) < int("29b", 16):
-                    media_name = f"{n:02d}_cut03.jpg"
-                elif int(pos, 16) < int("39b", 16):
-                    media_name = f"{n:02d}_cut04.jpg"
-                elif int(pos, 16) < int("49b", 16):
-                    media_name = f"{n:02d}_cut05.jpg"
-                elif int(pos, 16) < int("59b", 16):
-                    media_name = f"{n:02d}_cut06.jpg"
-                elif int(pos, 16) < int("69b", 16):
-                    media_name = f"{n:02d}_cut07.jpg"
-                elif int(pos, 16) < int("79b", 16):
-                    media_name = f"{n:02d}_cut08.jpg"
-                elif int(pos, 16) < int("89b", 16):
-                    media_name = f"{n:02d}_cut09.jpg"
-                elif int(pos, 16) < int("99b", 16):
-                    media_name = f"{n:02d}_cut10.jpg"
-                else:
-                    print(f"WARNING: unmatched position for {position} as {name}")
-
-                media = [
-                    Medium(f"{media_name}",
-                           [Source(page, (ReliabilityTypes.Reliable, OriginTypes.Official))])
-                ]
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    media=media,
-                    links=links if links else None,
-                    comments=f"Genre: {genre}\n{comment}",
-                    position=position
-                ))
-
-        media = [
-            Medium(f"{n:02d}_cut_na.jpg",
-                   [Source(page, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO (大展示ホール)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2003秋"],
+            aliases=[f"M3-{i:02d}", "M3-2003秋"],
             dates="2003.10.11",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            comments="Lost catalogue cover: https://web.archive.org/web/20031011182500/http://mmm.panic.or.jp:80/m3_12_cat.html",
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-13 ====
-    if False: # A LOT OF MANUAL WORK HERE PLEASE DON'T OVERRIDE !
-        n = 13
-        page = "https://www.m3net.jp/event/2004s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        details_with_cuts = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" in switch_names[i].get_text(strip=True)]
-        details_with_descriptions = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" not in switch_names[i].get_text(strip=True)] # Only first is enough
+    i = 13
+    if i in active_events:  # ==== M3- ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2004s.php"
 
-        circles_: list[Circle] = []
-        for di in range(len(details_with_cuts)):
-            d = details_with_cuts[di]
-            rows = d.select("table tr")
-            rows_image_blocks = [d for d in rows if d.select_one("table img")]
-            rows_name_blocks = [d for d in rows if not d.select_one("table img")]
-            # print(len(rows_image_blocks), len(rows_name_blocks))
-            # get position dict
-            position_table = details_with_descriptions[di].select_one("table")
-            position_dict = {}
-            genre = switch_names[di*2].get_text(strip=True).strip(" ][").strip(" ()/1234567890")
-            
-            for row in position_table.select("tr"):
-                cols = row.select("td")
-                name = cols[1].get_text(strip=True)
-                position = cols[0].get_text(strip=True)
-                position_dict[name] = position
-
-            for i in range(len(rows_image_blocks)):
-                cut_blocks = rows_image_blocks[i].select("td")
-                name_blocks = rows_name_blocks[i].select("td")
-                
-                for j in range(min(len(cut_blocks), len(name_blocks))):
-                    img_tags = cut_blocks[j].select_one("img")
-                    if not img_tags:
-                        continue
-                    img_name = re.search(r"/([^/]+)$", img_tags["src"]).group(1)
-                    img_file_name = f'{n:02d}_cut_{img_name}'
-                    
-                    position = position_dict.get(name_blocks[j].get_text(strip=True), "")
-                    if not position:
-                        print("WARNING: No position found for circle:", name_blocks[j].get_text(strip=True))
-                                            
-                    # # download image
-                    # img_resp = requests.get(f"https://www.m3net.jp/img/event/m3_{n:02d}/{img_name}")
-                    # if img_resp.status_code != 200:
-                    #     raise ValueError(f"Failed to fetch image {img_name}, status code: {img_resp.status_code}")
-                    # img_path = save_folder_path / f'{n:02d}_cut_{img_name}'
-                    # with img_path.open("wb") as img_file:
-                    #     img_file.write(img_resp.content)
-                    # print(f"Downloaded image {img_name}")
-
-                    # Process images
-                    if img_file_name == f"{n:02d}_cut_na.jpg":
-                        media = None
-                    else:
-                        media = [Medium(img_file_name, 
-                                      [Source(page, (ReliabilityTypes.Reliable, OriginTypes.Official))])]
-                    links = [name_blocks[j].select_one("a")["href"] if name_blocks[j].select_one("a") else None]
-                    circles_.append(Circle(
-                        aliases=[f"{name_blocks[j].get_text(strip=True)}"],
-                        media=media,
-                        links=links if links else None,
-                        comments=f"Genre: {genre}\n{cut_blocks[j].get_text(strip=True)}",
-                        position=position
-                    ))
-
-
-        media = [
-            Medium(f"{n:02d}_m3_{n:02d}.jpg",
-                   [Source(page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
-            Medium(f"{n:02d}_cut_na.jpg",
-                   [Source(page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium(
+                "13_m3_13.jpg",
+                [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))],
+            )
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO (大展示ホール)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2004春"],
+            aliases=[f"M3-{i:02d}", "M3-2004春"],
             dates="2004.05.02",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-14 ====
-    if False: # A LOT OF MANUAL WORK HERE PLEASE DON'T OVERRIDE !
-        n = 14
-        page = "https://www.m3net.jp/event/2004f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        details_with_cuts = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" in switch_names[i].get_text(strip=True)]
-        details_with_descriptions = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" not in switch_names[i].get_text(strip=True)] # Only first is enough
+    i = 14
+    if i in active_events:  # ==== M3-14 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2004f.php"
 
-        circles_: list[Circle] = []
-        for di in range(len(details_with_cuts)):
-            d = details_with_cuts[di]
-            rows = d.select("table tr")
-            rows_image_blocks = [d for d in rows if d.select_one("table img")]
-            rows_name_blocks = [d for d in rows if not d.select_one("table img")]
-            # print(len(rows_image_blocks), len(rows_name_blocks))
-            # get position dict
-            position_table = details_with_descriptions[di].select_one("table")
-            position_dict = {}
-            genre = switch_names[di*2].get_text(strip=True).strip(" ][").strip(" ()/1234567890")
-            
-            for row in position_table.select("tr"):
-                cols = row.select("td")
-                name = cols[1].get_text(strip=True)
-                position = cols[0].get_text(strip=True)
-                position_dict[name] = position
-
-            for i in range(min(len(rows_image_blocks), len(rows_name_blocks))):
-                cut_blocks = rows_image_blocks[i].select("td")
-                name_blocks = rows_name_blocks[i].select("td")
-                
-                for j in range(min(len(cut_blocks), len(name_blocks))):
-                    img_tags = cut_blocks[j].select_one("img")
-                    if not img_tags:
-                        continue
-                    img_name = re.search(r"/([^/]+)$", img_tags["src"]).group(1)
-                    img_file_name = f'{n:02d}_cut_{img_name}'
-                    
-                    position = position_dict.get(name_blocks[j].get_text(strip=True), "")
-                    if not position:
-                        print("WARNING: No position found for circle:", name_blocks[j].get_text(strip=True))
-                                            
-                    # # download image
-                    # img_resp = requests.get(f"https://www.m3net.jp/img/event/m3_{n:02d}/{img_name}")
-                    # if img_resp.status_code != 200:
-                    #     raise ValueError(f"Failed to fetch image {img_name}, status code: {img_resp.status_code}")
-                    # img_path = save_folder_path / f'{n:02d}_cut_{img_name}'
-                    # with img_path.open("wb") as img_file:
-                    #     img_file.write(img_resp.content)
-                    # print(f"Downloaded image {img_name}")
-
-                    # Process images
-                    if img_file_name == f"{n:02d}_cut_na.jpg":
-                        media = None
-                    else:
-                        media = [Medium(img_file_name, 
-                                      [Source(page, (ReliabilityTypes.Reliable, OriginTypes.Official))])]
-                    links = [name_blocks[j].select_one("a")["href"] if name_blocks[j].select_one("a") else None]
-                    circles_.append(Circle(
-                        aliases=[f"{name_blocks[j].get_text(strip=True)}"],
-                        media=media,
-                        links=links if links else None,
-                        comments=f"Genre: {genre}\n{cut_blocks[j].get_text(strip=True)}",
-                        position=position
-                    ))
-
-
-        media = [
-            Medium(f"{n:02d}_m3_{n:02d}.jpg",
-                   [Source(page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
-            Medium(f"{n:02d}_cut_na.jpg",
-                   [Source(page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium(
+                "14_20070728212237_m3_14.jpg",
+                [
+                    Source(
+                        "https://web.archive.org/web/20070728212237/http://www.m3net.jp:80/image/m3_14.jpg",
+                        (ReliabilityTypes.Reliable, OriginTypes.Official),
+                    )
+                ],
+            )
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO (大展示ホール)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2004秋"],
+            aliases=[f"M3-{i:02d}", "M3-2004秋"],
             dates="2004.10.09",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-15 ====
-    if False: # A LOT LOT LOOOOOOOOOT OF MANUAL WORK HERE PLEASE DON'T OVERRIDE !
-        n = 15
-        page = "https://www.m3net.jp/event/2005s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        details_with_cuts = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" in switch_names[i].get_text(strip=True)]
-        details_with_descriptions = [switch_details[i] for i in range(len(switch_details)) if "サークルカット集" not in switch_names[i].get_text(strip=True)] # Only first is enough
+    i = 15
+    if i in active_events:  # ==== M3-15 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2005s.php"
 
-        circles_: list[Circle] = []
-        for di in range(len(details_with_cuts)):
-            d = details_with_cuts[di]
-            rows = d.select("table tr")
-            rows_image_blocks = [d for d in rows if d.select_one("table img")]
-            rows_name_blocks = [d for d in rows if not d.select_one("table img")]
-            # print(len(rows_image_blocks), len(rows_name_blocks))
-            # get position dict
-            position_table = details_with_descriptions[di].select_one("table")
-            position_dict = {}
-            genre = switch_names[di*2].get_text(strip=True).strip(" ][").strip(" ()/1234567890")
-            
-            for row in position_table.select("tr"):
-                cols = row.select("td")
-                name = cols[1].get_text(strip=True)
-                position = cols[0].get_text(strip=True)
-                position_dict[name] = position
-
-            iI, iN = 0, 0
-            while max(iI, iN) < min(len(rows_image_blocks), len(rows_name_blocks)):
-                cut_blocks = rows_image_blocks[iI].select("td")
-                name_blocks = rows_name_blocks[iN].select("td")
-                for j in range(min(len(cut_blocks), len(name_blocks))):
-                    img_tags = cut_blocks[j].select_one("img")
-                    if not img_tags:
-                        continue
-                    img_name = re.search(r"/([^/]+)$", img_tags["src"]).group(1)
-                    img_file_name = f'{n:02d}_cut_{img_name}'
-
-                    pos_ = re.search(r"([\w\d-]*)\.jpg", img_name)
-                    if not pos_:
-                        print("WARNING: No position found for circle:", name_blocks[j].get_text(strip=True))
-                    position = pos_.group(1) if pos_ else "@"
-                    # position = position_dict.get(name_blocks[j].get_text(strip=True), "")
-                    # if not position:
-                    #     print("WARNING: No position found for circle:", name_blocks[j].get_text(strip=True))
-                                            
-                    # # download image
-                    # img_resp = requests.get(f"https://www.m3net.jp/img/event/m3_{n:02d}/{img_name}")
-                    # if img_resp.status_code != 200:
-                    #     raise ValueError(f"Failed to fetch image {img_name}, status code: {img_resp.status_code}")
-                    # img_path = save_folder_path / f'{n:02d}_cut_{img_name}'
-                    # with img_path.open("wb") as img_file:
-                    #     img_file.write(img_resp.content)
-                    # print(f"Downloaded image {img_name}")
-
-                    # Process images
-                    if img_file_name == f"{n:02d}_cut_na.jpg":
-                        media = None
-                    else:
-                        media = [Medium(img_file_name, 
-                                      [Source(page, (ReliabilityTypes.Reliable, OriginTypes.Official))])]
-                    links = [name_blocks[j].select_one("a")["href"] if name_blocks[j].select_one("a") else None]
-                    circles_.append(Circle(
-                        aliases=[f"{name_blocks[j].get_text(strip=True)}"],
-                        media=media,
-                        links=links if (links and len(links) > 0 and links[0] != None) else None,
-                        comments=f"Genre: {genre}\n{cut_blocks[j].get_text(strip=True)}",
-                        position=position
-                    ))
-
-                    if position in ["A05-06", "A31-32", "C33-34", "C21", "F39-40"]: # 1 for 2
-                        iN += 1
-                        print(f"iN+=1 {position=}")
-                    elif position in ["A21-22", "B33-34", "C01-02", "E07-08", "E13-14", "F03-04"]: # 1 double for 1
-                        iN -= 1
-                        print(f"iN-=1 {position=}")
-                    elif position in ["E06"]: # offset can't explain why
-                        iN -= 1
-                        print(f"iN-=1 {position=}")
-                iI, iN = iI + 1, iN + 1
-        print("F13 missing too")
-
-        media = [
-            Medium(f"{n:02d}_cut_na.jpg",
-                   [Source(page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO (大展示ホール)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2005春"],
+            aliases=[f"M3-{i:02d}", "M3-2005春"],
             dates="2005.05.01",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
-            comments="Corrupted catalog image: https://www.m3net.jp/img/event/m3_15.jpg"
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            comments="Corrupted catalog image: https://www.m3net.jp/img/event/m3_15.jpg",
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-16 ====
-    if False: #
-        n = 16
-        page = "https://www.m3net.jp/event/2005f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            genre = switch_names[i].get_text(strip=True).strip(" ][")
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 16
+    if i in active_events:  # ==== M3-16 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2005f.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a")
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    media=[],
-                    links=links if links else None,
-                    comments=f"Genre: {genre}\n{comment}",
-                    position=position
-                ))
-
-        media = []
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO (大展示ホール)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2005秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2005秋"],  # 春 秋
             dates="2005.11.13",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-17 ====
-    if False: 
-        n = 17 # not much info
-        page = "https://www.m3net.jp/event/2006s.php"
-        media = []
-        circles_= []
+    i = 17
+    if i in active_events:  # ==== M3-17 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2006s.php"
 
+        media_ = [
+            Medium(
+                "17_20060430015541_m17cat.jpg",
+                [
+                    Source(
+                        "https://web.archive.org/web/20060430015541/http://www.m3net.jp:80/image/m17cat.jpg",
+                        (ReliabilityTypes.Reliable, OriginTypes.Official),
+                    )
+                ],
+            )
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO (大展示ホール)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2006春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2006春"],  # 春 秋
             dates="2006.04.29",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(
+                    f"Date: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+                Source(
+                    "Participating circle: https://web.archive.org/web/20061212003031fw_/http://www.m3net.jp/m3_17/",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-18 ====
-    if False: 
-        n = 18 # not much info
-        page = "https://www.m3net.jp/event/2006f.php"
-        media = []
-        circles_= []
+    i = 18
+    if i in active_events:  # ==== M3-18 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2006f.php"
 
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO (大展示ホール)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2006秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2006秋"],  # 春 秋
             dates="2006.10.09",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(
+                    f"Date: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+                Source(
+                    "Participating circles: https://web.archive.org/web/20061212003359/http://www.m3net.jp/m3_18/circle.html",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-19 ====
-    if False: 
-        n = 19 # not much info
-        page = "https://www.m3net.jp/event/2007s.php"
-        media = []
-        circles_= []
+    i = 19
+    if i in active_events:  # ==== M3-19 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2007s.php"
 
+        media_ = [
+            Medium(
+                "19_19_20070308124325_m3_19_planA.jpg",
+                [
+                    Source(
+                        "https://web.archive.org/web/20070308124325/http://www.m3net.jp:80/m3_19_planA.jpg",
+                        (ReliabilityTypes.Reliable, OriginTypes.Official),
+                    )
+                ],
+            )
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO (大展示ホール)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2007春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2007春"],  # 春 秋
             dates="2007.04.29",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(
+                    f"Date: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+                Source(
+                    "Participating circles: https://web.archive.org/web/20070714203329/http://www.m3net.jp/m3_19/",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-20 ====
-    if False: 
-        n = 20 # not much info
-        page = "https://www.m3net.jp/event/2007f.php"
-        media = []
-        circles_= []
+    i = 20
+    if i in active_events:  # ==== M3-20 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2007f.php"
 
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ・PiO (大展示ホール/小展示ホール)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2007秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2007秋"],  # 春 秋
             dates="2007.10.08",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(
+                    f"Date: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+                Source(
+                    "Participating circles: http://www.ahoge.com/old/2007event.html (Likely not to have missing circles as it is a 300 space venue and the list has 361 unique space positions)",
+                    (ReliabilityTypes.Likely, OriginTypes.External),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.30",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-OSAKA ====
-    if False: #
-        n = "大阪"
-        page = "https://www.m3net.jp/event/2008osaka.php"
-        with Path(__file__).with_name(f"raw大阪.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            # genre = switch_names[i].get_text(strip=True).strip(" ][")
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    n = "大阪"
+    if n in active_events:  # ==== M3-大阪 ====
+        name = f"M3-{n}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2008osaka.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a")
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    media=[],
-                    links=links if links else None,
-                    comments=f"{comment}",
-                    position=position
-                ))
-
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.626181212536!2d135.4836250756423!3d34.68938297292369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e658eb20202f%3A0xc3e1552c4163ec4!2sGrand%20Cube%20Osaka%20(Osaka%20International%20Convention%20Center)!5e0!3m2!1sen!2sfr!4v1760221173598!5m2!1sen!2sfr",
+                description="グランキューブ大阪 10F会議室(1001～1003)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=["M3-大阪", "M3-OSAKA", "M3-2008osaka"], # 春 秋
+            aliases=["M3-大阪", "M3-OSAKA", "M3-2008osaka"],  # 春 秋
             dates="2008.03.09",
-            circles=circles_,
-            media=[],
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source(f"Alias 'M3-2008osaka : {page}'", (ReliabilityTypes.Likely, OriginTypes.Official)),
-                ],
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+                Source(
+                    "Alias 'M3-2008osaka' from url: https://www.m3net.jp/event/2008osaka.php",
+                    (ReliabilityTypes.Likely, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-大阪.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
-    
-    # ==== M3-21 ====
-    if False: #
-        n = 21
-        page = "https://www.m3net.jp/event/2008s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{n}" / f"circles_{n}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a")
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
+    i = 21
+    if i in active_events:  # ==== M3-21 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2008s.php"
 
-                circles_.append(Circle(
-                    aliases=[name],
-                    media=[],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-
-        media = []
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ・PiO (大展示ホール/小展示ホール)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2008春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2008春"],  # 春 秋
             dates="2008.05.11",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-22 ====
-    if False: #
-        n = 22
-        page = "https://www.m3net.jp/event/2008f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 22
+    if i in active_events:  # ==== M3-22 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2008f.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a")
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    media=[],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-
-        media = []
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ・PiO",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2008秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2008秋"],  # 春 秋
             dates="2008.10.13",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-Festa ====
-    if False: #
-        n = "Festa"
-        page = "https://www.m3net.jp/event/2008festa.php"
-        with Path(__file__).with_name(f"rawFesta.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            if block[2] in ["K"]:
-                for row in switch_details[i].select("table tr"): # 
-                    cols = row.select("td")
-                    position, name, comment, a_tag = cols[0].get_text(strip=True), cols[1].get_text(strip=True), cols[2].get_text(strip=True), cols[1].select_one("a")
-                    links = [a_tag["href"]] if a_tag else None
-                    circles_.append(Circle(
-                        aliases=[name],
-                        links=links if links else None,
-                        comments=f"Block: 企業スペース一\n{comment}",
-                        position=position
-                    ))
-            elif block[2] in ["A", "B", "C", "D", "E", "F", "G"]:
-                for row in switch_details[i].select("table tr"): # 
-                    cols = row.select("td")
-                    position, name, comment, a_tag = cols[0].get_text(strip=True), cols[1].get_text(strip=True), cols[2].get_text(strip=True), cols[1].select_one("a")
-                    links = [a_tag["href"]] if a_tag else None
-                    circles_.append(Circle(
-                        aliases=[name],
-                        links=links if links else None,
-                        comments=f"Block: フリースペース参加サークル一\n{comment}",
-                        position=position
-                    ))
-            elif block[2] in ["H", "I"]:
-                for row in switch_details[i].select("table tr"): # 
-                    cols = row.select("td")
-                    time_ = cols[0].get_text(strip=True)
-                    name = cols[1].get_text(strip=True)
-                    comment = cols[2].get_text(strip=True)
-                    a_tag = cols[1].select_one("a")
-                    
-                    circles_.append(Circle(
-                        aliases=[name],
-                        links=[a_tag["href"]] if a_tag else None,
-                        comments=f"Block: アンプラグド・ライブエリア参加一覧, {block[2]} area, time {time_}\n{comment}",
-                    ))
-            else:
-                print("Should be a katakana block:", block[2], block)
-                for row in switch_details[i].select("table tr"): # 
-                    cols = row.select("td")
-                    name = cols[0].get_text(strip=True)
-                    a_tag = cols[0].select_one("a")
-                    
-                    circles_.append(Circle(
-                        aliases=[name],
-                        links=[a_tag["href"]] if a_tag else None,
-                        comments=f"Block: CD試聴コーナー参加サークル一, {block[2]} area",
-                    ))
-        media = []
+    n = "Festa"
+    if i in active_events:  # ==== M3-Festa ====
+        name = f"M3-{n}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2008festa.php"
+
+        media_ = [
+            Medium(
+                "Festa_haichi.gif",
+                [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))],
+            ),
+            Medium(
+                "Festa_M3Festa.pdf",
+                [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))],
+            ),
+            Medium(
+                "Festa_plan.jpg",
+                [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))],
+            ),
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d51870.19369178282!2d139.68455124863283!3d35.65515299999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b60c0d52981%3A0x5db20f81d038f20c!2sTokyo%20Metropolitan%20Industrial%20Trade%20Center%20Hamamatsuch%C5%8D!5e0!3m2!1sen!2sfr!4v1760220990307!5m2!1sen!2sfr",
+                description="東京都立産業貿易センター 浜松町館 3F展示室",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=["M3-Festa", "M3-2008festa"], # 春 秋
+            aliases=["M3-Festa", "M3-2008festa", "エムスリーフェスタ"],  # 春 秋
             dates="2008.11.24",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source(f"Alias '2008festa': {page}", (ReliabilityTypes.Likely, OriginTypes.Official)),
-                ],
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+                Source(
+                    "Alias '2008festa' and 'エムスリーフェスタ' from url https://www.m3net.jp/event/2008festa.php",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-festa.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-23 ====
-    if False: #
-        n = 23
-        page = "https://www.m3net.jp/event/2009s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 23
+    if i in active_events:  # ==== M3-23 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2009s.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a")
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    media=[],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-
-        media = []
+        media_ = [
+            # Medium("",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25969.42090179059!2d139.70210698661896!3d35.549315445297644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601860f87f5da4e3%3A0x8a0493a2f4accfb0!2sOta%20City%20Industrial%20Plaza%20PiO!5e0!3m2!1sen!2sfr!4v1760204504687!5m2!1sen!2sfr",
+                description="大田区産業プラザ PiO (大展示ホール)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2009春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2009春"],  # 春 秋
             dates="2009.05.05",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open(
+            "r", encoding="utf-8"
+        ) as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-24 ====
-    if False: #
-        n = 24
-        page = "https://www.m3net.jp/event/2009f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 24
+    if i in active_events:  # ==== M3-24 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2009f.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a")
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    media=[],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-
-        media = []
+        media_ = [
+            # Medium(",
+            #        [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))])
+        ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3250.0809002298374!2d139.6459722753115!3d35.45279154248986!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60185cffb2d826f7%3A0x9f88529083fb131a!2sOsanbashi%20Hall!5e0!3m2!1sen!2sfr!4v1760205422589!5m2!1sen!2sfr",
+                description="大さん橋ホール (横浜港大さん橋国際客船ターミナル内) [会場アクセス] (http://www.osanbashi.com/map/index.html)",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2009秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2009秋"], # 春 秋
             dates="2009.10.11",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(
+                    f"Date, Participating circles: {m3_page}",
+                    (ReliabilityTypes.Reliable, OriginTypes.Official),
+                ),
+            ],
+            locations=locations,
+            last_edited="2026.05.31",
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-25 ====
-    if False: #
-        n = 25
-        page = "https://www.m3net.jp/event/2010s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 25
+    if (i in active_events): # ==== M3-25 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2010s.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a") 
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-
-        media = []
+        media_ = [
+            Medium("25_20120419064147_manga.jpg",
+                   [Source("https://web.archive.org/web/20120419064147/http://www.m3net.jp/m3_25/manga.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))])
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター(TRC)第2展示場 E～Fホール",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
+        ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2010春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2010春"], # 春 秋
             dates="2010.05.05",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(f"Date, Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.05.31"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-26 ====
-    if False: #
-        n = 26
-        page = "https://www.m3net.jp/event/2010f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 26
+    if (i in active_events): # ==== M3-26 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2010f.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a") 
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-
-        media = [
+        media_ = [
             Medium("26_m3-26_jouei_list.pdf",
                    [Source("https://www.m3net.jp/pdf/m3-26_jouei_list.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))])
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター(TRC)第2展示場 E～Fホール",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2010秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2010秋"], # 春 秋
             dates="2010.10.31",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(f"Date, Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.05.31"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-27 ====
-    if False: #
-        n = 27
-        page = "https://www.m3net.jp/event/2011s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 27
+    if (i in active_events): # ==== M3-27 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2011s.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a") 
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-
-        media = [
+        media_ = [
+            Medium("27_20120408214344_m3_27_cat.jpg",
+                   [Source("https://web.archive.org/web/20120408214344/http://www.m3net.jp/m3_27/m3_27_cat.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("27_20110722113333_manga.jpg",
+                   [Source("https://web.archive.org/web/20110722113333/http://www.m3net.jp/m3_27/manga.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             Medium("27_m3-27_jouei_list.pdf",
-                   [Source("https://www.m3net.jp/pdf/m3-27_jouei_list.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))])
+                   [Source("https://www.m3net.jp/pdf/m3-27_jouei_list.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター(TRC)第1展示場 A～Dホール",
+                sources=[
+                    Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))
+                ],
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2011春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2011春"], # 春 秋
             dates="2011.05.01",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
-            comments="・動画「M3準備会からのご案内」(ニコニコ動画: http://www.nicovideo.jp/watch/sm14229809 ・YouTube: http://www.youtube.com/watch?v=beGpYk-IKAA)\n・M3-2011春 映像上映作品リスト: https://www.m3net.jp/pdf/m3-27_jouei_list.pdf\nNote: One can see the event catalog cover from the video here https://youtu.be/beGpYk-IKAA?si=LRqQy7kXKiVml7tE&t=126"
+                Source(f"Date, Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            comments="・動画「M3準備会からのご案内」(ニコニコ動画: http://www.nicovideo.jp/watch/sm14229809\n・YouTube: http://www.youtube.com/watch?v=beGpYk-IKAA)\n・M3-2011春 映像上映作品リスト: https://www.m3net.jp/pdf/m3-27_jouei_list.pdf\nNote: One can see the event catalog cover from the video here https://youtu.be/beGpYk-IKAA?si=LRqQy7kXKiVml7tE&t=126",
+            last_edited="2026.05.30"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-28 ====
-    if False: #
-        n = 28
-        page = "https://www.m3net.jp/event/2011f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 28
+    if (i in active_events): # ==== M3-28 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2011f.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a") 
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-
-        media = [
+        media_ = [
             Medium("28_m3-28_jouei_list.pdf",
-                   [Source("https://www.m3net.jp/event/2011f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             Medium("28_m3_28_Halls.pdf",
-                   [Source("https://www.m3net.jp/event/2011f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             Medium("28_m3_28_D-hall.pdf",
-                   [Source("https://www.m3net.jp/event/2011f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))])
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("28_20120314232737_m3_28_manga.jpg",
+                   [Source("https://web.archive.org/web/20120314232737/http://www.m3net.jp/m3_28/m3_28_manga.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター(TRC)第1展示場、第2展示場",
+                sources=[Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2011秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2011秋"], # 春 秋
             dates="2011.10.30",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
-
-            comments="・動画「M3準備会からのご案内」(ニコニコ動画: http://www.nicovideo.jp/watch/sm14229809 ・YouTube: http://www.youtube.com/watch?v=beGpYk-IKAA)\n・M3-2011春 映像上映作品リスト: https://www.m3net.jp/pdf/m3-27_jouei_list.pdf"
+                Source(f"Date, Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            comments="・動画「M3準備会からのご案内」([ニコニコ動画](http://www.nicovideo.jp/watch/sm15925549)・[YouTube](http://www.youtube.com/watch?v=EJzzLBHfG20))\n・[M3-2011秋 映像上映作品リスト](https://www.m3net.jp/pdf/m3-28_jouei_list.pdf)",
+            last_edited="2026.05.31"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-29 ====
-    if False: #
-        n = 29
-        page = "https://www.m3net.jp/event/2012s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 29
+    if (i in active_events): # ==== M3-29 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2012s.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a") 
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        
-        lasttable = soup.select("table.tblCircleList")[-1]
-        for row in lasttable.select("tr"):
-            cols = row.select("td")
-            position = cols[0].get_text(strip=True)
-            name = cols[1].get_text(strip=True)
-            comment = cols[2].get_text(strip=True)
-            a_tag = cols[1].select_one("a")
-            if a_tag:
-                links = [a_tag["href"]]
-            else:
-                links = None
-
-            circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: 出展企業一覧\n{comment}",
-                    position=position
-                ))
-
-
-        media = [
+        media_ = [
+            Medium("29_20130605070138_m3_29_cat.jpg",
+                   [Source("https://web.archive.org/web//http://www.m3net.jp/img/event/m3_29_cat.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             Medium("29_m3_29_E-hall.pdf",
-                   [Source("https://www.m3net.jp/event/2012s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_2019042729_20120601035300_imgIndex01.jpg",
+                   [Source("https://web.archive.org/web/20120601035300/http://www.m3net.jp/img/imgIndex01.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162717_01.jpg",
+                   [Source("https://web.archive.org/web/20190427162717/http://www.m3net.jp/img/enjoy/01.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162717_02.jpg",
+                   [Source("https://web.archive.org/web/20190427162717/http://www.m3net.jp/img/enjoy/02.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162717_03.jpg",
+                   [Source("https://web.archive.org/web/20190427162717/http://www.m3net.jp/img/enjoy/03.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162717_04.jpg",
+                   [Source("https://web.archive.org/web/20190427162717/http://www.m3net.jp/img/enjoy/04.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162717_05.jpg",
+                   [Source("https://web.archive.org/web/20190427162717/http://www.m3net.jp/img/enjoy/05.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162717_06.jpg",
+                   [Source("https://web.archive.org/web/20190427162717/http://www.m3net.jp/img/enjoy/06.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162719_07.jpg",
+                   [Source("https://web.archive.org/web/20190427162719/http://www.m3net.jp/img/enjoy/07.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162717_08.jpg",
+                   [Source("https://web.archive.org/web/20190427162717/http://www.m3net.jp/img/enjoy/08.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162717_09.jpg",
+                   [Source("https://web.archive.org/web/20190427162717/http://www.m3net.jp/img/enjoy/09.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162717_10.jpg",
+                   [Source("https://web.archive.org/web/20190427162717/http://www.m3net.jp/img/enjoy/10.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162718_11.jpg",
+                   [Source("https://web.archive.org/web/20190427162718/http://www.m3net.jp/img/enjoy/11.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162718_12.jpg",
+                   [Source("https://web.archive.org/web/20190427162718/http://www.m3net.jp/img/enjoy/12.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162719_13.jpg",
+                   [Source("https://web.archive.org/web/20190427162719/http://www.m3net.jp/img/enjoy/13.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162718_14.jpg",
+                   [Source("https://web.archive.org/web/20190427162718/http://www.m3net.jp/img/enjoy/14.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162719_15.jpg",
+                   [Source("https://web.archive.org/web/20190427162719/http://www.m3net.jp/img/enjoy/15.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162718_16.jpg",
+                   [Source("https://web.archive.org/web/20190427162718/http://www.m3net.jp/img/enjoy/16.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162718_17.jpg",
+                   [Source("https://web.archive.org/web/20190427162718/http://www.m3net.jp/img/enjoy/17.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162719_18.jpg",
+                   [Source("https://web.archive.org/web/20190427162719/http://www.m3net.jp/img/enjoy/18.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("29_20190427162719_19.jpg",
+                   [Source("https://web.archive.org/web/20190427162719/http://www.m3net.jp/img/enjoy/19.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター(TRC)第一展示場、第二展示場",
+                sources=[Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2012春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2012春"], # 春 秋
             dates="2012.04.30",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source(f"Date, Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(f"Date, Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.05.31"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-30 ====
-    if False: #
-        n = 30
-        page = "https://www.m3net.jp/event/2012f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 30
+    if (i in active_events): # ==== M3-30 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2012f.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a") 
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-
-
-        media = [
+        media_ = [
+            Medium("30_20130115050030_imgIndex2012f.jpg",
+                   [Source("https://web.archive.org/web/20130115050030/http://www.m3net.jp/img/imgIndex2012f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("30_20130125132558_imgIndex2012f_a.jpg",
+                   [Source("https://web.archive.org/web/20130125132558/http://www.m3net.jp/img/imgIndex2012f_a.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             Medium("30_M3-30_Halls.pdf",
-                   [Source("https://www.m3net.jp/pdf/M3-30_Halls.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+                   [Source("https://www.m3net.jp/pdf/M3-30_Halls.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))])
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="TRC 第二展示場1階[Eホール]",
+                sources=[Source("https://www.m3net.jp/pdf/M3-30_kigyo_haichi.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2012秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2012秋"], # 春 秋
             dates="2012.10.28",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
                 Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.01"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-31 ====
-    if False: #
-        n = 31
-        page = "https://www.m3net.jp/event/2013s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 31
+    if (i in active_events): # ==== M3-31 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2013s.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a") 
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
+        media_ = [
+            Medium("31_20130517122334_m3_31_cat.jpg",
+                   [Source("https://web.archive.org/web//http://www.m3net.jp/m3_31/m3_31_cat.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             Medium("31_M3-31_cat_errata.pdf",
                    [Source("https://www.m3net.jp/pdf/M3-31_cat_errata.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("31_20190926073700_imgIndex2013.jpg",
+                   [Source("https://web.archive.org/web/20190926073700/http://www.m3net.jp/img/imgIndex2013.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("31_20130507091950_imgIndex2013end.jpg",
+                   [Source("https://web.archive.org/web/20130507091950/http://www.m3net.jp/img/imgIndex2013end.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC 第一展示場/第二展示場)",
+                sources=[Source("M3-31 catalog cover", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2013春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2013春"], # 春 秋
             dates="2013.04.29",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: M3-31 catalog cover", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.01"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-32 ====
-    if False: #
-        n = 32
-        page = "https://www.m3net.jp/event/2013f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 32
+    if (i in active_events): # ==== M3-32 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2013f.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a") 
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
+        media_ = [
+            Medium("32_20131221180300_imgIndex2013Autumn.jpg",
+                   [Source("https://web.archive.org/web/20131221180300/http://www.m3net.jp/img/imgIndex2013Autumn.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             Medium("32_M3-32_haichi.pdf",
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+                   [Source("https://www.m3net.jp/event/2013f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 32_20131221180300_imgIndex2013Autumn.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2013秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2013秋"], # 春 秋
             dates="2013.10.27",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(f"Date, Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.01"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-33 ====
-    if False: #
-        n = 33
-        page = "https://www.m3net.jp/event/2014s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 33
+    if (i in active_events): # ==== M3-33 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2014s.php"
 
-                position = cols[0].get_text(strip=True)
-                name = cols[1].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-                a_tag = cols[1].select_one("a") 
-                if a_tag:
-                    links = [a_tag["href"]]
-                else:
-                    links = None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("M3_M3-33_haichi.pdf",
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("33_20141111192532_imgIndex2014s.jpg",
+                   [Source("https://web.archive.org/web/20141111192532/http://www.m3net.jp/img/imgIndex2014s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("33_20140528025710_imgIndex2014sEnd.jpg",
+                   [Source("https://web.archive.org/web/20140528025710/http://www.m3net.jp/img/imgIndex2014sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("33_M3-33_haichi.pdf",
+                   [Source("https://www.m3net.jp/event/2014s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 33_20140528025710_imgIndex2014sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2014春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2014春"], # 春 秋
             dates="2014.04.27",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source(f"Date, Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.01"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-34 ====
-    if False: #
-        n = 34
-        page = "https://www.m3net.jp/event/2014f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 34
+    if (i in active_events): # ==== M3-34 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2014f.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                name = dropmenu.select_one("a").get_text(strip=True) if dropmenu and dropmenu.select_one("a") else cols[1].get_text(strip=True)
-                other_a_tags = dropmenu.select("a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if "href" in a_tag.attrs] if other_a_tags else None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
+        media_ = [
+            Medium("34_20140712122657_imgIndex2014f.jpg",
+                   [Source("https://web.archive.org/web/20140712122657/http://www.m3net.jp/img/imgIndex2014f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("34_20141124155949_imgIndex2014fEnd.jpg",
+                   [Source("https://web.archive.org/web/20141124155949/http://www.m3net.jp/img/imgIndex2014fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             Medium("34_m3_34_Halls.pdf",
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 34_20140712122657_imgIndex2014f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2014秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2014秋"], # 春 秋
             dates="2014.10.26",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: Banner 34_20140712122657_imgIndex2014f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.01"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-35 ====
-    if False: #
-        n = 35
-        page = "https://www.m3net.jp/event/2015s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 35
+    if (i in active_events): # ==== M3-35 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2015s.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                name = dropmenu.select_one("a").get_text(strip=True) if dropmenu and dropmenu.select_one("a") else cols[1].get_text(strip=True)
-                other_a_tags = dropmenu.select("a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if "href" in a_tag.attrs] if other_a_tags else None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
+        media_ = [
+            Medium("35_m3_35_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog35.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("35_20150213014104_imgIndex2015s.jpg",
+                   [Source("https://web.archive.org/web/20150213014104/http://www.m3net.jp/img/imgIndex2015s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
             Medium("35_m3_35_Halls.pdf",
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 35_20150213014104_imgIndex2015s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2015春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2015春"], # 春 秋
             dates="2015.04.26",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: M3-35 catalog cover", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-36 ====
-    if False: #
-        n = 36
-        page = "https://www.m3net.jp/event/2015f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 36
+    if (i in active_events): # ==== M3-36 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2015f.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                name = dropmenu.select_one("a").get_text(strip=True) if dropmenu and dropmenu.select_one("a") else cols[1].get_text(strip=True)
-                other_a_tags = dropmenu.select("a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if "href" in a_tag.attrs] if other_a_tags else None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("36_m3-36_plan.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("36_m3_36_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog36.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("36_20150816062748_imgIndex2015f.jpg",
+                   [Source("https://web.archive.org/web/20190212000000*/http://www.m3net.jp/img/imgIndex2015f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("36_20160103053158_imgIndex2015fEnd.jpg",
+                   [Source("https://web.archive.org/web/20160103053158/http://www.m3net.jp/img/imgIndex2015fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("36_m3-36_plan.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 36_20150816062748_imgIndex2015f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2015秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2015秋"], # 春 秋
             dates="2015.10.25",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: 36_20150816062748_imgIndex2015f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-37 ====
-    if False: #
-        n = 37
-        page = "https://www.m3net.jp/event/2016s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
+    i = 37
+    if (i in active_events): # ==== M3-37 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2016s.php"
 
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}"
-                ))
-        media = [
-            Medium("37_M3tuushin37map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("37_m3_37_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog37.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("37_20160109110605_imgIndex2016s.jpg",
+                   [Source("https://web.archive.org/web/20160109110605/http://www.m3net.jp/img/imgIndex2016s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("37_20210401053258_imgIndex2016sEnd.jpg",
+                   [Source("https://web.archive.org/web/20210401053258/http://www.m3net.jp/img/imgIndex2016sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("37_M3tuushin37map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 37_20210401053258_imgIndex2016sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2016春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2016春"], # 春 秋
             dates="2016.04.24",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: Banner 37_20210401053258_imgIndex2016sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-38 ====
-    if False: #
-        n = 38
-        page = "https://www.m3net.jp/event/2016f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 38
+    if (i in active_events): # ==== M3-38 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2016f.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("38_M3tuushin38map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("38_m3_38_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog38.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("38_20160611160224_imgIndex2016f.jpg",
+                   [Source("https://web.archive.org/web/20160611160224/http://www.m3net.jp/img/imgIndex2016f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("38_20170311112851_imgIndex2016fEnd.jpg",
+                   [Source("https://web.archive.org/web/20170311112851/http://www.m3net.jp/img/imgIndex2016fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("38_M3tuushin38map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 38_20160611160224_imgIndex2016f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2016秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2016秋"], # 春 秋
             dates="2016.10.30",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: Banner 38_20160611160224_imgIndex2016f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-39 ====
-    if False: #
-        n = 39
-        page = "https://www.m3net.jp/event/2017s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 39
+    if (i in active_events): # ==== M3-39 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2017s.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("39_M3tuushin39map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("39_m3_39_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog39.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("39_20170427161949_imgIndex2017s.jpg",
+                   [Source("https://web.archive.org/web/20170427161949/http://www.m3net.jp/img/imgIndex2017s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("39_20180131140958_imgIndex2017sEnd.jpg",
+                   [Source("https://web.archive.org/web/20180131140958/http://www.m3net.jp/img/imgIndex2017sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("39_M3tuushin39map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 39_20180131140958_imgIndex2017sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2017春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2017春"], # 春 秋
             dates="2017.04.30",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: Banner 39_20180131140958_imgIndex2017sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-40 ====
-    if False: #
-        n = 40
-        page = "https://www.m3net.jp/event/2017f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 40
+    if (i in active_events): # ==== M3-40 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2017f.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("40_M3tuushin40map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("40_m3_40_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog40.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("40_20170609033859_imgIndex2017f.jpg",
+                   [Source("https://web.archive.org/web/20170609033859/http://www.m3net.jp/img/imgIndex2017f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("40_M3tuushin40map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 40_20170609033859_imgIndex2017f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2017秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2017秋"], # 春 秋
             dates="2017.10.29",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: Banner 40_20170609033859_imgIndex2017f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-41 ====
-    if False: #
-        n = 41
-        page = "https://www.m3net.jp/event/2018s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 41
+    if (i in active_events): # ==== M3- ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2018s.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("41_M3tuushin41map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("41_m3_41_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog41.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("41_20180128180033_imgIndex2018s.jpg",
+                   [Source("https://web.archive.org/web/20180128180033/http://www.m3net.jp/img/imgIndex2018s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("41_20220104002001_imgIndex2018sEnd.jpg",
+                   [Source("https://web.archive.org/web/20220104002001/http://www.m3net.jp/img/imgIndex2018sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("41_M3tuushin41map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 41_20220104002001_imgIndex2018sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2018春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2018春"], # 春 秋
             dates="2018.04.29",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: Banner 41_20220104002001_imgIndex2018sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-42 ====
-    if False: #
-        n = 42
-        page = "https://www.m3net.jp/event/2018f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 42
+    if (i in active_events): # ==== M3-42 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/2018f.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("42_M3tuushin42map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("42_m3_42_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog42.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("42_20180723112533_imgIndex2018f.jpg",
+                   [Source("https://web.archive.org/web/20180723112533/http://www.m3net.jp/img/imgIndex2018f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("42_20181209080559_imgIndex2018fEnd.jpg",
+                   [Source("https://web.archive.org/web/20181209080559/http://www.m3net.jp/img/imgIndex2018fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("42_M3tuushin42map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 42_20181209080559_imgIndex2018fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2018秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2018秋"], # 春 秋
             dates="2018.10.28",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: Banner 42_20181209080559_imgIndex2018fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-43 ====
-    if False: #
-        n = 43
-        page = "https://www.m3net.jp/event/circle2019s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 43
+    if (i in active_events): # ==== M3-43 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/circle2019s.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("43_M3tuushin43map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("43_m3_43_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog43.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("43_20190402133304_imgIndex2019s.jpg",
+                   [Source("https://web.archive.org/web/20190402133304/http://www.m3net.jp/img/imgIndex2019s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("43_20190503065746_imgIndex2019End.jpg",
+                   [Source("https://web.archive.org/web/20190503065746/http://www.m3net.jp/img/imgIndex2019End.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("43_M3tuushin43map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 43_20190402133304_imgIndex2019s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2019春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2019春"], # 春 秋
             dates="2019.04.28",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: Banner 43_20190402133304_imgIndex2019s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-44 ====
-    if False: #
-        n = 44
-        page = "https://www.m3net.jp/event/circle2019f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 44
+    if (i in active_events): # ==== M3-44 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/circle2019f.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("44_M3tuushin44map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("44_m3_44_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog44.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("44_20190702045120_imgIndex2019f.jpg",
+                   [Source("https://web.archive.org/web/20190702045120/http://www.m3net.jp/img/imgIndex2019f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("44_20191216124254_imgIndex2019fEnd.jpg",
+                   [Source("https://web.archive.org/web/20191216124254/http://www.m3net.jp/img/imgIndex2019fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("44_M3tuushin44map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 44_20191216124254_imgIndex2019fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2019秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2019秋"], # 春 秋
             dates="2019.10.27",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: Banner 44_20191216124254_imgIndex2019fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-45 ====
-    if False: #
-        n = 45
-        page = "https://www.m3net.jp/event/circle2020s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 45
+    if (i in active_events): # ==== M3-45 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/circle2020s.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("45_M3tuushin45map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("45_m3_45_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog45.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("45_20200217232440_imgIndex2020s.jpg",
+                   [Source("https://web.archive.org/web/20200217232440/http://www.m3net.jp/img/imgIndex2020s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("45_20200303013824_imgIndex2020sEnd.jpg",
+                   [Source("https://web.archive.org/web/20200303013824/https://www.m3net.jp/img/imgIndex2020sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("45_M3tuushin45map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 45_20200303013824_imgIndex2020sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2019秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2020春"], # 春 秋
             dates="2020.03.01",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
+                Source("Date: Banner 45_20200303013824_imgIndex2020sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-46 ====
-    if False: #
-        n = 46
-        page = "https://www.m3net.jp/event/circle2020f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 46
+    if (i in active_events): # ==== M3-46 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/circle2020f.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                if block.strip("[ ]") in "黒茶赤橙黄緑青紫灰白銀金":
-                    position += " (Virtual)"
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("46_M3tuushin46map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
-            Medium("46_m3-46_virtualLayout.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("46_m3_46_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog46.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("46_20200724144638_imgIndex2020f.jpg",
+                   [Source("https://web.archive.org/web/20200724144638/http://www.m3net.jp/img/imgIndex2020f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("46_20201030151801_imgIndex2020f_.jpg",
+                   [Source("https://web.archive.org/web/20201030151801/http://www.m3net.jp/img/imgIndex2020f_.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("46_20201109184917_imgIndex2020fEnd_.jpg",
+                   [Source("https://web.archive.org/web/20201109184917/https://www.m3net.jp/img/imgIndex2020fEnd_.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("46_M3tuushin46map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("46_m3-46_virtualLayout.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 46_20200724144638_imgIndex2020f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+            Location(
+                description="+ Web event (https://www.m3net.jp/m3_46/m3-46_virtualLayout.pdf)",
+                sources=[Source("Banner 46_20201109184917_imgIndex2020fEnd_.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2020秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2020秋"], # 春 秋
             dates="2020.10.25",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source(f"Note & Virtual participations: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
-            comments="Note: 島番号[A]～[R]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[ス]は第二展示場2階、[黒]～[金]はWeb会場です。"
+                Source("Date: Banner 46_20200724144638_imgIndex2020f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Note & Virtual participations: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            comments="Note: 島番号[A]～[R]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[ス]は第二展示場2階、[黒]～[金]はWeb会場です。",
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-47 ====
-    if False: #
-        n = 47
-        page = "https://www.m3net.jp/event/circle2021s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 47
+    if (i in active_events): # ==== M3-47 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/circle2021s.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                if block.strip("[ ]") in "黒茶赤橙黄緑青紫灰白銀金":
-                    position += " (Virtual)"
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("47_M3tuushin47map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
-            Medium("47_m3-47_WebEvent_Map.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("47_m3_47_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog47.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("47_20210126193207_imgIndex2021s.jpg",
+                   [Source("https://web.archive.org/web/20210126193207/http://www.m3net.jp/img/imgIndex2021s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("47_20210506023407_imgIndex2021sEnd.jpg",
+                   [Source("https://web.archive.org/web/20210506023407/http://www.m3net.jp/img/imgIndex2021sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("47_M3tuushin47map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("47_m3-47_WebEvent_Map.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 47_20210126193207_imgIndex2021s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+            Location(
+                description="+ Web event (https://www.m3net.jp/m3_47/m3-47_WebEvent_Map.pdf)",
+                sources=[Source("Banner 47_20210126193207_imgIndex2021s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2021春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2021春"], # 春 秋
             dates="2021.04.25",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source(f"Note & Virtual participations: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
-            comments="Note: 島番号[A]～[R]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[ス]は第二展示場2階、[黒]～[金]はWeb会場です。"
+                Source("Date: 47_20210126193207_imgIndex2021s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Note & Virtual participations: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            comments="Note: 島番号[A]～[R]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[ス]は第二展示場2階、[黒]～[金]はWeb会場です。",
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-48 ====
-    if False: #
-        n = 48
-        page = "https://www.m3net.jp/event/circle2021f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 48
+    if (i in active_events): # ==== M3-48 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/circle2021f.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                if block.strip("[ ]") in "黒茶赤橙黄緑青紫灰白銀金":
-                    position += " (Virtual)"
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("48_M3tuushin48map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
-            Medium("48_m3-48_WebEvent_Map.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("48_m3_48_catA.png",
+                   [Source("http://www.m3net.jp/attendance/catalog48.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("48_m3_48_catB.png",
+                   [Source("http://www.m3net.jp/attendance/catalog48.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("48_20210705071611_imgIndex2021f.jpg",
+                   [Source("https://web.archive.org/web/20210705071611/http://www.m3net.jp/img/imgIndex2021f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("48_20211113163225_imgIndex2021fEnd.jpg",
+                   [Source("https://web.archive.org/web/20211113163225/https://www.m3net.jp/img/imgIndex2021fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("48_M3tuushin48map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("48_m3-48_WebEvent_Map.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 48_20210705071611_imgIndex2021f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+            Location(
+                description="+ Web event (https://www.m3net.jp/m3_48/m3-48_WebEvent_Map.pdf)",
+                sources=[Source("Banner 48_20210705071611_imgIndex2021f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2021秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2021秋"], # 春 秋
             dates="2021.10.31",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source(f"Note & Virtual participations: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
-            comments="Note: 島番号[A]～[T]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[ス]は第二展示場2階、[黒]～[金]はWeb会場です。"
+                Source("Date: 48_20210705071611_imgIndex2021f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Note & Virtual participations: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            comments="Note: 島番号[A]～[T]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[ス]は第二展示場2階、[黒]～[金]はWeb会場です。",
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-49 ====
-    if False: #
-        n = 49
-        page = "https://www.m3net.jp/event/circle2022s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 49
+    if (i in active_events): # ==== M3-49 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/circle2022s.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                if block.strip("[ ]") in "黒茶赤橙黄緑青紫灰白銀金":
-                    position += " (Virtual)"
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("49_M3tuushin49map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
-            Medium("49_m3-49_WebEvent_Map.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("49_m3_49_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog49.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("49_20220324121958_imgIndex2022s.jpg",
+                   [Source("https://web.archive.org/web/20220324121958/https://www.m3net.jp/img/imgIndex2022s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("49_20220516163402_imgIndex2022sEnd.jpg",
+                   [Source("https://web.archive.org/web/20220516163402/http://www.m3net.jp/img/imgIndex2022sEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("49_M3tuushin49map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("49_m3-49_WebEvent_Map.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 49_20220324121958_imgIndex2022s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+            Location(
+                description="+ Web event (https://www.m3net.jp/m3_49/m3-49_WebEvent_Map.pdf)",
+                sources=[Source("Banner 49_20220324121958_imgIndex2022s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2022春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2022春"], # 春 秋
             dates="2022.04.24",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source(f"Note & Virtual participations: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
-            comments="Note: 島番号[A]～[P]は第一展示場、[あ]～[お]は第二展示場1階、[カ]～[サ]は第二展示場2階、[黒]～[金]はWeb会場です。"
+                Source("Date: Banner 49_20220324121958_imgIndex2022s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Note & Virtual participations: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            comments="Note: 島番号[A]～[P]は第一展示場、[あ]～[お]は第二展示場1階、[カ]～[サ]は第二展示場2階、[黒]～[金]はWeb会場です。",
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-50 ====
-    if False: #
-        n = 50
-        page = "https://www.m3net.jp/event/circle2022f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 50
+    if (i in active_events): # ==== M3-50 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/circle2022f.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                if block.strip("[ ]") in "黒茶赤橙黄緑青紫灰白銀金":
-                    position += " (Virtual)"
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("50_M3tuushin50map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("50_m3_50_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog50.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("50_20220702115333_imgIndex2022f.jpg",
+                   [Source("https://web.archive.org/web/20220702115333/https://www.m3net.jp/img/imgIndex2022f.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("50_20221203141601_imgIndex2022fEnd.jpg",
+                   [Source("https://web.archive.org/web/20221203141601/http://www.m3net.jp/img/imgIndex2022fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("50_M3tuushin50map_web.pdf",
+                   [Source("https://www.m3net.jp/event/circle2022f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 50_20221203141601_imgIndex2022fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2022秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2022秋"], # 春 秋
             dates="2022.10.30",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source(f"Note & Virtual participations: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
-            comments="Note: 島番号[A]～[R]は第一展示場、[あ]～[お]は第二展示場1階、[カ]～[サ]は第二展示場2階、[黒]～[金]はWeb会場です。"
+                Source("Date: Banner 50_20221203141601_imgIndex2022fEnd.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://catalog.m3net.jp/2022f/circles.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Note: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            comments="Note: 島番号[A]～[R]は第一展示場、[あ]～[お]は第二展示場1階、[カ]～[サ]は第二展示場2階、[黒]～[金]はWeb会場です。",
+            last_edited="2026.06.06"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-51 ====
-    if False: #
-        n = 51
-        page = "https://www.m3net.jp/event/circle2023s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 51
+    if (i in active_events): # ==== M3-51 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/circle2023s.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                if block.strip("[ ]") in "黒茶赤橙黄緑青紫灰白銀金":
-                    position += " (Virtual)"
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("51_M3tuushin51map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("51_m3_51_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog51.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("51_imgIndex2023S.png",
+                   [Source("https://web.archive.org/web/20230412061554/http://www.m3net.jp/img/imgIndex2023S.png", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("51_imgIndex2023S_0501.png",
+                   [Source("https://web.archive.org/web/20230502163708/https://www.m3net.jp/img/imgIndex2023S_0501.png", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("51_M3tuushin51map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 51_imgIndex2023S_0501.png", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2023春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2023春"], # 春 秋
             dates="2023.04.30",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source(f"Note & Virtual participations: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
-            comments=f"Note: on {page}, M3tuushin53map_web.pdf is linked instead of M3tuushin51map_web.pdf\nNote: 島番号[A]～[Q]は第一展示場、[あ]～[お]は第二展示場1階、[カ]～[サ]は第二展示場2階、[黒]～[金]はWeb会場です。"
+                Source("Date: Banner 51_imgIndex2023S_0501.png", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://catalog.m3net.jp/2023s/circles.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Note 2: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            comments="Note: on https://www.m3net.jp/event/circle2023s.php, M3tuushin53map_web.pdf is linked instead of M3tuushin51map_web.pdf\nNote: 島番号[A]～[Q]は第一展示場、[あ]～[お]は第二展示場1階、[カ]～[サ]は第二展示場2階、[黒]～[金]はWeb会場です。",
+            last_edited="2026.06.06"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-52 ====
-    if False: #
-        n = 52
-        page = "https://www.m3net.jp/event/circle2023f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 52
+    if (i in active_events): # ==== M3-52 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/circle2023f.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                if block.strip("[ ]") in "黒茶赤橙黄緑青紫灰白銀金":
-                    position += " (Virtual)"
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("52_M3tuushin52map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("52_m3_52_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog52.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("52_keyvisual.png",
+                   [Source("https://catalog.m3net.jp/2023f/", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("https://web.archive.org/web/20250915124428/https://www.m3net.jp/m3_52/M3-2023F.catalog.pdf",
+                   [Source("https://web.archive.org/web/20250915124428/https://www.m3net.jp/m3_52/M3-2023F.catalog.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("52_M3tuushin52map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Catalog (M3-2023F.catalog.pdf)", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2023秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2023秋"], # 春 秋
             dates="2023.10.29",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source(f"Note & Virtual participations: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
-            comments="Note: 島番号[A]～[T]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[ス]は第二展示場2階、[黒]～[金]はWeb会場です。"
+                Source("Date: Catalog (M3-2023F.catalog.pdf)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://catalog.m3net.jp/2023f/circles.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Note: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            comments="Note: 島番号[A]～[T]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[ス]は第二展示場2階、[黒]～[金]はWeb会場です。",
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-53 ====
-    if False: #
-        n = 53
-        page = "https://www.m3net.jp/event/circle2023f.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 53
+    if (i in active_events): # ==== M3-53 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/circle2024s.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                if block.strip("[ ]") in "黒茶赤橙黄緑青紫灰白銀金":
-                    position += " (Virtual)"
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("53_M3tuushin53map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("53_m3_53_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog53.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("53_20240330230728_imgIndex2024s.jpg",
+                   [Source("https://web.archive.org/web/20231216012914/https://www.m3net.jp/img/imgIndex2024s.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("53_20240612092213_imgIndex2024s_w-end.jpg",
+                   [Source("https://web.archive.org/web/20240612092213/https://www.m3net.jp/img/imgIndex2024s_w-end.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("53_M3tuushin53map_web.pdf",
+                   [Source("http://www.m3net.jp/m3_53/M3tuushin53map_web.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("https://web.archive.org/web/20240612185411/https://www.m3net.jp/m3_53/M3-2024S.catalog.pdf",
+                   [Source("https://web.archive.org/web/20240612185411/https://www.m3net.jp/m3_53/M3-2024S.catalog.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 53_20240612092213_imgIndex2024s_w-end.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2024春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2024春"], # 春 秋
             dates="2024.04.28",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source(f"Note & Virtual participations: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
-            comments="Note: 島番号[A]～[T]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[シ]は第二展示場2階、[黒]～[金]はWeb会場です。"
+                Source("Date: Banner 53_20240612092213_imgIndex2024s_w-end.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://catalog.m3net.jp/2024s/circles.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Note: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            comments="Note: 島番号[A]～[T]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[ス]は第二展示場2階、[黒]～[金]はWeb会場です。",
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-54 ====
-    if False: #
-        n = 54
-        page = "https://www.m3net.jp/event/circle2024s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        switch_details = soup.select("div.switchDetail")
-        switch_names = soup.select("p.switchTitle")
-        # print(len(switch_details), len(switch_names))
-        
-        circles_: list[Circle] = []
-        for i in range(len(switch_details)):
-            block = switch_names[i].get_text(strip=True)
-            for row in switch_details[i].select("table tr"):
-                cols = row.select("td")
-                if len(cols) < 3:
-                    continue
+    i = 54
+    if (i in active_events): # ==== M3-54 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/event/circle2024f.php"
 
-                position = cols[0].get_text(strip=True)
-                comment = cols[2].get_text(strip=True)
-
-                dropmenu = cols[1].select_one("ul.dropmenu2")
-                main_li_a = cols[1].select_one("ul.dropmenu2 > li > a")
-                if main_li_a:
-                    name = main_li_a.get_text(strip=True)
-                else:
-                    name = cols[1]._all_strings(strip=True).__next__() # Get first text
-                other_a_tags = dropmenu.select("li a")[1:] if dropmenu else []
-                links = [a_tag["href"] for a_tag in other_a_tags if ("href" in a_tag.attrs and a_tag["href"] != "target=_blank")] if other_a_tags else None
-
-                if block.strip("[ ]") in "黒茶赤橙黄緑青紫灰白銀金":
-                    position += " (Virtual)"
-
-                circles_.append(Circle(
-                    aliases=[name],
-                    links=links if links else None,
-                    comments=f"Block: {block}\n{comment}",
-                    position=position
-                ))
-        media = [
-            Medium("54_M3tuushin54map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("54_m3_54_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog54.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("54_20240805075053_imgIndex2024a.jpg",
+                   [Source("https://web.archive.org/web/20240805075053/http://www.m3net.jp/img/imgIndex2024a.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("54_20241113232004_imgIndex2024a_w-end.jpg",
+                   [Source("https://web.archive.org/web/20241113232004/https://www.m3net.jp/img/imgIndex2024a_w-end.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("54_M3tuushin54map_web.pdf",
+                   [Source(m3_page, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("https://web.archive.org/web/20250427031227/https://www.m3net.jp/m3_54/M3-2024F.catalog.pdf",
+                   [Source("https://web.archive.org/web/20250427031227/https://www.m3net.jp/m3_54/M3-2024F.catalog.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Catalog: M3-2024F.catalog.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2024秋"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2024秋"], # 春 秋
             dates="2024.10.27",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                Source(f"Note & Virtual participations: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ],
-            comments="Note: 島番号[A]～[T]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[シ]は第二展示場2階、[黒]～[金]はWeb会場です。"
+                Source("Date: Catalog M3-2024F.catalog.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://catalog.m3net.jp/2024f/circles.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source(f"Note: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            comments="Note: 島番号[A]～[V]は第一展示場、[あ]～[か]は第二展示場1階、[キ]～[シ]は第二展示場2階、[黒]～[金]はWeb会場です。",
+            last_edited="2026.06.02"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
-    # ==== M3-55 ====
-    if False: #
-        n = 55
-        page = "https://www.m3net.jp/attendance/circle2025s.php"
-        with Path(__file__).with_name(f"raw{n:02d}.htm").open("rb") as f:
-            soup = BeautifulSoup(f.read(), features="html.parser")
-        
-        
-        circles_: list[Circle] = []
-        rows = soup.select("dl.d_box > div")
-        # print(f"Sel: {rows}")
-        for row in rows:
-            rr = row.select("span")
-            position = rr[0].get_text(strip=True)
-            name = rr[1].get_text(strip=True)
+    i = 55
+    if (i in active_events): # ==== M3-55 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://www.m3net.jp/attendance/circle2025s.php"
 
-            a_tag = rr[1].select_one("a")
-            links = [a_tag['href']] if a_tag and 'href' in a_tag.attrs else None
-
-            comment = row.select_one("dd").get_text(strip=True)
-            comment = re.sub(r"(\\n)? +", r"\1 ", comment) # Cleanup
-                
-            circles_.append(Circle(
-                aliases=[name],
-                links=links if links else None,
-                comments=f"{comment}",
-                position=position
-            ))
-        media = [
-            Medium("55_keyvisual.png", 
-                   [Source('https://catalog.m3net.jp/archive/2025s/', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
-            Medium("55_M3tuushin55map_web.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
-            Medium("55_M3-2025S.catalog.pdf", 
-                   [Source(f'{page}', (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        media_ = [
+            Medium("55_m3_55_cat.png",
+                   [Source("http://www.m3net.jp/attendance/catalog55.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("55_keyvisual.png",
+                   [Source("https://catalog.m3net.jp/archive/2025s/", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("55_M3tuushin55map_web.pdf",
+                   [Source("https://www.m3net.jp/attendance/circle2025s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("https://web.archive.org/web/20250713022024/https://www.m3net.jp/m3_55/M3-2025S.catalog.pdf",
+                   [Source("https://web.archive.org/web/20250713022024/https://www.m3net.jp/m3_55/M3-2025S.catalog.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("Banner 55_keyvisual.png", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
         ]
         event = Event(
-            aliases=[f"M3-{n:02d}", "M3-2025春"], # 春 秋
+            aliases=[f"M3-{i:02d}", "M3-2025春"], # 春 秋
             dates="2025.04.27",
-            circles=circles_,
-            media=media,
+            circles=[],
+            media=media_,
             sources=[
-                Source("Date: https://puellabyte.github.io/events", (ReliabilityTypes.Likely, OriginTypes.External)),
-                Source(f"Participating circles: {page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
-                ]
+                Source("Date: Banner 55_keyvisual.png", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://catalog.m3net.jp/2025s/circles.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.04"
         )
-        events.append(event)
-        with (save_folder_path / f"m3-{n:02d}.json").open("w+", encoding='utf-8') as f:
-            json.dump(event.get_json(), f, indent=4, ensure_ascii=False)
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
+    i = 56
+    if (i in active_events): # ==== M3-56 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
+        m3_page = "https://catalog.m3net.jp/2025f/circles.html"
 
+        media_ = [
+            Medium("56_M3-2025F.catalog.png",
+                   [Source("First page of https://www.m3net.jp/m3_56/M3-2025F.catalog.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("56_keyvisual.webp",
+                   [Source("https://catalog.m3net.jp/2025f/index.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("56_M3tuushin56map_web.pdf",
+                   [Source("https://www.m3net.jp/attendance/circle2025f.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("https://www.m3net.jp/m3_56/M3-2025F.catalog.pdf",
+                   [Source("https://www.m3net.jp/m3_56/M3-2025F.catalog.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("https://catalog.m3net.jp/2025f/index.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
+        event = Event(
+            aliases=[f"M3-{i:02d}", "M3-2025秋"],
+            dates="2025.10.06",
+            circles=[],
+            media=media_,
+            sources=[
+                Source("Date: https://catalog.m3net.jp/2025f/index.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://catalog.m3net.jp/2025f/circles.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.05"
+        )
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
+    i = 57
+    if (i in active_events): # ==== M3-57 ====
+        name = f"M3-{i:02d}"
+        print(f"Processing {name} ...")
 
+        media_ = [
+            Medium("57_canvas.png",
+                   [Source("First page of https://www.m3net.jp/m3_57/M3-2026S.catalog.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("57_keyvisual_2026s.png",
+                   [Source("https://catalog.m3net.jp/2026s/", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("https://www.m3net.jp/m3_57/M3-2026S.catalog.pdf",
+                   [Source("https://www.m3net.jp/m3_57/M3-2026S.catalog.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("57_M3tuushin57map_web.pdf",
+                   [Source("https://www.m3net.jp/attendance/circle2026s.php", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("",
+                   [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+                description="東京流通センター (TRC)",
+                sources=[Source("https://catalog.m3net.jp/2026s/", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
+        event = Event(
+            aliases=[f"M3-{i:02d}", "M3-2026春"],
+            dates="2026.04.26",
+            circles=[],
+            media=media_,
+            sources=[
+                Source("Date: https://catalog.m3net.jp/2026s/", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                Source("Participating circles: https://catalog.m3net.jp/2026s/circles/", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.06.05"
+        )
+        event_raw = event.get_json()
+        # Retrieve circles
+        with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+            circles_raw = json.load(f)
+        event_raw["circles"] = circles_raw
+        events_raw.append(event_raw)
 
+    # i = 
+    # if (i in active_events): # ==== M3- ====
+    #     name = f"M3-{i:02d}"
+    #     print(f"Processing {name} ...")
+    #     m3_page =
 
+    #     media_ = [
+    #         Medium("",
+    #                [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+    #         Medium("",
+    #                [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+    #         Medium("",
+    #                [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+    #         Medium("",
+    #                [Source(, (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+    #         ]
+    #     locations = [
+    #         Location(
+    #             iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6489.961600896923!2d139.7417581761773!3d35.57886570190225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60186178f12a486d%3A0x4fc2afb490aab5f6!2sTokyo%20Ryutsu%20Center!5e0!3m2!1sen!2sfr!4v1759871108185!5m2!1sen!2sfr",
+    #             description="東京流通センター (TRC)",
+    #             sources=[Source("Banner ", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+    #         ),
+    #     ]
+    #     event = Event(
+    #         aliases=["M3-", "M3-", "M3-"],
+    #         dates="",
+    #         circles=[],
+    #         media=media_,
+    #         sources=[
+    #             Source("Date: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+    #             Source(f"Participating circles: {m3_page}", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+    #         ],
+    #         locations=locations,
+    #         last_edited="2026.06.02"
+    #     )
+    #     event_raw = event.get_json()
+    #     # Retrieve circles
+    #     with (Path(__file__).parent / f"M3-{i:02d}" / f"circles_{i:02d}.json").open("r", encoding='utf-8') as f:
+    #         circles_raw = json.load(f)
+    #     event_raw["circles"] = circles_raw
+    #     events_raw.append(event_raw)
 
+    # ==== event group ====
+    media = [
+        Medium("20200330165516_background.jpg",
+               [Source("https://web.archive.org/web/20200330165516/http://www.m3net.jp/exCatalog/image/background.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        Medium("20220424082236_M3-20thAnniversary.pdf",
+               [Source("https://web.archive.org/web/20220424082236/http://www.m3net.jp/attendance/M3-20thAnniversary.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        Medium("20190203071953_20th.jpg",
+               [Source("https://web.archive.org/web/20190203071953/http://www.m3net.jp/img/20th.jpg", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        # Medium("",
+        #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        # Medium("",
+        #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        # Medium("",
+        #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        # Medium("",
+        #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+        # Medium("",
+        #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+    ]
+    links = ["https://ttc.ninja-web.net/kantai-parade", "https://x.com/kantai_parade"]
 
-
-
-
-
-
-
-
-
-
-
-    def _get_date(json_file_pat: Path) -> str:
-        with json_file_pat.open("r", encoding='utf-8') as f:
-            data = json.load(f)
-        return data.get("dates", "")
-    events_raw = []
-    for p in sorted(Path(__file__).parent.glob("m3-*.json"), key=_get_date):
-        with p.open("r", encoding='utf-8') as f:
-            events_raw.append(json.load(f))
-        
-
-    eg = EventGroup(
-        events = [],
+    event_group = EventGroup(
         aliases=["M3", "エムスリー", "Music Media-Mix Market"],
-        links=["https://www.m3net.jp/", "http://mmm.panic.or.jp/", "https://x.com/m3doujin"],
-        sources=[
-            Source("Alias 'Music Media-Mix Market': https://web.archive.org/web/19990428190424/http://mmm.panic.or.jp/", (ReliabilityTypes.Reliable, OriginTypes.Official))
+        events=[],
+        media=media,
+        links=[
+            "https://www.m3net.jp/",
+            "http://mmm.panic.or.jp/",
+            "https://x.com/m3doujin",
         ],
-        comments=None
+        sources=[
+            Source(
+                "Alias 'Music Media-Mix Market': https://web.archive.org/web/19990428190424/http://mmm.panic.or.jp/",
+                (ReliabilityTypes.Reliable, OriginTypes.Official),
+            ),
+            Source(
+                "Alias 'エムスリー': https://www.m3net.jp/event/2008festa.php",
+                (ReliabilityTypes.Reliable, OriginTypes.Official),
+            ),
+        ],
+        comments=None,
+        description=None,
+        last_edited="2026.06.03",
     )
-    content = eg.get_json()
-    content["events"] = events_raw
-    with (save_folder_path / "m3.json").open("w+", encoding='utf-8') as f:
-        json.dump(content, f, indent=4, ensure_ascii=False)
 
-    
+    # Reorder events and add to event group
+    events_raw_sorted = sorted(events_raw, key=lambda er: er["dates"])
+
+    for event_raw in events_raw_sorted:
+        event = Event.load_from_json(event_raw)
+        event_group.events.append(event)
+
+    print(f"Saving {Path(__file__).stem} database...")
+    event_group.save(save_folder_path, indent=None)
+    print("Done")

@@ -42,7 +42,8 @@ if __name__ == '__main__':
                 Source("Participating circles: https://web.archive.org/web/20170913141445/http://ttc.ninja-web.net/kantai-parade/kantai-parade_list.htm", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
-            comments="Part of 名古屋熱田同人祭 (Nagoya Atsuta Doujin Festival)."
+            comments="Part of 名古屋熱田同人祭 (Nagoya Atsuta Doujin Festival).",
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -81,6 +82,7 @@ if __name__ == '__main__':
                 Source("Participating circles (dead): http://ttc.ninja-web.net/nagoya-doujin-fes/181104_circlelist.pdf", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         # with (Path(__file__).parent / "web" / f"{name}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -108,6 +110,7 @@ if __name__ == '__main__':
         links=links,
         comments=None,
         description=None,
+        last_edited="2026.05.30"
     )
     
     # Reorder events and add to event group

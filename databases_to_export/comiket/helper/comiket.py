@@ -36,6 +36,131 @@ if __name__ == '__main__':
     save_folder_path = Path(__file__).parent.parent
     events_raw: list[Any] = []
     
+    if True: # ==== C109 ====
+        i = 109
+        print(f"Processing c{i} ...")
+        # chrono_url = "https://web.archive.org/web/20260525181651/https://www.comiket.co.jp/archives/Chronology.html"
+
+        circles_ = []
+        media_ = [
+            # Medium("",
+            #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            # Medium("",
+            #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            #        , comments=""),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京ビッグサイト全館",
+                sources=[Source("https://www.comiket.co.jp/info-a/C109/C109Schedule.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
+        event = Event(
+            aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
+            dates="2026.12.29 - 2026.12.31",
+            circles=circles_,
+            media=media_,
+            sources=[
+                Source("Date: https://www.comiket.co.jp/info-a/C109/C109Schedule.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.05.30"
+        )
+        event_raw = event.get_json()
+
+        events_raw.append(event_raw)
+        if SAVE_INTER_JSON:
+            with (save_folder_path / f"C{i:03d}.json").open("w+", encoding='utf-8') as f:
+                json.dump(event_raw, f, indent=None, ensure_ascii=False)
+
+    if True: # ==== C108 ====
+        i = 108
+        print(f"Processing c{i} ...")
+        # chrono_url = "https://web.archive.org/web/20260525181651/https://www.comiket.co.jp/archives/Chronology.html"
+
+        circles_ = []
+        media_ = [
+            # Medium("",
+            #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            # Medium("",
+            #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            #        , comments=""),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場 (東京ビッグサイト)",
+                sources=[Source("https://www.comiket.co.jp/info-a/C108/C108Info.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
+        event = Event(
+            aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
+            dates="2026.08.15 - 2026.08.16",
+            circles=circles_,
+            media=media_,
+            sources=[
+                Source("Date: https://www.comiket.co.jp/info-a/C108/C108Info.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.05.30"
+        )
+        event_raw = event.get_json()
+
+        events_raw.append(event_raw)
+        if SAVE_INTER_JSON:
+            with (save_folder_path / f"C{i:03d}.json").open("w+", encoding='utf-8') as f:
+                json.dump(event_raw, f, indent=None, ensure_ascii=False)
+
+    if True: # ==== C107 ====
+        i = 107
+        print(f"Processing c{i} ...")
+
+        circles_ = []
+        media_ = [
+            # Medium("",
+            #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]),
+            Medium("107_C107CtlgWeb.jpeg",
+                   [Source("https://web.archive.org/web/20260525181651/https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+                   , comments="かんざきひろ（サークル：tabgraphics）"),
+            Medium("107_C107_pamphlet.png",
+                   [Source("https://web.archive.org/web/20260525181651/https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+                   , comments="竹虎スズメ（サークル：たけ家）"),
+            Medium("107_C107Kamibukuro.png",
+                   [Source("https://web.archive.org/web/20260525181651/https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+                   , comments="画像：めふぃすと（サークル：Angraecum) デザイン： フジタ（サークル：第2コンドル採掘場)"),
+            # Medium("",
+            #        [Source("", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            #        , comments=""),
+            ]
+        locations = [
+            Location(
+                iframe_url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.918835313837!2d139.79293267568477!3d35.629727372603924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601889dc629d1e7b%3A0xa4d1509a76045a01!2sTokyo%20Big%20Sight!5e0!3m2!1sen!2sfr!4v1760364136540!5m2!1sen!2sfr",
+                description="東京国際展示場（東京ビッグサイト）(除く東１～３ホール)、ＴＦＴホール",
+                sources=[Source("https://web.archive.org/web/20260525181651/https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+            ),
+        ]
+        event = Event(
+            aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
+            dates="2025.12.30 - 2025.12-31",
+            circles=circles_,
+            media=media_,
+            sources=[
+                Source("Date: https://www.comiket.co.jp/info-a/C107/C107AfterReport.html", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+                # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
+            ],
+            locations=locations,
+            last_edited="2026.05.30"
+        )
+        event_raw = event.get_json()
+
+        events_raw.append(event_raw)
+        if SAVE_INTER_JSON:
+            with (save_folder_path / f"C{i:03d}.json").open("w+", encoding='utf-8') as f:
+                json.dump(event_raw, f, indent=None, ensure_ascii=False)
+
     if True: # ==== C106 ====
         i = 106
         print(f"Processing c{i} ...")
@@ -52,6 +177,9 @@ if __name__ == '__main__':
             Medium("106_C106Kamibukuro.jpeg",
                    [Source("https://web.archive.org/web/20250716040318/https://comiket.co.jp/info-a/C106/C106distributions.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
                    , comments="ラスト：ideolo（サークル：NEKO WORLDi) 　１日目西め60ab"),
+            Medium("106_C106_pamphlet.png",
+                   [Source("https://web.archive.org/web/20260525181651/https://www.comiket.co.jp/archives/Chronology.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
+                   , comments="蝶夜（サークル：Luce_Farfalla）"),
             Medium("https://web.archive.org/web/20250409184101/https://www.comiket.co.jp/info-c/C106/C106Appset.pdf",
                    [Source("https://web.archive.org/web/20250716040318/https://comiket.co.jp/info-a/C106/C106distributions.html", (ReliabilityTypes.Reliable, OriginTypes.Official))]
                    , comments="表紙イラスト：ぴこぴこぐらむ（サークル：プラチナきのこ）  ２日目東ア83ab"),
@@ -75,6 +203,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -128,6 +257,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -185,6 +315,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -241,6 +372,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -298,6 +430,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -340,7 +473,7 @@ if __name__ == '__main__':
         ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
-            dates="2012.12.30 - 2012.12.31",
+            dates="2022.12.30 - 2022.12.31",
             circles=circles_,
             media=media_,
             sources=[
@@ -348,6 +481,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -401,6 +535,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -452,6 +587,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -520,6 +656,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -584,6 +721,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -650,6 +788,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -710,6 +849,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -771,6 +911,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -831,6 +972,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -891,6 +1033,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -951,6 +1094,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -1012,6 +1156,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -1072,6 +1217,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -1134,6 +1280,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -1194,6 +1341,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -1254,6 +1402,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -1311,6 +1460,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -1358,6 +1508,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
         with (Path(__file__).parent / "catalogs" / f"c{i}" / "all_circles_export.json").open("r", encoding='utf-8') as f:
@@ -1402,6 +1553,7 @@ if __name__ == '__main__':
                 # Source("Participating circles: ", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         
         event_raw = event.get_json()
@@ -1910,9 +2062,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C70 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C70" / "process" / "c70_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C70" / "c70_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -1956,9 +2109,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C69 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C69" / "process" / "c69_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C69" / "c69_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2002,9 +2156,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C68 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C68" / "process" / "c68_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C68" / "c68_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2048,9 +2203,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C67 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C67" / "process" / "c67_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C67" / "c67_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2094,9 +2250,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C66 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C66" / "process" / "c66_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C66" / "c66_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2140,9 +2297,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C65 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C65" / "process" / "c65_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C65" / "c65_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2186,9 +2344,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C64 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C64" / "process" / "c64_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C64" / "c64_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2234,9 +2393,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C63 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C63" / "process" / "c63_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C63" / "c63_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2280,9 +2440,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C62 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C62" / "process" / "c62_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C62" / "c62_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2326,9 +2487,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C61 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C61" / "process" / "c61_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C61"/ "c61_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2372,9 +2534,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C60 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C60" / "process" / "c60_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C60" / "c60_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2418,9 +2581,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C59 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C59" / "process" / "c59_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C59" / "c59_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2466,9 +2630,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C58 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C58" / "process" / "c58_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C58" / "c58_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2512,9 +2677,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C57 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C57" / "process" / "c57_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C57" / "c57_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2558,9 +2724,10 @@ if __name__ == '__main__':
                 Source("Participating circles: C56 Catalog CD (see media)", (ReliabilityTypes.Reliable, OriginTypes.Official)),
             ],
             locations=locations,
+            last_edited="2026.05.30"
         )
         event_raw = event.get_json()
-        with (Path(__file__).parent / "catalogs" / "C56" / "process" / "c56_circles.json").open("r", encoding='utf-8') as f:
+        with (Path(__file__).parent / "catalogs" / "C56" / "c56_circles.json").open("r", encoding='utf-8') as f:
             circles_raw = json.load(f)
         event_raw["circles"] = circles_raw
         prefix_all_circle_media_of_event(event_raw, f"{i}catarom/")
@@ -2784,7 +2951,7 @@ if __name__ == '__main__':
         ]
         event = Event(
             aliases=[f"C{i}", f"コミックマーケット{i}", f"Comiket {i}", f"Comic Market {i}", ],
-            dates="	1996.08.03 - 	1996.08.04",
+            dates="1996.08.03 - 1996.08.04",
             circles=circles_,
             media=media_,
             sources=[
@@ -4824,25 +4991,38 @@ if __name__ == '__main__':
             events=[],
             media=media,
             links=links,
-            comments="C21 was had first comiket catalog (https://x.com/comiketofficial/status/1079571967454277632)"
+            comments="C21 was the first comiket with a catalog (https://x.com/comiketofficial/status/1079571967454277632)",
+            last_edited="2026.05.30"
         )
+            
+        events_raw_sorted = sorted(events_raw, key=lambda er: er["dates"])
+        for event_raw in events_raw_sorted:
+            try:
+                event = Event.load_from_json(event_raw)
+            except Exception as e:
+                print(f"Error at {event_raw['aliases']}")
+                raise e
+            event_group.events.append(event)
         
-        if SAVE_INTER_JSON: # deprecated way of doing things
-            event_group_raw = event_group.get_json()
-            events_raw = []
-            for file in sorted(save_folder_path.glob("C*.json"), key=lambda x: x.stem):
-                with file.open("r", encoding='utf-8') as f:
-                    event_json = json.load(f)
-                events_raw.append(event_json)
-            event_group_raw["events"] = events_raw
-
-            event_group_new = EventGroup.load_from_json_old(event_group_raw)
-        else:
-            event_group_raw = event_group.get_json()
-            event_group_raw["events"] = events_raw[::-1]
-            event_group_new = EventGroup.load_from_json_old(event_group_raw)
         print("Saving comiket database...")
-        event_group_new.save(save_folder_path, indent=None)
+        event_group.save(save_folder_path, indent=None)
+
+        # if SAVE_INTER_JSON: # deprecated way of doing things
+        #     event_group_raw = event_group.get_json()
+        #     events_raw = []
+        #     for file in sorted(save_folder_path.glob("C*.json"), key=lambda x: x.stem):
+        #         with file.open("r", encoding='utf-8') as f:
+        #             event_json = json.load(f)
+        #         events_raw.append(event_json)
+        #     event_group_raw["events"] = events_raw
+
+        #     event_group_new = EventGroup.load_from_json_old(event_group_raw)
+        # else:
+        #     event_group_raw = event_group.get_json()
+        #     event_group_raw["events"] = events_raw[::-1]
+        #     event_group_new = EventGroup.load_from_json_old(event_group_raw)
+        # print("Saving comiket database...")
+        # event_group_new.save(save_folder_path, indent=None)
 
         print("Done")
             
